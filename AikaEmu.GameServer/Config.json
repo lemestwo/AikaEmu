@@ -1,0 +1,18 @@
+{
+  "Id": 1,
+  "Network": {
+    "Host": "127.0.0.1",
+    "Port": 8822
+  },
+  "AuthNetwork": {
+    "Host": "127.0.0.1",
+    "Port": 8832
+  },
+  "Database": {
+    "Host": "localhost",
+    "Port": 3306,
+    "User": "root",
+    "Pass": "root",
+    "Database": "aikaemu_game"
+  }
+}

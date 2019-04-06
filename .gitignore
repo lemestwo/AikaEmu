@@ -1,0 +1,11 @@
+.vs/
+.vscode/
+.idea/
+publish/
+AikaEmu.AuthServer/obj/
+AikaEmu.GameServer/obj/
+AikaEmu.Shared/obj/
+AikaEmu.AuthServer/bin/
+AikaEmu.GameServer/bin/
+AikaEmu.Shared/bin/
+*.old

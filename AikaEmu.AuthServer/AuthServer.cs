@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using AikaEmu.AuthServer.Configuration;
-using AikaEmu.AuthServer.Controllers;
+using AikaEmu.AuthServer.Managers;
 using AikaEmu.AuthServer.Models;
 using AikaEmu.AuthServer.Network;
 using AikaEmu.AuthServer.Network.AuthServer;
@@ -33,7 +33,7 @@ namespace AikaEmu.AuthServer
             // Basic Setup
             SetupConfig(ref _authConfig);
             SetupDatabase(DatabaseManager = new DatabaseManager(), _authConfig.Database);
-            GameAuthController.Instance.Init();
+            AuthGameManager.Instance.Init();
 
             // Auth Server Setup
             var cNetwork = _authConfig.Network;

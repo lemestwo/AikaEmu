@@ -27,11 +27,23 @@
       <Content Include="NLog.config">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Database\**" />
+      <None Remove="Data\Character\CharacterConfig.json" />
+      <Content Include="Data\Character\CharacterConfig.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Database" />
-      <Folder Include="Manager" />
+      <Compile Remove="Database\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Database\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\Account" />
     </ItemGroup>
 
 </Project>

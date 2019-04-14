@@ -1,12 +1,13 @@
 using System.Net;
+using AikaEmu.AuthServer.Models;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
-using AikaEmu.Shared.Network.Packets;
 
 namespace AikaEmu.AuthServer.Network.AuthServer
 {
     public class AuthConnection : BaseConnection
     {
-        public uint AccountId { get; set; }
+        public Account Account { get; set; }
 
         public AuthConnection(Session session) : base(session)
         {

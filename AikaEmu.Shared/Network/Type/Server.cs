@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using AikaEmu.Shared.Model.Network;
 using NLog;
 
 namespace AikaEmu.Shared.Network.Type
@@ -12,11 +13,11 @@ namespace AikaEmu.Shared.Network.Type
         private static Logger _log = LogManager.GetCurrentClassLogger();
 
         private const int ReceiveBufferSize = 8096;
-        private readonly BufferManager _bufferManager;
+        private readonly BufferControl _bufferControl;
         private readonly Socket _listenSocket;
         private readonly Semaphore _maxNumberAcceptedClients;
         private readonly ConcurrentDictionary<uint, Session> _sessions;
-        private BaseProtocol _protocol;
+        private readonly BaseProtocol _protocol;
 
         public bool IsStarted { get; private set; }
 
@@ -26,11 +27,11 @@ namespace AikaEmu.Shared.Network.Type
             _listenSocket.Bind(localEndPoint);
             _listenSocket.Listen(100);
 
-            _bufferManager = new BufferManager(ReceiveBufferSize * numConnections, ReceiveBufferSize);
+            _bufferControl = new BufferControl(ReceiveBufferSize * numConnections, ReceiveBufferSize);
             _maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
             _sessions = new ConcurrentDictionary<uint, Session>();
-            _bufferManager.Init();
-            
+            _bufferControl.Init();
+
             _protocol = handler;
         }
 
@@ -75,7 +76,7 @@ namespace AikaEmu.Shared.Network.Type
         {
             var readEventArg = new SocketAsyncEventArgs();
             readEventArg.Completed += ReadComplete;
-            _bufferManager.Set(readEventArg);
+            _bufferControl.Set(readEventArg);
 
             if (e.AcceptSocket?.RemoteEndPoint == null)
             {
@@ -161,7 +162,7 @@ namespace AikaEmu.Shared.Network.Type
 
         public void RemoveSession(Session session)
         {
-            _bufferManager.Empty(session.ReadEventArg);
+            _bufferControl.Empty(session.ReadEventArg);
 
             _sessions.TryRemove(session.Id, out var val);
             if (val != null)

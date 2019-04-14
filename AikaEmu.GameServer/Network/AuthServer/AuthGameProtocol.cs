@@ -1,6 +1,7 @@
 using System;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
-using AikaEmu.Shared.Network.Packets;
+using AikaEmu.Shared.Packets;
 using NLog;
 using static AikaEmu.GameServer.GameServer;
 
@@ -44,19 +45,19 @@ namespace AikaEmu.GameServer.Network.AuthServer
                     stream.ReadUInt16();
                     var opcode = stream.ReadUInt16();
 
-                    if (Enum.IsDefined(typeof(GameAuthOpcode), opcode))
+                    if (Enum.IsDefined(typeof(AuthGameOpcode), opcode))
                     {
-                        var pName = Enum.GetName(typeof(GameAuthOpcode), opcode);
-                        var pType = Type.GetType($"AikaEmu.GameServer.Packets.Auth.{pName}");
+                        var pName = Enum.GetName(typeof(AuthGameOpcode), opcode);
+                        var pType = Type.GetType($"AikaEmu.GameServer.Packets.AG.{pName}");
                         var packet = (AuthGamePacket) Activator.CreateInstance(pType);
                         packet.Opcode = opcode;
                         packet.Connection = connection;
                         packet.Decode(stream);
-                        _log.Debug("Auth->Game: {0:x2} {1}", opcode, pName);
+                        //_log.Debug("Auth->Game: (0x{0:x2}) {1}.", opcode, pName);
                     }
                     else
                     {
-                        _log.Error("Opcode not found: {0} (0x{1:x2})", connection.SessionIp, opcode);
+                        _log.Error("Opcode not found: {0} (0x{1:x2})", connection.Ip, opcode);
                         _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
                     }
                 }

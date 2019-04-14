@@ -1,13 +1,13 @@
 using System;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
-using AikaEmu.Shared.Network.Packets;
 
 namespace AikaEmu.AuthServer.Network.GameServer
 {
     public class GameAuthPacket : BasePacket
     {
         public GameAuthConnection Connection { protected get; set; }
-        public override PacketStream Encode()
+        public virtual PacketStream Encode()
         {
             var stream = new PacketStream();
             try
@@ -24,7 +24,7 @@ namespace AikaEmu.AuthServer.Network.GameServer
             return stream;
         }
 
-        public override BasePacket Decode(PacketStream stream)
+        public virtual BasePacket Decode(PacketStream stream)
         {
             try
             {

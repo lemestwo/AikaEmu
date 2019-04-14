@@ -1,6 +1,8 @@
 using System;
 using System.Net;
-using AikaEmu.GameServer.Configuration;
+using AikaEmu.GameServer.Managers.Configuration;
+using AikaEmu.GameServer.Managers.Id;
+using AikaEmu.GameServer.Models.Data;
 using AikaEmu.GameServer.Network;
 using AikaEmu.GameServer.Network.AuthServer;
 using AikaEmu.GameServer.Network.GameServer;
@@ -14,7 +16,7 @@ namespace AikaEmu.GameServer
     public class GameServer : BaseProgram
     {
         public static readonly GameServer Instance = new GameServer();
-        
+
         public DatabaseManager DatabaseManager { get; private set; }
         public GameConfig GameConfigs = new GameConfig();
 
@@ -30,6 +32,15 @@ namespace AikaEmu.GameServer
             // Basic Setup
             SetupConfig(ref GameConfigs);
             SetupDatabase(DatabaseManager = new DatabaseManager(), GameConfigs.Database);
+
+            // Managers
+            DataManager.Instance.Init();
+
+            // IdManagers
+            IdCharacterManager.Instance.Init();
+            IdConnectionManager.Instance.Init();
+            IdUnitSpawnManager.Instance.Init();
+            IdMobSpawnManager.Instance.Init();
 
             // Server Setup
             var cNetwork = GameConfigs.Network;

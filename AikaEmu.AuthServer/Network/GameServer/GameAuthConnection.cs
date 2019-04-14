@@ -1,3 +1,4 @@
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.AuthServer.Network.GameServer

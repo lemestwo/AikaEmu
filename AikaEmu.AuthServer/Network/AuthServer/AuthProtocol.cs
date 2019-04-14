@@ -1,5 +1,7 @@
 using System;
-using AikaEmu.AuthServer.Controllers;
+using AikaEmu.AuthServer.Managers;
+using AikaEmu.AuthServer.Managers.Connections;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;
 using NLog;
@@ -15,7 +17,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
             _log.Info("Client ({0}) connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
             try
             {
-                AuthConnections.Instance.Add(new AuthConnection(session));
+                AuthConnectionsManager.Instance.Add(new AuthConnection(session));
             }
             catch (Exception e)
             {
@@ -28,9 +30,9 @@ namespace AikaEmu.AuthServer.Network.AuthServer
         {
             try
             {
-                var con = AuthConnections.Instance.GetConnection(session.Id);
+                var con = AuthConnectionsManager.Instance.GetConnection(session.Id);
                 if (con != null)
-                    AuthConnections.Instance.Remove(session.Id);
+                    AuthConnectionsManager.Instance.Remove(session.Id);
             }
             catch (Exception e)
             {
@@ -43,7 +45,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
 
         public override void OnReceive(Session session, byte[] buff, int bytes)
         {
-            var connection = AuthConnections.Instance.GetConnection(session.Id);
+            var connection = AuthConnectionsManager.Instance.GetConnection(session.Id);
             if (connection == null) return;
 
             try
@@ -86,9 +88,9 @@ namespace AikaEmu.AuthServer.Network.AuthServer
                             var opcode = stream.ReadUInt16();
                             stream.ReadInt32();
 
-                            if (Enum.IsDefined(typeof(AuthOpcode), opcode))
+                            if (Enum.IsDefined(typeof(ClientOpcode), opcode))
                             {
-                                var pName = Enum.GetName(typeof(AuthOpcode), opcode);
+                                var pName = Enum.GetName(typeof(ClientOpcode), opcode);
                                 var pType = Type.GetType($"AikaEmu.AuthServer.Packets.Client.{pName}");
                                 var packet = (AuthPacket) Activator.CreateInstance(pType);
                                 packet.Opcode = opcode;
@@ -98,7 +100,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
                             }
                             else
                             {
-                                _log.Error("Opcode not found: {0} (0x{1:x2})", connection.SessionIp, opcode);
+                                _log.Error("Opcode not found: {0} (0x{1:x2})", connection.Ip, opcode);
                                 _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
                             }
                         }

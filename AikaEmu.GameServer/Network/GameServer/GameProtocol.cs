@@ -1,6 +1,7 @@
 using System;
 using System.Text;
-using AikaEmu.GameServer.Controllers;
+using AikaEmu.GameServer.Managers.Connections;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;
 using NLog;
@@ -15,7 +16,7 @@ namespace AikaEmu.GameServer.Network.GameServer
         {
             try
             {
-                GameConnections.Instance.Add(new GameConnection(session));
+                GameConnectionManager.Instance.Add(new GameConnection(session));
                 _log.Info("Client {0} connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
             }
             catch (Exception e)
@@ -29,10 +30,10 @@ namespace AikaEmu.GameServer.Network.GameServer
         {
             try
             {
-                var connection = GameConnections.Instance.GetConnection(session.Id);
+                var connection = GameConnectionManager.Instance.GetConnection(session.Id);
                 if (connection == null) return;
                 // ondisconnect
-                GameConnections.Instance.Remove(session.Id);
+                GameConnectionManager.Instance.Remove(session.Id);
             }
             catch (Exception e)
             {
@@ -45,11 +46,19 @@ namespace AikaEmu.GameServer.Network.GameServer
 
         public override void OnReceive(Session session, byte[] buff, int bytes)
         {
-            var connection = GameConnections.Instance.GetConnection(session.Id);
+            var connection = GameConnectionManager.Instance.GetConnection(session.Id);
             if (connection == null) return;
 
             try
             {
+                // TODO - Better fix for 11 F3 11 1F at start of the packet 
+                if (buff.Length > 2 && buff[0] == 0x11 && buff[1] == 0xF3)
+                {
+                    var newBuff = new byte[buff.Length - 4];
+                    Array.Copy(buff, 4, newBuff, 0, buff.Length - 4);
+                    buff = newBuff;
+                }
+                
                 var stream = new PacketStream();
                 stream.Insert(stream.Count, buff);
                 if (stream.Count < 12) return;
@@ -80,19 +89,19 @@ namespace AikaEmu.GameServer.Network.GameServer
                             var opcode = stream.ReadUInt16();
                             stream.ReadInt32();
 
-                            if (Enum.IsDefined(typeof(GameOpcode), opcode))
+                            if (Enum.IsDefined(typeof(ClientOpcode), opcode))
                             {
-                                var pName = Enum.GetName(typeof(GameOpcode), opcode);
+                                var pName = Enum.GetName(typeof(ClientOpcode), opcode);
                                 var pType = Type.GetType($"AikaEmu.GameServer.Packets.Client.{pName}");
                                 var packet = (GamePacket) Activator.CreateInstance(pType);
                                 packet.Opcode = opcode;
                                 packet.Connection = connection;
                                 packet.Decode(stream);
-                                _log.Debug("C->Game: {0:x2} {1}", opcode, pName);
+                                _log.Debug("C->Game: (0x{0:x2}) {1}.", opcode, pName);
                             }
                             else
                             {
-                                _log.Error("Opcode not found: {0} (0x{1:x2})", connection.SessionIp, opcode);
+                                _log.Error("Opcode not found: {0} (0x{1:x2})", connection.Ip, opcode);
                                 _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
                             }
                         }

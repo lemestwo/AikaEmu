@@ -1,6 +1,10 @@
+using AikaEmu.GameServer.Managers;
+using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Packets;
-using AikaEmu.GameServer.Packets.Game;
+using AikaEmu.GameServer.Packets.GA;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
+using RegisterGs = AikaEmu.GameServer.Packets.GA.RegisterGs;
 
 namespace AikaEmu.GameServer.Network.AuthServer
 {
@@ -10,10 +14,11 @@ namespace AikaEmu.GameServer.Network.AuthServer
         {
         }
 
-        public override void OnConnect()
+        public void OnConnect()
         {
+            // TODO - KEY FOR INTERNAL REGISTRATION
             var gsId = AikaEmu.GameServer.GameServer.Instance.GameConfigs.Id;
-            SendPacket(new RegisterGS(gsId));
+            SendPacket(new RegisterGs(gsId));
         }
 
         public void SendPacket(AuthGamePacket packet)

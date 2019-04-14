@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network.Type;
 using NLog;
 
@@ -10,7 +11,7 @@ namespace AikaEmu.Shared.Network
 {
     public class Session : IDisposable
     {
-        private static Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private readonly IBaseNetwork _network;
         private readonly Dictionary<string, object> _attributes = new Dictionary<string, object>();
@@ -93,7 +94,10 @@ namespace AikaEmu.Shared.Network
             catch (ObjectDisposedException)
             {
                 _packetQueue = null;
-                _sending = false;
+                lock (Socket)
+                {
+                    _sending = false;
+                }
             }
         }
 
@@ -118,7 +122,7 @@ namespace AikaEmu.Shared.Network
             }
             else
             {
-                _log.Error("Error on ProcessSend: {0}", e.SocketError.ToString());
+                Log.Error("Error on ProcessSend: {0}", e.SocketError.ToString());
                 Close();
             }
         }
@@ -135,9 +139,9 @@ namespace AikaEmu.Shared.Network
             {
                 Socket.Shutdown(SocketShutdown.Receive);
             }
-            // throws if client process has already closed
             catch (Exception)
             {
+                // ignored
             }
 
             Socket.Close();

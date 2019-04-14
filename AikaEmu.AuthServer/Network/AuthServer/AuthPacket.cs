@@ -1,7 +1,7 @@
 using System;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;
-using AikaEmu.Shared.Network.Packets;
 
 namespace AikaEmu.AuthServer.Network.AuthServer
 {
@@ -9,15 +9,14 @@ namespace AikaEmu.AuthServer.Network.AuthServer
     {
         public AuthConnection Connection { protected get; set; }
 
-        public override PacketStream Encode()
+        public PacketStream Encode()
         {
             var stream = new PacketStream();
             try
             {
-                var opcodeByte = BitConverter.GetBytes(Opcode);
-                var header = new byte[] {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, opcodeByte[0], opcodeByte[1], 0x3C, 0x5E, 0x5F, 0x70};
-                stream.Write(header);
-                stream.Write(new PacketStream().Write(this));
+                var packet = new PacketStream().Write(0).Write((ushort) 0).Write(Opcode).Write(Time);
+                packet.Write(this);
+                stream.Write(packet);
             }
             catch (Exception e)
             {
@@ -31,7 +30,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
             return stream;
         }
 
-        public override BasePacket Decode(PacketStream stream)
+        public BasePacket Decode(PacketStream stream)
         {
             try
             {

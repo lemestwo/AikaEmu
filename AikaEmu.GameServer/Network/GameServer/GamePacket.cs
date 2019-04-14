@@ -1,7 +1,7 @@
 using System;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;
-using AikaEmu.Shared.Network.Packets;
 
 namespace AikaEmu.GameServer.Network.GameServer
 {
@@ -9,12 +9,12 @@ namespace AikaEmu.GameServer.Network.GameServer
     {
         public GameConnection Connection { protected get; set; }
 
-        public override PacketStream Encode()
+        public PacketStream Encode()
         {
             var stream = new PacketStream();
             try
             {
-                var packet = new PacketStream().Write(0u).Write((short) 0).Write(Opcode).Write(62512);
+                var packet = new PacketStream().Write(0).Write(Connection.ConnectionId).Write(Opcode).Write(Time);
                 packet.Write(this);
                 stream.Write(packet);
             }
@@ -31,7 +31,7 @@ namespace AikaEmu.GameServer.Network.GameServer
             return stream;
         }
 
-        public override BasePacket Decode(PacketStream stream)
+        public BasePacket Decode(PacketStream stream)
         {
             try
             {

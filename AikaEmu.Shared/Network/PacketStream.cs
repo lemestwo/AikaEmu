@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using AikaEmu.Shared.Conversions;
-using AikaEmu.Shared.Network.Packets;
+using AikaEmu.Shared.Model.Network;
+using AikaEmu.Shared.Utils.Conversions;
 
 namespace AikaEmu.Shared.Network
 {
@@ -17,7 +17,6 @@ namespace AikaEmu.Shared.Network
 
         #region Properties
 
-        private Stream stream;
         public byte[] Buffer { get; private set; }
         public int Count { get; private set; }
         public int Pos { get; set; }
@@ -237,9 +236,13 @@ namespace AikaEmu.Shared.Network
             return Write(Converter.GetBytes(value));
         }
 
-        public PacketStream WriteBc(uint value)
+        public PacketStream WriteCc(int count)
         {
-            return Write(Converter.GetBytes(value, 3));
+            var buff = new byte[count];
+            for (var i = 0; i < count; i++)
+                buff[i] = 0xCC;
+
+            return Write(buff);
         }
 
         #endregion // Write Primitive Types
@@ -257,6 +260,24 @@ namespace AikaEmu.Shared.Network
         }
 
         #endregion // Write Complex Types
+
+        #region Write String Types
+
+        public PacketStream Write(string value, int count, bool fillCc = false)
+        {
+            var tmp = Encoding.UTF8.GetBytes(fillCc ? value + '\u0000' : value);
+            var buff = new byte[count];
+            if (fillCc)
+            {
+                for (var i = 0; i < buff.Length; i++)
+                    buff[i] = 0xCC;
+            }
+
+            System.Buffer.BlockCopy(tmp, 0, buff, 0, tmp.Length);
+            return Write(buff);
+        }
+
+        #endregion
 
         #region Read Primitive Types
 
@@ -361,16 +382,6 @@ namespace AikaEmu.Shared.Network
             return result;
         }
 
-        public uint ReadBc()
-        {
-            if (Pos + 3 > Count)
-                throw new Exception();
-
-            var result = ReadUInt16() + (ReadByte() << 16);
-
-            return (uint) result;
-        }
-
         public ulong ReadUInt64()
         {
             if (Pos + 8 > Count)
@@ -405,5 +416,24 @@ namespace AikaEmu.Shared.Network
         }
 
         #endregion // Read Primitive Types
+
+        #region Read Strings
+
+        public string ReadString(int size)
+        {
+            var str = ReadBytes(size);
+            for (var i = 0; i < str.Length; i++)
+                if (str[i].Equals(0xCC))
+                    str[i] = 0x00;
+            return Encoding.UTF8.GetString(str).Trim('\u0000');
+        }
+
+        public string ReadMacAddress()
+        {
+            var str = ReadBytes(6);
+            return BitConverter.ToString(str).Replace("-", ":");
+        }
+
+        #endregion
     }
 }

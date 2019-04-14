@@ -1,0 +1,3 @@
+# AikaEmu
+
+Aika emulator.

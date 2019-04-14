@@ -2,18 +2,18 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using AAEmu.Commons.Network;
+using AikaEmu.Shared.Model.Network;
 using NLog;
 
 namespace AikaEmu.Shared.Network.Type
 {
     public class Client : IBaseNetwork
     {
-        private static Logger _log = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private const int BufferSize = 8096;
         private readonly IPEndPoint _remoteEndPoint;
-        private readonly BufferManager _bufferManager;
+        private readonly BufferControl _bufferControl;
         private readonly Socket _socket;
         private readonly BaseProtocol _protocol;
 
@@ -21,9 +21,9 @@ namespace AikaEmu.Shared.Network.Type
         {
             _remoteEndPoint = remoteEndPoint;
             _socket = new Socket(remoteEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            
-            _bufferManager = new BufferManager(BufferSize, BufferSize);
-            _bufferManager.Init();
+
+            _bufferControl = new BufferControl(BufferSize, BufferSize);
+            _bufferControl.Init();
 
             _protocol = handler;
         }
@@ -38,12 +38,12 @@ namespace AikaEmu.Shared.Network.Type
             if (_socket.Connected)
                 _socket.Disconnect(true);
             _socket.Close();
-            _log.Info("Client network stopped.");
+            Log.Info("Client network stopped.");
         }
 
         private void StartConnect()
         {
-            _log.Info("Connecting to {0}", _remoteEndPoint.ToString());
+            Log.Info("Connecting to {0}", _remoteEndPoint.ToString());
             var connectEventArg = new SocketAsyncEventArgs {RemoteEndPoint = _remoteEndPoint};
             connectEventArg.Completed += AcceptEventArg_Completed;
             var willRaiseEvent = _socket.ConnectAsync(connectEventArg);
@@ -63,7 +63,7 @@ namespace AikaEmu.Shared.Network.Type
             {
                 case SocketError.TimedOut:
                 case SocketError.ConnectionRefused:
-                    _log.Info("Connection to ({0}) failed, trying new attempt...", _remoteEndPoint);
+                    Log.Info("Connection to ({0}) failed, trying new attempt...", _remoteEndPoint);
                     Thread.Sleep(5000);
                     StartConnect();
                     return;
@@ -77,11 +77,11 @@ namespace AikaEmu.Shared.Network.Type
 
             var readEventArg = new SocketAsyncEventArgs();
             readEventArg.Completed += ReadComplete;
-            _bufferManager.Set(readEventArg);
+            _bufferControl.Set(readEventArg);
 
             if (_socket?.RemoteEndPoint == null)
             {
-                _log.Info("Connection to ({0}) failed, trying new attempt...", _remoteEndPoint);
+                Log.Info("Connection to ({0}) failed, trying new attempt...", _remoteEndPoint);
                 Thread.Sleep(10000);
                 StartConnect();
                 return;
@@ -133,7 +133,7 @@ namespace AikaEmu.Shared.Network.Type
             {
                 if (e.SocketError != SocketError.Success && e.SocketError != SocketError.OperationAborted &&
                     e.SocketError != SocketError.ConnectionReset)
-                    _log.Error("Error on ProcessReceive: {0}", e.SocketError.ToString());
+                    Log.Error("Error on ProcessReceive: {0}", e.SocketError.ToString());
                 session.Close();
             }
         }
@@ -160,7 +160,7 @@ namespace AikaEmu.Shared.Network.Type
 
         public void RemoveSession(Session session)
         {
-            _bufferManager.Empty(session.ReadEventArg);
+            _bufferControl.Empty(session.ReadEventArg);
         }
     }
 }

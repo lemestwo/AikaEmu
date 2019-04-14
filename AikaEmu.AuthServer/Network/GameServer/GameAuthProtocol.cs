@@ -1,7 +1,9 @@
 using System;
-using AikaEmu.AuthServer.Controllers;
+using AikaEmu.AuthServer.Managers;
+using AikaEmu.AuthServer.Managers.Connections;
+using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
-using AikaEmu.Shared.Network.Packets;
+using AikaEmu.Shared.Packets;
 using NLog;
 
 namespace AikaEmu.AuthServer.Network.GameServer
@@ -13,17 +15,17 @@ namespace AikaEmu.AuthServer.Network.GameServer
         public override void OnConnect(Session session)
         {
             var template = new GameAuthConnection(session);
-            GameAuthConnections.Instance.Add(template);
+            IntConnectionsManager.Instance.Add(template);
             _log.Info("Gameserver ({0}) connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
         }
 
         public override void OnDisconnect(Session session)
         {
-            GameAuthConnections.Instance.Remove(session.Id);
+            IntConnectionsManager.Instance.Remove(session.Id);
             var gsId = session.GetAttribute("gsId");
             if (gsId != null)
-                GameAuthController.Instance.Remove((byte) gsId);
-            GameAuthConnections.Instance.Remove(session.Id);
+                AuthGameManager.Instance.Remove((byte) gsId);
+            IntConnectionsManager.Instance.Remove(session.Id);
             _log.Info("Gameserver ({0}) disconnected.", session.Ip.ToString());
         }
 
@@ -31,7 +33,7 @@ namespace AikaEmu.AuthServer.Network.GameServer
         {
             try
             {
-                var connection = GameAuthConnections.Instance.GetConnection(session.Id);
+                var connection = IntConnectionsManager.Instance.GetConnection(session.Id);
                 if (connection == null || buff.Length < 2) return;
 
                 var stream = new PacketStream();
@@ -49,7 +51,7 @@ namespace AikaEmu.AuthServer.Network.GameServer
                     if (Enum.IsDefined(typeof(GameAuthOpcode), opcode))
                     {
                         var pName = Enum.GetName(typeof(GameAuthOpcode), opcode);
-                        var pType = Type.GetType($"AikaEmu.AuthServer.Packets.Game.{pName}");
+                        var pType = Type.GetType($"AikaEmu.AuthServer.Packets.GA.{pName}");
                         var packet = (GameAuthPacket) Activator.CreateInstance(pType);
                         packet.Opcode = opcode;
                         packet.Connection = connection;
@@ -58,7 +60,7 @@ namespace AikaEmu.AuthServer.Network.GameServer
                     }
                     else
                     {
-                        _log.Error("Opcode not found: {0} (0x{1:x2}).", connection.SessionIp, opcode);
+                        _log.Error("Opcode not found: {0} (0x{1:x2}).", connection.Ip, opcode);
                         _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
                     }
                 }

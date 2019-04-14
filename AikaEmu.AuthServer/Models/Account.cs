@@ -1,9 +1,16 @@
+using System;
+using System.Net;
+
 namespace AikaEmu.AuthServer.Models
 {
     public class Account
     {
         public uint Id { get; set; }
         public string User { get; set; }
-        public string Pass { get; set; }
+        public byte Level { get; set; }
+        public DateTime LastLogin { get; set; }
+        public IPAddress LastIp { get; set; }
+        public string SessionHash { get; set; }
+        public DateTime SessionTime { get; set; }
     }
 }

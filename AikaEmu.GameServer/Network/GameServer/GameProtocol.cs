@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using AikaEmu.GameServer.Managers.Connections;
+using AikaEmu.GameServer.Packets;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;
@@ -89,20 +90,23 @@ namespace AikaEmu.GameServer.Network.GameServer
                             var opcode = stream.ReadUInt16();
                             stream.ReadInt32();
 
-                            if (Enum.IsDefined(typeof(ClientOpcode), opcode))
+                            if (opcode != 0x3006) // TODO - REMOVE
                             {
-                                var pName = Enum.GetName(typeof(ClientOpcode), opcode);
-                                var pType = Type.GetType($"AikaEmu.GameServer.Packets.Client.{pName}");
-                                var packet = (GamePacket) Activator.CreateInstance(pType);
-                                packet.Opcode = opcode;
-                                packet.Connection = connection;
-                                packet.Decode(stream);
-                                _log.Debug("C->Game: (0x{0:x2}) {1}.", opcode, pName);
-                            }
-                            else
-                            {
-                                _log.Error("Opcode not found: {0} (0x{1:x2})", connection.Ip, opcode);
-                                _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
+                                if (Enum.IsDefined(typeof(ClientOpcode), opcode))
+                                {
+                                    var pName = Enum.GetName(typeof(ClientOpcode), opcode);
+                                    var pType = Type.GetType($"AikaEmu.GameServer.Packets.Client.{pName}");
+                                    var packet = (GamePacket) Activator.CreateInstance(pType);
+                                    packet.Opcode = opcode;
+                                    packet.Connection = connection;
+                                    packet.Decode(stream);
+                                    _log.Debug("C->Game: (0x{0:x2}) {1}.", opcode, pName);
+                                }
+                                else
+                                {
+                                    _log.Error("Opcode not found: {0} (0x{1:x2})", connection.Ip, opcode);
+                                    _log.Error("Data: {0}", BitConverter.ToString(stream.ReadBytes(stream.Count - stream.Pos)));
+                                }
                             }
                         }
                         else

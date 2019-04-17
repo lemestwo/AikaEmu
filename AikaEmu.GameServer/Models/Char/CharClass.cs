@@ -2,6 +2,8 @@ namespace AikaEmu.GameServer.Models.Char
 {
     public enum CharClass : ushort
     {
+        Undefined = 0,
+        
         Warrior = 1,
         Conquerer = 2,
 

@@ -53,8 +53,6 @@ namespace AikaEmu.GameServer.Models
                             Slot = reader.GetUInt32("slot"),
                             Name = reader.GetString("name"),
                             CharClass = (CharClass) reader.GetUInt16("class"),
-                            Face = (CharFace) reader.GetUInt16("face"),
-                            Hair = (CharHair) reader.GetUInt16("hair"),
                             Level = reader.GetUInt16("level"),
                             BodyTemplate = new BodyTemplate
                             {
@@ -87,6 +85,7 @@ namespace AikaEmu.GameServer.Models
                             Token = reader.GetString("token"),
                             AccountId = Id
                         };
+                        template.Init();
                         _accCharLobby.Add(template.Slot, template);
                     }
                 }
@@ -95,9 +94,10 @@ namespace AikaEmu.GameServer.Models
             Connection.SendPacket(new SendCharacterList(ConnectionId, Id, _accCharLobby));
         }
 
-        public void CreateCharacter(uint slot, string name, CharFace face, CharHair hair, bool isRanch)
+        public void CreateCharacter(uint slot, string name, ushort face, ushort hair, bool isRanch)
         {
-            if (_accCharLobby.Count > 3 || slot >= 3 || !Enum.IsDefined(typeof(CharFace), face) || !Enum.IsDefined(typeof(CharHair), hair))
+            var charClass = GetClassByFace(face);
+            if (_accCharLobby.Count > 3 || slot >= 3 || charClass == CharClass.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != 1)
             {
                 SendCharacterList();
                 return;
@@ -111,29 +111,27 @@ namespace AikaEmu.GameServer.Models
                 return;
             }
 
-            var nameRegex = new Regex(DataManager.Instance.CharacterConfig.NameRegex, RegexOptions.Compiled);
+            // TODO - include bad words verification
+            var nameRegex = new Regex(DataManager.Instance.CharInitial.Data.NameRegex, RegexOptions.Compiled);
             if (!nameRegex.IsMatch(name))
             {
                 Connection.SendPacket(new SendMessage(new Message(16, 1, "This name is already taken.")));
                 return;
             }
 
-            var configs = DataManager.Instance.CharacterConfig;
-            var charClass = GetClassByFace(face);
+            var configs = DataManager.Instance.CharInitial;
             var charInitials = configs.GetInitial((ushort) charClass);
             var template = new Character
             {
                 Id = IdCharacterManager.Instance.GetNextId(),
                 AccountId = Id,
                 CharClass = charClass,
-                Hair = hair,
-                Face = face,
                 Name = name,
                 Position = new Position
                 {
                     WorldId = 1,
-                    CoordX = isRanch ? configs.StartPosition[1].CoordX : configs.StartPosition[0].CoordX,
-                    CoordY = isRanch ? configs.StartPosition[1].CoordY : configs.StartPosition[0].CoordY,
+                    CoordX = isRanch ? configs.Data.StartPosition[1].CoordX : configs.Data.StartPosition[0].CoordX,
+                    CoordY = isRanch ? configs.Data.StartPosition[1].CoordY : configs.Data.StartPosition[0].CoordY,
                 },
                 Hp = charInitials.HpMp[0],
                 MaxHp = charInitials.HpMp[0],
@@ -157,16 +155,15 @@ namespace AikaEmu.GameServer.Models
             SendCharacterList();
         }
 
-        private static CharClass GetClassByFace(CharFace face)
+        private static CharClass GetClassByFace(ushort face)
         {
-            var f = (ushort) face;
-            if (f >= 10 && f < 15) return CharClass.Warrior;
-            if (f >= 20 && f < 25) return CharClass.Paladin;
-            if (f >= 30 && f < 35) return CharClass.Rifleman;
-            if (f >= 40 && f < 45) return CharClass.DualGunner;
-            if (f >= 50 && f < 55) return CharClass.Warlock;
-            if (f >= 60 && f < 65) return CharClass.Cleric;
-            return CharClass.Warrior;
+            if (face >= 10 && face < 15) return CharClass.Warrior;
+            if (face >= 20 && face < 25) return CharClass.Paladin;
+            if (face >= 30 && face < 35) return CharClass.Rifleman;
+            if (face >= 40 && face < 45) return CharClass.DualGunner;
+            if (face >= 50 && face < 55) return CharClass.Warlock;
+            if (face >= 60 && face < 65) return CharClass.Cleric;
+            return CharClass.Undefined;
         }
     }
 }

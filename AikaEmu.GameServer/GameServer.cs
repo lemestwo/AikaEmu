@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Data;
@@ -39,8 +40,12 @@ namespace AikaEmu.GameServer
             // IdManagers
             IdCharacterManager.Instance.Init();
             IdConnectionManager.Instance.Init();
+            IdItemManager.Instance.Init();
             IdUnitSpawnManager.Instance.Init();
             IdMobSpawnManager.Instance.Init();
+            
+            // Spawn
+            WorldManager.InitBasicSpawn();
 
             // Server Setup
             var cNetwork = GameConfigs.Network;

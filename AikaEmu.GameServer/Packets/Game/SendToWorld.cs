@@ -1,5 +1,6 @@
 using System;
 using AikaEmu.GameServer.Models;
+using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Network;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
@@ -24,7 +25,7 @@ namespace AikaEmu.GameServer.Packets.Game
             stream.Write(0);
             stream.Write(_character.Id);
             stream.Write(_character.Name, 16);
-            stream.Write((byte) 0); //nation?
+            stream.Write((byte) 5); // server
             stream.Write((ushort) _character.CharClass);
             stream.Write((byte) 0);
             stream.Write(_character.CharAttributes);
@@ -63,26 +64,33 @@ namespace AikaEmu.GameServer.Packets.Game
             stream.Write(_character.Experience);
             stream.Write(_character.Level);
             stream.Write("", 154);
-            for (var i = 0; i < 16; i++)
+
+            var equips = _character.Inventory.GetItemsBySlotType(SlotType.Equipments);
+            for (ushort i = 0; i < 16; i++)
             {
-                if (i == 0) stream.Write((ushort) _character.Face);
-                else if (i == 1) stream.Write((ushort) _character.Hair);
-                else stream.Write((ushort) 0);
-                stream.Write("", 18);
+                if (equips.ContainsKey(i))
+                {
+                    stream.Write(equips[i]);
+                }
+                else
+                {
+                    stream.Write("", 20);
+                }
             }
 
             stream.Write(0);
-            for (var i = 0; i < 80; i++)
-            {
-                if (i == 0) stream.Write((ushort) 1985);
-                else stream.Write((ushort) 0);
-                stream.Write("", 18);
-            }
 
-            for (var i = 0; i < 4; i++)
+            var inv = _character.Inventory.GetItemsBySlotType(SlotType.Inventory);
+            for (ushort i = 0; i < 84; i++)
             {
-                stream.Write((ushort) 5300);
-                stream.Write("", 18);
+                if (inv.ContainsKey(i))
+                {
+                    stream.Write(inv[i]);
+                }
+                else
+                {
+                    stream.Write("", 20);
+                }
             }
 
             stream.Write(_character.Money);

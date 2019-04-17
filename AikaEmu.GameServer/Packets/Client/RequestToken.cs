@@ -1,3 +1,4 @@
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Packets.Game;
@@ -13,13 +14,14 @@ namespace AikaEmu.GameServer.Packets.Client
             var tokenStage = stream.ReadUInt16();
             var token = stream.ReadString(4);
             var token2 = stream.ReadString(4); // right one
-            Log.Debug("Token: ({0}) {1}/{2}, Action: {3}.", charSlot, token, token2, tokenStage);
+            Log.Debug("Token: ({0}) {2}, Action: {3}.", charSlot, token2, tokenStage);
 
             var character = Connection.Account.GetSlotCharacter(charSlot);
             if (character == null) return;
 
             character.Connection = Connection;
             Connection.ActiveCharacter = character;
+            WorldManager.Instance.Spawn(character);
 
 //            Connection.SendPacket(new Unk30A6());
 //            Connection.SendPacket(new Unk1086());

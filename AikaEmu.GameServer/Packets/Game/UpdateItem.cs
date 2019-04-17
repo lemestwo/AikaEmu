@@ -1,3 +1,4 @@
+using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Network;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
@@ -6,35 +7,35 @@ namespace AikaEmu.GameServer.Packets.Game
 {
     public class UpdateItem : GamePacket
     {
-        private readonly ushort _slot;
+        private readonly Item _item;
+        private readonly bool _isNotice;
 
-        public UpdateItem(ushort slot)
+        public UpdateItem(Item item, bool isNotice)
         {
-            _slot = slot;
+            _item = item;
+            _isNotice = isNotice;
             Opcode = (ushort) GameOpcode.UpdateItem;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            if (_slot == 84)
-            {
-                stream.Write(new byte[]
-                {
-                    0x00, 0x02, 0x54, 0x00, 0x68, 0x00, 0x68, 0x00, 0x00, 0x00, 0x00, 0x00,
-                    0x2B, 0x1B, 0x5B, 0x4C, 0x7F, 0x00, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00,
-                });
-            }
-            else
-            {
-                stream.Write(false); // isNotice
-                stream.Write((byte) 2); // typeslot
-                stream.Write(_slot);
-                stream.Write((ushort) 0); // id
-                stream.Write((ushort) 0);
-                stream.Write((ushort) 0);
-                stream.Write(0);
-                stream.Write("", 12);
-            }
+            stream.Write(_isNotice);
+            stream.Write((byte) _item.SlotType);
+            stream.Write(_item.Slot);
+            stream.Write(_item.ItemId);
+            stream.Write(_item.ItemId);
+            stream.Write(_item.Id);
+            stream.Write(_item.Effect1);
+            stream.Write(_item.Effect2);
+            stream.Write(_item.Effect3);
+            stream.Write((byte) (_item.Effect1Value >> 1));
+            stream.Write((byte) (_item.Effect2Value >> 1));
+            stream.Write((byte) (_item.Effect3Value >> 1));
+            stream.Write(_item.Durability);
+            stream.Write(_item.DurMax);
+            stream.Write((byte) (_item.Refinement << 4));
+            stream.Write(_item.DisableDurplus);
+            stream.Write(_item.Time);
 
             return stream;
         }

@@ -7,14 +7,26 @@ namespace AikaEmu.GameServer.Network.GameServer
 {
     public class GamePacket : BasePacket
     {
+        private ushort _changedConnectionId = 0;
+        private bool _isConnectionIdChanged = false;
         public GameConnection Connection { protected get; set; }
+
+        protected ushort ChangeConnectionId
+        {
+            set
+            {
+                _changedConnectionId = value;
+                _isConnectionIdChanged = true;
+            }
+        }
 
         public PacketStream Encode()
         {
             var stream = new PacketStream();
             try
             {
-                var packet = new PacketStream().Write(0).Write(Connection.ConnectionId).Write(Opcode).Write(Time);
+                var conId = _isConnectionIdChanged ? _changedConnectionId : Connection.ConnectionId;
+                var packet = new PacketStream().Write(0).Write(conId).Write(Opcode).Write(Time);
                 packet.Write(this);
                 stream.Write(packet);
             }

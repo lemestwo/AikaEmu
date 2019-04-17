@@ -32,6 +32,18 @@
       <Content Include="Data\Character\CharacterConfig.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Data\Game\ItemList.bin.json" />
+      <Content Include="Data\Game\ItemList.bin.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Data\Game\npcpos.bin.json" />
+      <Content Include="Data\Game\npcpos.bin.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Data\Game\MobPos.bin.json" />
+      <Content Include="Data\Game\MobPos.bin.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

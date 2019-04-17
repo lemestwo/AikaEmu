@@ -12,7 +12,7 @@ namespace AikaEmu.Shared
 {
     public abstract class BaseProgram
     {
-        protected readonly Logger Log = LogManager.GetLogger("AuthServer");
+        protected readonly Logger Log = LogManager.GetLogger("GameServer");
         private bool _running;
         private string _appDirectory;
 

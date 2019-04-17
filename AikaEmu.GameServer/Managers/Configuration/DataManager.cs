@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
-using AikaEmu.GameServer.Models.Data.Character;
+using AikaEmu.GameServer.Models.Data;
+using AikaEmu.GameServer.Models.Data.JsonModel;
 using AikaEmu.Shared.Utils;
 using NLog;
 
@@ -10,7 +12,11 @@ namespace AikaEmu.GameServer.Managers.Configuration
     {
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly string _curDir;
-        public CharacterConfig CharacterConfig { get; private set; }
+        public CharInitialData CharInitial { get; private set; }
+        public ItemsData ItemsData { get; private set; }
+        public MnData MnData { get; set; }
+        public NpcPosData NpcPosData { get; set; }
+        public MobPosData MobPosData { get; set; }
 
         protected DataManager()
         {
@@ -20,21 +26,30 @@ namespace AikaEmu.GameServer.Managers.Configuration
         public void Init()
         {
             _log.Info("Loading CharacterConfig...");
-            CharacterConfig = CharacterConfig.FromJson(GetConfigFile("Character\\CharacterConfig"));
+            CharInitial = new CharInitialData(GetPath("Character\\CharacterConfig"));
+
+            _log.Info("Loading ItemList...");
+            ItemsData = new ItemsData(GetPath("Game\\ItemList.bin"));
+            _log.Info("Loaded {0} items.", ItemsData.Count);
+
+            _log.Info("Loading MN...");
+            MnData = new MnData(GetPath("Game\\MN.bin"));
+            _log.Info("Loaded {0} names.", MnData.Count);
+
+            _log.Info("Loading NpcPos...");
+            NpcPosData = new NpcPosData(GetPath("Game\\npcpos.bin"));
+            _log.Info("Loaded {0} npcs.", NpcPosData.Count);
+
+            _log.Info("Loading MobPos...");
+            MobPosData = new MobPosData(GetPath("Game\\MobPos.bin"));
+            _log.Info("Loaded {0} mobs.", MobPosData.Count);
+
+            // TODO EXP / PRAN XP
         }
 
-        public string GetConfigFile(string dir)
+        private string GetPath(string dir)
         {
-            var configFile = _curDir + "Data\\" + dir + ".json";
-            if (!File.Exists(configFile)) return string.Empty;
-
-            string content;
-            using (var reader = File.OpenText(configFile))
-            {
-                content = reader.ReadToEnd();
-            }
-
-            return content;
+            return _curDir + "Data\\" + dir + ".json";
         }
     }
 }

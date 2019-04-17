@@ -1,6 +1,7 @@
 using System;
 using AikaEmu.GameServer.Models.Base;
 using AikaEmu.GameServer.Models.Char;
+using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Network.GameServer;
 using NLog;
 
@@ -17,14 +18,20 @@ namespace AikaEmu.GameServer.Models
         public ushort Level { get; set; }
         public CharAttributes CharAttributes { get; set; }
         public CharClass CharClass { get; set; }
-        public CharFace Face { get; set; }
-        public CharHair Hair { get; set; }
         public ulong Money { get; set; }
         public ulong Experience { get; set; }
         public int HonorPoints { get; set; }
         public int PvpPoints { get; set; }
         public int InfamyPoints { get; set; }
         public string Token { get; set; }
+
+        public CharInventory Inventory { get; set; }
+
+        public void Init()
+        {
+            Inventory = new CharInventory(this);
+            Inventory.Init();
+        }
 
         public bool Save()
         {
@@ -35,8 +42,8 @@ namespace AikaEmu.GameServer.Models
                 {
                     command.CommandText =
                         "REPLACE INTO `characters`" +
-                        "(`id`,`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `face`, `hair`, `money`, `hp`, `mp`, `x`, `y`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`, `updated_at`)" +
-                        "VALUES (@id, @acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @face, @hair, @money, @hp, @mp, @x, @y, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token, @updated_at)";
+                        "(`id`,`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `money`, `hp`, `mp`, `x`, `y`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`, `updated_at`)" +
+                        "VALUES (@id, @acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @money, @hp, @mp, @x, @y, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token, @updated_at)";
 
                     command.Parameters.AddWithValue("@id", Id);
                     command.Parameters.AddWithValue("@acc_id", AccountId);
@@ -49,8 +56,6 @@ namespace AikaEmu.GameServer.Models
                     command.Parameters.AddWithValue("@leg", BodyTemplate.Leg);
                     command.Parameters.AddWithValue("@body", BodyTemplate.Body);
                     command.Parameters.AddWithValue("@exp", Experience);
-                    command.Parameters.AddWithValue("@face", (ushort) Face);
-                    command.Parameters.AddWithValue("@hair", (ushort) Hair);
                     command.Parameters.AddWithValue("@money", Money);
                     command.Parameters.AddWithValue("@hp", Hp);
                     command.Parameters.AddWithValue("@mp", Mp);
@@ -68,6 +73,8 @@ namespace AikaEmu.GameServer.Models
                     command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
                     command.ExecuteNonQuery();
                 }
+
+                Inventory?.Save();
 
                 try
                 {

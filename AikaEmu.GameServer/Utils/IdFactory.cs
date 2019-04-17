@@ -21,24 +21,21 @@ namespace AikaEmu.GameServer.Utils
         private int _nextFreeId;
 
         private readonly string _name;
-        private readonly uint _firstId = 0x00000001;
-        private readonly uint _lastId = 0xFFFFFFFF;
+        private readonly uint _firstId;
         private readonly uint[] _exclude;
         private readonly int _freeIdSize;
         private readonly string[,] _objTables;
         private readonly bool _distinct;
         private readonly object _lock = new object();
 
-        public IdFactory(string name, uint firstId, uint lastId, string[,] objTables, uint[] exclude,
-            bool distinct = false)
+        protected IdFactory(string name, uint firstId, uint lastId, string[,] objTables, uint[] exclude, bool distinct = false)
         {
             _name = name;
             _firstId = firstId;
-            _lastId = lastId;
             _objTables = objTables;
             _exclude = exclude;
             _distinct = distinct;
-            _freeIdSize = (int) (_lastId - _firstId);
+            _freeIdSize = (int) (lastId - _firstId);
             PrimeFinder.Init();
         }
 
@@ -57,7 +54,7 @@ namespace AikaEmu.GameServer.Utils
                     var objectId = (int) (usedObjectId - _firstId);
                     if (usedObjectId < _firstId)
                     {
-                        _log.Warn("{0}: Object ID {1} in DB is less than {2}", _name, usedObjectId, _firstId);
+                        _log.Warn("{0}: Object ID {1} in DB is less than {2}.", _name, usedObjectId, _firstId);
                         continue;
                     }
 
@@ -68,11 +65,11 @@ namespace AikaEmu.GameServer.Utils
                 }
 
                 _nextFreeId = _freeIds.NextClear(0);
-                _log.Info("{0} successfully initialized", _name);
+                _log.Info("{0}: Successfully initialized.", _name);
             }
             catch (Exception e)
             {
-                _log.Error("{0} could not be initialized correctly", _name);
+                _log.Error("{0}: Could not be initialized correctly.", _name);
                 _log.Error(e);
                 return false;
             }
@@ -99,9 +96,9 @@ namespace AikaEmu.GameServer.Utils
                     using (var reader = command.ExecuteReader())
                     {
                         if (!reader.Read())
-                            throw new Exception("IdManager: can't extract count ids");
+                            throw new Exception($"{_name}: can't extract count ids.");
                         if (reader.GetInt32(0) != reader.GetInt32(1) && !_distinct)
-                            throw new Exception("IdManager: there are duplicates in object ids");
+                            throw new Exception($"{_name}: there are duplicates in object ids.");
                         count = reader.GetInt32(0);
                     }
 
@@ -109,7 +106,6 @@ namespace AikaEmu.GameServer.Utils
                         return new uint[0];
 
                     var result = new uint[count];
-                    _log.Info("{0}: Extracting {1} used id's from data tables...", _name, count);
 
                     command.CommandText = query;
                     command.Prepare();
@@ -141,7 +137,7 @@ namespace AikaEmu.GameServer.Utils
                 Interlocked.Increment(ref _freeIdCount);
             }
             else
-                _log.Warn("{0}: release objectId {1} failed", _name, usedObjectId);
+                _log.Warn("{0}: release objectId {1} failed.", _name, usedObjectId);
         }
 
         public uint GetNextId()
@@ -162,7 +158,7 @@ namespace AikaEmu.GameServer.Utils
                     if (_freeIds.Count < _freeIdSize)
                         IncreaseBitSetCapacity();
                     else
-                        throw new Exception("Ran out of valid Id's.");
+                        throw new Exception($"{_name}: Ran out of valid Id's.");
                 }
 
                 _nextFreeId = nextFree;

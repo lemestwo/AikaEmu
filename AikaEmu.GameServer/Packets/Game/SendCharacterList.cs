@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AikaEmu.GameServer.Models;
+using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Network;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
@@ -56,18 +57,27 @@ namespace AikaEmu.GameServer.Packets.Game
             stream.Write((ushort) 0);
             stream.Write((ushort) character.CharClass);
             stream.Write(character.BodyTemplate);
-            stream.Write((ushort) character.Face);
-            stream.Write((ushort) character.Hair);
-
-            // hard code set
-            stream.Write((short) 0);
-            stream.Write((short) 0);
-            stream.Write((short) 0);
-            stream.Write((short) 0);
-            stream.Write((short) 0);
-            stream.Write((short) 0);
-            stream.Write(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc, 0xcc, 0xcc});
-
+            
+            var equips = character.Inventory.GetItemsBySlotType(SlotType.Equipments);
+            stream.Write(equips.ContainsKey(0) ? equips[0].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(1) ? equips[1].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(4) ? equips[4].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(5) ? equips[5].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(7) ? equips[7].ItemId : (ushort) 0);
+            stream.Write((byte) 0); // accessories
+            stream.Write((byte) 0); // accessories
+            stream.Write((byte) (equips.ContainsKey(2) ? equips[2].Refinement << 4 : 0));
+            stream.Write((byte) (equips.ContainsKey(3) ? equips[3].Refinement << 4 : (ushort) 0));
+            stream.Write((byte) 0); // accessories
+            stream.Write((byte) (equips.ContainsKey(4) ? equips[4].Refinement << 4 : (ushort) 0));
+            stream.Write((byte) (equips.ContainsKey(5) ? equips[5].Refinement << 4 : (ushort) 0));
+            stream.Write((byte) (equips.ContainsKey(6) ? equips[6].Refinement << 4 : (ushort) 0));
+            stream.Write((byte) (equips.ContainsKey(7) ? equips[7].Refinement << 4 : (ushort) 0));
+            stream.WriteCc(3);
+            
             stream.Write(character.CharAttributes.Strenght);
             stream.Write(character.CharAttributes.Agility);
             stream.Write(character.CharAttributes.Intelligence);

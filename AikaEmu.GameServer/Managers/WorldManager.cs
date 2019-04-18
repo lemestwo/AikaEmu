@@ -11,111 +11,111 @@ using NLog;
 
 namespace AikaEmu.GameServer.Managers
 {
-    public class WorldManager : Singleton<WorldManager>
-    {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
+	public class WorldManager : Singleton<WorldManager>
+	{
+		private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-        private readonly ConcurrentDictionary<uint, Npc> _npcs;
-        private readonly ConcurrentDictionary<uint, Character> _characters;
+		private readonly ConcurrentDictionary<uint, Npc> _npcs;
+		private readonly ConcurrentDictionary<uint, Character> _characters;
 
-        protected WorldManager()
-        {
-            _npcs = new ConcurrentDictionary<uint, Npc>();
-            _characters = new ConcurrentDictionary<uint, Character>();
-        }
+		protected WorldManager()
+		{
+			_npcs = new ConcurrentDictionary<uint, Npc>();
+			_characters = new ConcurrentDictionary<uint, Character>();
+		}
 
-        public static void InitBasicSpawn()
-        {
-            foreach (var npc in DataManager.Instance.NpcPosData.GetAllNpc())
-            {
-                npc.Spawn();
-            }
-        }
+		public static void InitBasicSpawn()
+		{
+			foreach (var npc in DataManager.Instance.NpcPosData.GetAllNpc())
+			{
+				npc.Spawn();
+			}
+		}
 
-        public void Spawn(BaseUnit unit)
-        {
-            if (unit == null) return;
+		public void Spawn(BaseUnit unit)
+		{
+			if (unit == null) return;
 
-            switch (unit)
-            {
-                case Character character:
-                    _characters.TryAdd(character.Id, character);
-                    break;
-                case Npc npc:
-                    _npcs.TryAdd(npc.Id, npc);
-                    break;
-            }
-        }
+			switch (unit)
+			{
+				case Character character:
+					_characters.TryAdd(character.Id, character);
+					break;
+				case Npc npc:
+					_npcs.TryAdd(npc.Id, npc);
+					break;
+			}
+		}
 
-        public void Despawn(BaseUnit unit)
-        {
-            if (unit == null) return;
+		public void Despawn(BaseUnit unit)
+		{
+			if (unit == null) return;
 
-            switch (unit)
-            {
-                case Character character:
-                    _characters.TryRemove(character.Id, out _);
-                    break;
-                case Npc npc:
-                    _npcs.TryRemove(npc.Id, out _);
-                    break;
-            }
-        }
+			switch (unit)
+			{
+				case Character character:
+					_characters.TryRemove(character.Id, out _);
+					break;
+				case Npc npc:
+					_npcs.TryRemove(npc.Id, out _);
+					break;
+			}
+		}
 
-        public void ShowVisibleUnits(BaseUnit unit)
-        {
-            if (!(unit is Character character)) return;
+		public void ShowVisibleUnits(BaseUnit unit)
+		{
+			if (!(unit is Character character)) return;
 
-            if (character.VisibleUnits.Count <= 0)
-            {
-                character.VisibleUnits = GetUnitsAround(character.Position);
+			if (character.VisibleUnits.Count <= 0)
+			{
+				character.VisibleUnits = GetUnitsAround(character.Position, unit.Id);
 
-                foreach (var (_, tempUnit) in character.VisibleUnits)
-                {
-                    character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
-                }
-            }
-            else
-            {
-                var newUnits = GetUnitsAround(character.Position);
+				foreach (var (_, tempUnit) in character.VisibleUnits)
+				{
+					character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+				}
+			}
+			else
+			{
+				var newUnits = GetUnitsAround(character.Position, unit.Id);
 
-                var oldIds = new List<uint>(character.VisibleUnits.Keys);
-                var newIds = new List<uint>(newUnits.Keys);
+				var oldIds = new List<uint>(character.VisibleUnits.Keys);
+				var newIds = new List<uint>(newUnits.Keys);
 
-                var deleteUnits = oldIds.Except(newIds);
-                var spawnUnits = newIds.Except(oldIds);
+				var deleteUnits = oldIds.Except(newIds);
+				var spawnUnits = newIds.Except(oldIds);
 
-                foreach (var unitDel in deleteUnits)
-                    character.Connection.SendPacket(new DespawnUnit(unitDel));
+				foreach (var unitDel in deleteUnits)
+					character.Connection.SendPacket(new DespawnUnit(unitDel));
 
-                foreach (var unitSpawn in spawnUnits)
-                {
-                    var tempUnit = newUnits[unitSpawn];
-                    // TODO - MOBS
-                    character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
-                }
+				foreach (var unitSpawn in spawnUnits)
+				{
+					var tempUnit = newUnits[unitSpawn];
+					// TODO - MOBS
+					character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+				}
 
-                character.VisibleUnits = newUnits;
-            }
-        }
+				character.VisibleUnits = newUnits;
+			}
+		}
 
-        public Dictionary<uint, BaseUnit> GetUnitsAround(Position pos)
-        {
-            var list = new Dictionary<uint, BaseUnit>();
+		public Dictionary<uint, BaseUnit> GetUnitsAround(Position pos, uint myId)
+		{
+			var list = new Dictionary<uint, BaseUnit>();
 
-            // TODO - Make distance 100 configurable
-            // will get erros if more than 16k online
-            foreach (var npc in _npcs.Values)
-            {
-                if (npc.IsAround(pos, 100)) list.Add(npc.Id, npc);
-            }
+			// TODO - Make distance 100 configurable
+			// will get erros if more than 16k online
+			foreach (var npc in _npcs.Values)
+			{
+				if (npc.IsAround(pos, 100) && npc.Id != myId) list.Add(npc.Id, npc);
+			}
 
-            foreach (var character in _characters.Values)
-            {
-                if (character.IsAround(pos, 100)) list.Add(character.Id, character);
-            }
+			foreach (var character in _characters.Values)
+			{
+				if (character.IsAround(pos, 100) && character.Id != myId) list.Add(character.Id, character);
+			}
 
-            return list;
-        }
-    }
+			return list;
+		}
+	}
 }

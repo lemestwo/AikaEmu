@@ -4,35 +4,69 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Models.Char
 {
-    public class CharAttributes : BasePacket
-    {
-        public ushort Strenght { get; set; }
-        public ushort Agility { get; set; }
-        public ushort Intelligence { get; set; }
-        public ushort Constitution { get; set; }
-        public ushort Spirit { get; set; }
+	public class CharAttributes : BasePacket
+	{
+		private readonly ushort _baseStr;
+		private readonly ushort _baseAgi;
+		private readonly ushort _baseInt;
+		private readonly ushort _baseCon;
+		private readonly ushort _baseSpi;
 
-        public CharAttributes(IReadOnlyList<ushort> attr)
-        {
-            Strenght = attr[0];
-            Agility = attr[1];
-            Intelligence = attr[2];
-            Constitution = attr[3];
-            Spirit = attr[4];
-        }
+		public ushort Strenght
+		{
+			get => _baseStr;
+		}
 
-        public CharAttributes()
-        {
-        }
+		public ushort Agility
+		{
+			get => _baseAgi;
+		}
 
-        public override PacketStream Write(PacketStream stream)
-        {
-            stream.Write(Strenght);
-            stream.Write(Agility);
-            stream.Write(Intelligence);
-            stream.Write(Constitution);
-            stream.Write(Spirit);
-            return stream;
-        }
-    }
+		public ushort Intelligence
+		{
+			get => _baseInt;
+		}
+
+		public ushort Constitution
+		{
+			get => _baseCon;
+		}
+
+		public ushort Spirit
+		{
+			get => _baseSpi;
+		}
+
+		public CharAttributes(IReadOnlyList<ushort> attr)
+		{
+			_baseStr = attr[0];
+			_baseAgi = attr[1];
+			_baseInt = attr[2];
+			_baseCon = attr[3];
+			_baseSpi = attr[4];
+		}
+		
+		public CharAttributes(ushort str, ushort agi, ushort inte, ushort con, ushort spi)
+		{
+			_baseStr = str;
+			_baseAgi = agi;
+			_baseInt = inte;
+			_baseCon = con;
+			_baseSpi = spi;
+		}
+
+		public CharAttributes()
+		{
+		}
+
+		public override PacketStream Write(PacketStream stream)
+		{
+			stream.Write(Strenght);
+			stream.Write(Agility);
+			stream.Write(Intelligence);
+			stream.Write(Constitution);
+			stream.Write(Spirit);
+			return stream;
+		}
+	}
 }

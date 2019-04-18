@@ -4,11 +4,11 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-    public class SendQuestInfo : GamePacket
+    public class SendMobSpawn : GamePacket
     {
-        public SendQuestInfo()
+        public SendMobSpawn()
         {
-            Opcode = (ushort) GameOpcode.SendQuestInfo;
+            Opcode = (ushort) GameOpcode.SendMobSpawn;
         }
 
         public override PacketStream Write(PacketStream stream)

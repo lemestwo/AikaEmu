@@ -25,6 +25,9 @@ namespace AikaEmu.GameServer
         public Client AuthGameServer;
         public AuthGameConnection AuthGameConnection;
 
+        public ushort SystemSenderMsg = 30000;
+        public ushort SystemSender = 30005;
+
         public override void Start()
         {
             Console.Title = "AikaEmu GameServer (LOADING)";

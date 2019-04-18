@@ -6,22 +6,21 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Client
 {
-    public class RequestToken : GamePacket
-    {
-        protected override void Read(PacketStream stream)
-        {
-            var charSlot = stream.ReadUInt16();
-            var tokenStage = stream.ReadUInt16();
-            var token = stream.ReadString(4);
-            var token2 = stream.ReadString(4); // right one
-            Log.Debug("Token: ({0}) {2}, Action: {3}.", charSlot, token2, tokenStage);
+	public class RequestToken : GamePacket
+	{
+		protected override void Read(PacketStream stream)
+		{
+			var charSlot = stream.ReadUInt16();
+			var tokenStage = stream.ReadUInt16();
+			var token = stream.ReadString(4);
+			var token2 = stream.ReadString(4); // right one
+			Log.Debug("Token: ({0}) {2}, Action: {3}.", charSlot, token2, tokenStage);
 
-            var character = Connection.Account.GetSlotCharacter(charSlot);
-            if (character == null) return;
+			var character = Connection.Account.GetSlotCharacter(charSlot);
+			if (character == null) return;
 
-            character.Connection = Connection;
-            Connection.ActiveCharacter = character;
-            WorldManager.Instance.Spawn(character);
+			Connection.Account.ActiveCharacter = character;
+			WorldManager.Instance.Spawn(character);
 
 //            Connection.SendPacket(new Unk30A6());
 //            Connection.SendPacket(new Unk1086());
@@ -42,7 +41,7 @@ namespace AikaEmu.GameServer.Packets.Client
 //            Connection.SendPacket(new Unk101F());
 //            Connection.SendPacket(new UpdateDungeonTimer());
 
-            Connection.SendPacket(new SendToWorld(character));
+			Connection.SendPacket(new SendToWorld(character));
 
 //            Connection.SendPacket(new UpdateStatus());
 //            Connection.SendPacket(new UpdateAttributes(character.CharAttributes));
@@ -54,7 +53,7 @@ namespace AikaEmu.GameServer.Packets.Client
 //            Connection.SendPacket(new Unk303D());
 //            Connection.SendPacket(new Unk1028());
 
-            Connection.SendPacket(new SendUnitSpawn(character));
+			Connection.SendPacket(new SendUnitSpawn(character));
 
 //            Connection.SendPacket(new Unk106F());
 //            Connection.SendPacket(new UpdateHpMp(character));
@@ -76,6 +75,6 @@ namespace AikaEmu.GameServer.Packets.Client
 //            Connection.SendPacket(new Unk3CBE());
 //            Connection.SendPacket(new Unk3F34());
 //            Connection.SendPacket(new Unk3F1B());
-        }
-    }
+		}
+	}
 }

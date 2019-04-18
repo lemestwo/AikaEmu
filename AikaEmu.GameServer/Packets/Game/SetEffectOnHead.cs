@@ -4,17 +4,24 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-    public class SetEffectOnHead : GamePacket
-    {
-        public SetEffectOnHead()
-        {
-            Opcode = (ushort) GameOpcode.SetEffectOnHead;
-        }
+	public class SetEffectOnHead : GamePacket
+	{
+		private readonly uint _npcId;
+		private readonly uint _effectId;
 
-        public override PacketStream Write(PacketStream stream)
-        {
-            // 0E 09 00 00 05 00 00 00
-            return stream;
-        }
-    }
+		public SetEffectOnHead(uint npcId, uint effectId)
+		{
+			_npcId = npcId;
+			_effectId = effectId;
+
+			Opcode = (ushort) GameOpcode.SetEffectOnHead;
+		}
+
+		public override PacketStream Write(PacketStream stream)
+		{
+			stream.Write(_npcId);
+			stream.Write(_effectId);
+			return stream;
+		}
+	}
 }

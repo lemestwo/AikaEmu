@@ -103,8 +103,8 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
                             Effect3Value = reader.GetByte("effect3value"),
                             Durability = reader.GetByte("dur"),
                             DurMax = reader.GetByte("dur_max"),
-                            Refinement = reader.GetByte("refinement"),
-                            Time = reader.GetUInt16("time")
+                            Quantity = reader.GetByte("refinement"),
+                            ItemTime = reader.GetUInt16("time")
                         };
 
                         // Check if item exists in json data
@@ -155,8 +155,8 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
                         command.Parameters.AddWithValue("@effect3value", item.Effect3Value);
                         command.Parameters.AddWithValue("@dur", item.Durability);
                         command.Parameters.AddWithValue("@dur_max", item.DurMax);
-                        command.Parameters.AddWithValue("@refinement", item.Refinement);
-                        command.Parameters.AddWithValue("@time", item.Time);
+                        command.Parameters.AddWithValue("@refinement", item.Quantity);
+                        command.Parameters.AddWithValue("@time", item.ItemTime);
                         command.ExecuteNonQuery();
                     }
                 }

@@ -12,6 +12,7 @@ namespace AikaEmu.GameServer.Packets.Game
         {
             _result = result;
             Opcode = (ushort) GameOpcode.ResponseDeleteCharToken;
+            SenderId = 0;
         }
 
         public override PacketStream Write(PacketStream stream)

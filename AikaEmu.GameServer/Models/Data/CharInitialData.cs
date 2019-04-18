@@ -3,24 +3,24 @@ using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data
 {
-    public class CharInitialData
-    {
-        public CharInitialJson Data { get; }
+	public class CharInitialData
+	{
+		public CharInitialJson Data { get; }
 
-        public CharInitialData(string path)
-        {
-            JsonUtil.DeserializeFile(path, out CharInitialJson data);
-            Data = data;
-        }
+		public CharInitialData(string path)
+		{
+			JsonUtil.DeserializeFile(path, out CharInitialJson data);
+			Data = data;
+		}
 
-        public Class GetInitial(ushort id)
-        {
-            foreach (var c in Data.Classes)
-            {
-                if (c.ClassClass == id) return c;
-            }
+		public Classes GetInitial(ushort id)
+		{
+			foreach (var c in Data.Classes)
+			{
+				if (c.Class == id) return c;
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }

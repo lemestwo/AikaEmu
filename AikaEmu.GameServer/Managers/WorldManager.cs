@@ -15,21 +15,24 @@ namespace AikaEmu.GameServer.Managers
 	{
 		private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-		private readonly ConcurrentDictionary<uint, Npc> _npcs;
 		private readonly ConcurrentDictionary<uint, Character> _characters;
+		private readonly ConcurrentDictionary<uint, Npc> _npcs;
+		private readonly ConcurrentDictionary<uint, Mob> _mobs;
 
 		protected WorldManager()
 		{
-			_npcs = new ConcurrentDictionary<uint, Npc>();
 			_characters = new ConcurrentDictionary<uint, Character>();
+			_npcs = new ConcurrentDictionary<uint, Npc>();
+			_mobs = new ConcurrentDictionary<uint, Mob>();
 		}
 
 		public static void InitBasicSpawn()
 		{
 			foreach (var npc in DataManager.Instance.NpcPosData.GetAllNpc())
-			{
 				npc.Spawn();
-			}
+
+//			foreach (var mob in DataManager.Instance.MobPosData.GetAllMob())
+//				mob.Spawn();
 		}
 
 		public void Spawn(BaseUnit unit)
@@ -44,7 +47,12 @@ namespace AikaEmu.GameServer.Managers
 				case Npc npc:
 					_npcs.TryAdd(npc.Id, npc);
 					break;
+				case Mob mob:
+					_mobs.TryAdd(mob.Id, mob);
+					break;
 			}
+
+			// TODO - SHOW
 		}
 
 		public void Despawn(BaseUnit unit)
@@ -59,7 +67,12 @@ namespace AikaEmu.GameServer.Managers
 				case Npc npc:
 					_npcs.TryRemove(npc.Id, out _);
 					break;
+				case Mob mob:
+					_mobs.TryRemove(mob.Id, out _);
+					break;
 			}
+
+			// TODO - HIDE
 		}
 
 		public void ShowVisibleUnits(BaseUnit unit)
@@ -72,7 +85,14 @@ namespace AikaEmu.GameServer.Managers
 
 				foreach (var (_, tempUnit) in character.VisibleUnits)
 				{
-					character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+					if (tempUnit is Mob mob)
+					{
+						character.Connection.SendPacket(new SendMobSpawn(mob));
+					}
+					else
+					{
+						character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+					}
 				}
 			}
 			else
@@ -91,8 +111,14 @@ namespace AikaEmu.GameServer.Managers
 				foreach (var unitSpawn in spawnUnits)
 				{
 					var tempUnit = newUnits[unitSpawn];
-					// TODO - MOBS
-					character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+					if (tempUnit is Mob mob)
+					{
+						character.Connection.SendPacket(new SendMobSpawn(mob));
+					}
+					else
+					{
+						character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+					}
 				}
 
 				character.VisibleUnits = newUnits;
@@ -105,14 +131,19 @@ namespace AikaEmu.GameServer.Managers
 
 			// TODO - Make distance 100 configurable
 			// will get erros if more than 16k online
-			foreach (var npc in _npcs.Values)
-			{
-				if (npc.IsAround(pos, 100) && npc.Id != myId) list.Add(npc.Id, npc);
-			}
-
 			foreach (var character in _characters.Values)
 			{
-				if (character.IsAround(pos, 100) && character.Id != myId) list.Add(character.Id, character);
+				if (character.IsAround(pos, 70) && character.Id != myId) list.Add(character.Id, character);
+			}
+
+			foreach (var npc in _npcs.Values)
+			{
+				if (npc.IsAround(pos, 50) && npc.Id != myId) list.Add(npc.Id, npc);
+			}
+
+			foreach (var mob in _mobs.Values)
+			{
+				if (mob.IsAround(pos, 25) && mob.Id != myId) list.Add(mob.Id, mob);
 			}
 
 			return list;

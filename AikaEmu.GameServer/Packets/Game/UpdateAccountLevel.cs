@@ -19,9 +19,7 @@ namespace AikaEmu.GameServer.Packets.Game
 
 		public override PacketStream Write(PacketStream stream)
 		{
-			SenderId = Connection.ConnectionId;
-
-			stream.Write(_acc.Level);
+			stream.Write((uint) _acc.Level);
 			return stream;
 		}
 	}

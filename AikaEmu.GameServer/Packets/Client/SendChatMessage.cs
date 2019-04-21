@@ -1,5 +1,8 @@
 using System;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
+using AikaEmu.GameServer.Managers.Id;
+using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
@@ -21,7 +24,7 @@ namespace AikaEmu.GameServer.Packets.Client
 			Log.Debug("SendChat, unk1: {0}, unk2: {1}, type: {2}", unk1, unk2, chatType);
 
 			var command = msg.Split(" ");
-			if (command.Length > 2)
+			if (command.Length > 1)
 			{
 				ushort arg2 = 0;
 				ushort arg3 = 0;
@@ -68,8 +71,34 @@ namespace AikaEmu.GameServer.Packets.Client
 						};
 						Connection.ActiveCharacter.SetPosition(newPos);
 						break;
-					case "buff":
-						Connection.SendPacket(new UpdateBuffs(Connection.ActiveCharacter));
+					case "mobspawn":
+						var temp = new Mob
+						{
+							Id = IdMobSpawnManager.Instance.GetNextId(),
+							MobId = arg1,
+							Hp = 2000,
+							Mp = 2000,
+							MaxHp = 2000,
+							MaxMp = 2000,
+							Name = DataManager.Instance.MnData.GetUnitName(arg1),
+							Position = new Position
+							{
+								WorldId = 1,
+								CoordX = Connection.ActiveCharacter.Position.CoordX + 2.0f,
+								CoordY = Connection.ActiveCharacter.Position.CoordY + 2.0f
+							},
+							BodyTemplate = new BodyTemplate
+							{
+								Width = 7,
+								Chest = 119,
+								Leg = 119,
+								Body = 0
+							}
+						};
+						WorldManager.Instance.Spawn(temp);
+						break;
+					case "test":
+						
 						break;
 				}
 			}

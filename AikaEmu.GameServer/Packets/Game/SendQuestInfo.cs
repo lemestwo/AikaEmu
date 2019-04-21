@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Packets.Game
 
         public override PacketStream Write(PacketStream stream)
         {
-            // TODO
+            
             return stream;
         }
     }

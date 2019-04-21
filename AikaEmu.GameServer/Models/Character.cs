@@ -20,17 +20,17 @@ namespace AikaEmu.GameServer.Models
 		public ushort ConnectionId => Connection.Account.ConnectionId;
 
 		public uint Slot { get; set; }
-		public ushort Level { get; set; }
 		public CharAttributes CharAttributes { get; set; }
 		public CharClass CharClass { get; set; }
 		public ulong Money { get; set; }
+		public ulong BankMoney { get; set; }
 		public ulong Experience { get; set; }
 		public int HonorPoints { get; set; }
 		public int PvpPoints { get; set; }
 		public int InfamyPoints { get; set; }
 		public string Token { get; set; }
 
-		public CharInventory Inventory { get; set; }
+		public CharInventory Inventory { get; private set; }
 
 		public void Init()
 		{
@@ -43,10 +43,7 @@ namespace AikaEmu.GameServer.Models
 			Position = pos;
 
 			if (AbosoluteDistance(pos.CoordX, Position.CoordX) > 150 || AbosoluteDistance(pos.CoordY, Position.CoordY) > 150)
-			{
-				// TODO - isTP maybe check something
-				Connection.SendPacket(new UpdatePosition(this, true));
-			}
+				Connection.SendPacket(new UpdatePosition(this, 1));
 
 			WorldManager.Instance.ShowVisibleUnits(this);
 		}

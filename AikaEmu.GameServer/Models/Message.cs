@@ -5,7 +5,10 @@ namespace AikaEmu.GameServer.Models
 {
 	public enum MessageSender : byte
 	{
-		System = 0x10
+		System = 0x10,
+		Unk1 = 0x20,
+		
+		Unk2 = 0x04,
 	}
 
 	public enum MessageType : byte

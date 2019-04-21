@@ -17,8 +17,9 @@ namespace AikaEmu.GameServer.Network.GameServer
 			var stream = new PacketStream();
 			try
 			{
-				if (SenderId == ushort.MaxValue) SenderId = AikaEmu.GameServer.GameServer.Instance.SystemSender;
-				
+				if (SenderId == ushort.MaxValue)
+					SenderId = AikaEmu.GameServer.GameServer.Instance.SystemSender;
+
 				var packet = new PacketStream().Write(0).Write(SenderId).Write(Opcode).Write(Time);
 				packet.Write(this);
 				stream.Write(packet);
@@ -59,7 +60,12 @@ namespace AikaEmu.GameServer.Network.GameServer
 				case Npc npc:
 					SenderId = (ushort) npc.Id;
 					break;
-				// TODO - Mobs
+				case Mob mob:
+					SenderId = (ushort) mob.Id;
+					break;
+				case Pran pran:
+					SenderId = (ushort) pran.Id;
+					break;
 			}
 		}
 	}

@@ -44,6 +44,10 @@
       <Content Include="Data\Game\MobPos.bin.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <None Remove="Data\Game\MobEffects.json" />
+      <Content Include="Data\Game\MobEffects.csv.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

@@ -14,6 +14,7 @@ namespace AikaEmu.GameServer.Packets.Game
 
 		public override PacketStream Write(PacketStream stream)
 		{
+			// TODO
 			for (var i = 0; i < 48; i++)
 			{
 				stream.Write(0);

@@ -12,11 +12,22 @@ using NLog;
 
 namespace AikaEmu.GameServer.Models
 {
+	public enum AccLevel : byte
+	{
+		Default = 0,
+
+		PgRed1 = 1, // Both are lv 1 in client
+		PgRed2 = 3,
+
+		PgBlue1 = 2, // Both are lv 2 in client
+		PgBlue2 = 4,
+	}
+
 	public class Account
 	{
 		private readonly Logger _log = LogManager.GetCurrentClassLogger();
 		public uint Id { get; }
-		public uint Level { get; set; } = 1; // TODO
+		public AccLevel Level { get; set; } = AccLevel.Default;
 		public GameConnection Connection { get; }
 		public ushort ConnectionId => Connection.ConnectionId;
 		public Dictionary<uint, Character> AccCharLobby { get; private set; }

@@ -21,9 +21,9 @@ namespace AikaEmu.GameServer.Packets.Game
 		public override PacketStream Write(PacketStream stream)
 		{
 			stream.Write(_unit.Hp);
+			stream.Write(_unit.Hp); // TODO MAX
 			stream.Write(_unit.Mp);
-			stream.Write(_unit.MaxHp);
-			stream.Write(_unit.MaxMp);
+			stream.Write(_unit.Mp); // TODO MAX
 			stream.Write(0);
 			return stream;
 		}

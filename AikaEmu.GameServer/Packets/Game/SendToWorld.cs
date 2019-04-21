@@ -161,9 +161,30 @@ namespace AikaEmu.GameServer.Packets.Game
 			stream.Write("", 48);
 			stream.Write((ushort) 55477);
 			stream.Write((ushort) 23727);
-			stream.Write("", 44);
-			stream.Write(18771);
+			stream.Write("", 12);
+
+			stream.Write("TestPran", 16); // pran name?
+			stream.Write("TestPran", 16); // pran name?
+			
+			stream.Write((byte) 10); // +4684
+			stream.Write((byte) 10); // +4685
+			stream.Write((short) 0); // empty
 			return stream;
+			
+			/*
+			 
+			 12-16
+			 24-4608
+			 4652+16
+			 4668+16
+			 4684+1
+			 4685+1
+			 16+2
+			 12+4
+			 4636+4
+			 
+			 
+			 */
 		}
 	}
 }

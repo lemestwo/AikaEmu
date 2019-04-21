@@ -19,14 +19,29 @@ namespace AikaEmu.GameServer.Packets.Game
 
 		public override PacketStream Write(PacketStream stream)
 		{
+			var bid = (ushort) 9031;
+			var test1 = (byte) 206;
+			var test2 = (byte) 8;
+			var test3 = (ushort) 23736;
 			stream.Write(0); // unk
-			stream.Write((ushort) 9031); // buffId
+			stream.Write((ushort) bid); // buffId
 			stream.Write((ushort) 0); //unk
 			stream.Write(0L); //unk
-			stream.Write((byte) 206); // unk
-			stream.Write((byte) 8); //unk
-			stream.Write((ushort) 23736); // unk
+			stream.Write((byte) test1); // unk
+			stream.Write((byte) test2); //unk
+			stream.Write((ushort) test3); // unk
 			return stream;
+			
+			/*
+			 
+			v5 = *(_WORD *)(data + 12);
+			v6 = *(_WORD *)(data + 14);
+			v7 = *(_WORD *)(data + 16);
+			v8 = *(_DWORD *)(data + 20);
+			v9 = *(_DWORD *)(data + 24);
+			v10 = *(_DWORD *)(data + 28);
+			
+			 */
 		}
 	}
 }

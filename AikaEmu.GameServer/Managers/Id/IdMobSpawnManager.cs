@@ -5,7 +5,7 @@ namespace AikaEmu.GameServer.Managers.Id
     public class IdMobSpawnManager: IdFactory
     {
         private static IdMobSpawnManager _instance;
-        private const uint FirstId = 0x00004000; // 16384
+        private const uint FirstId = 0x00000FFF; // 4095
         private const uint LastId = 0x0000FFFF; // 65535
         private static readonly uint[] Exclude = { };
         private static readonly string[,] ObjTables = {{ }};

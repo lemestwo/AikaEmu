@@ -9,6 +9,7 @@ namespace AikaEmu.GameServer.Models.Base
 	public abstract class BaseUnit
 	{
 		public virtual uint Id { get; set; }
+		public ushort Level { get; set; }
 		public string Name { get; set; }
 		public Position Position { get; set; }
 		public BodyTemplate BodyTemplate { get; set; }
@@ -33,7 +34,8 @@ namespace AikaEmu.GameServer.Models.Base
 			{
 				WorldId = world,
 				CoordX = x,
-				CoordY = y
+				CoordY = y,
+				Rotation = 0
 			};
 
 			WorldManager.Instance.ShowVisibleUnits(this);
@@ -42,6 +44,12 @@ namespace AikaEmu.GameServer.Models.Base
 		public virtual void SetPosition(Position pos)
 		{
 			Position = pos;
+			WorldManager.Instance.ShowVisibleUnits(this);
+		}
+
+		public virtual void SetRotation(int rotation)
+		{
+			Position.Rotation = rotation;
 			WorldManager.Instance.ShowVisibleUnits(this);
 		}
 

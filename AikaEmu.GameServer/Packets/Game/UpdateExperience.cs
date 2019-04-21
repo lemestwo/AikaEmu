@@ -8,12 +8,10 @@ namespace AikaEmu.GameServer.Packets.Game
 	public class UpdateExperience : GamePacket
 	{
 		private readonly Character _character;
-		private readonly ushort _test;
 
-		public UpdateExperience(Character character, ushort test)
+		public UpdateExperience(Character character)
 		{
 			_character = character;
-			_test = test;
 
 			Opcode = (ushort) GameOpcode.UpdateExperience;
 			SenderId = character.ConnectionId;

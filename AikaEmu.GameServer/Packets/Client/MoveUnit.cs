@@ -14,7 +14,6 @@ namespace AikaEmu.GameServer.Packets.Client
 			var unk3 = stream.ReadByte();
 			var speed = stream.ReadByte();
 			var unk4 = stream.ReadInt32();
-			//Log.Debug("MoveUnit");
 
 			// TODO - Improve this function
 			Connection.ActiveCharacter.SetPosition(coordX, coordY);

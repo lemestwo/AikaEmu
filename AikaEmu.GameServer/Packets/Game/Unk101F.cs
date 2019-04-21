@@ -13,10 +13,11 @@ namespace AikaEmu.GameServer.Packets.Game
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(new byte[]
-            {
-                0x6C, 0x1E, 0x00, 0x00, 0x80, 0x09, 0x00, 0x00,
-            });
+            stream.Write((ushort) 0); // id1
+            stream.Write((ushort) 0); // id2
+
+            stream.Write((ushort) 0); // unk
+            stream.Write((ushort) 0); // unk
             return stream;
         }
     }

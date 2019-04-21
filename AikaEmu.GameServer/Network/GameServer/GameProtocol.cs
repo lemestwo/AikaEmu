@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Connections;
 using AikaEmu.GameServer.Packets;
 using AikaEmu.Shared.Model.Network;
@@ -33,7 +34,8 @@ namespace AikaEmu.GameServer.Network.GameServer
 			{
 				var connection = GameConnectionManager.Instance.GetConnection(session.Id);
 				if (connection == null) return;
-				// ondisconnect
+
+				connection.OnDisconnect();
 				GameConnectionManager.Instance.Remove(session.Id);
 			}
 			catch (Exception e)
@@ -45,6 +47,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 			_log.Info("Client {0} disconnected.", session.Ip.ToString());
 		}
 
+		// TODO - Need complete overhaul
 		public override void OnReceive(Session session, byte[] buff, int bytes)
 		{
 			var connection = GameConnectionManager.Instance.GetConnection(session.Id);

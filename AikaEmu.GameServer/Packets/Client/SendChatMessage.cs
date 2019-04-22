@@ -98,7 +98,7 @@ namespace AikaEmu.GameServer.Packets.Client
 						WorldManager.Instance.Spawn(temp);
 						break;
 					case "test":
-						
+						Connection.SendPacket(new Unk1054());
 						break;
 				}
 			}

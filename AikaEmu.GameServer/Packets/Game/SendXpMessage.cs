@@ -4,21 +4,19 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-	public class XTrap : GamePacket
+	public class SendXpMessage : GamePacket
 	{
-		private readonly int _active;
-
-		public XTrap(int active)
+		public SendXpMessage()
 		{
-			_active = active;
-
-			Opcode = (ushort) GameOpcode.XTrap;
+			Opcode = (ushort) GameOpcode.SendXpMessage;
 			SenderId = 0;
 		}
 
 		public override PacketStream Write(PacketStream stream)
 		{
-			stream.Write(_active);
+			stream.Write(0); // xp
+			stream.Write(0); // additional xp (x + y Experience)
+			stream.Write(0); // battle points
 			return stream;
 		}
 	}

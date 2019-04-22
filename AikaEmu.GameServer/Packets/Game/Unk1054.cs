@@ -4,18 +4,19 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-    public class Unk30A2 : GamePacket
+    public class Unk1054 : GamePacket
     {
-        public Unk30A2(ushort conId)
+        public Unk1054()
         {
-            Opcode = (ushort) GameOpcode.Unk30A2;
-            SenderId = conId;
+            Opcode = (ushort) GameOpcode.Unk1054;
+            SenderId = 0;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(0);
-            stream.Write(0);
+            // guild buff? 1 hour duration 
+            stream.Write(0); // id
+            stream.Write(0); // duration
             return stream;
         }
     }

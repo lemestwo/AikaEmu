@@ -29,7 +29,7 @@ namespace AikaEmu.GameServer.Models
 		public uint Id { get; }
 		public AccLevel Level { get; set; } = AccLevel.Default;
 		public GameConnection Connection { get; }
-		public ushort ConnectionId => Connection.ConnectionId;
+		public ushort ConnectionId => Connection.Id;
 		public Dictionary<uint, Character> AccCharLobby { get; private set; }
 		public Character ActiveCharacter { get; set; }
 
@@ -37,7 +37,7 @@ namespace AikaEmu.GameServer.Models
 		{
 			Id = accId;
 			Connection = conn;
-			Connection.ConnectionId = (ushort) IdConnectionManager.Instance.GetNextId();
+			Connection.Id = (ushort) IdConnectionManager.Instance.GetNextId();
 		}
 
 		public Character GetSlotCharacter(uint slot)

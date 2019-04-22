@@ -9,13 +9,13 @@ namespace AikaEmu.GameServer.Packets.Game
         public Unk3057()
         {
             Opcode = (ushort) GameOpcode.Unk3057;
+            SenderId = 0;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write(0);
-            stream.Write((ushort) 128);
-            stream.Write((ushort) 2);
+            stream.Write(131200); // always this value?
             stream.Write(0);
             return stream;
         }

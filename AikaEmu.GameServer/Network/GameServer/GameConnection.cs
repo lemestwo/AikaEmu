@@ -9,7 +9,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 	{
 		public Account Account { get; set; }
 		public Character ActiveCharacter => Account.ActiveCharacter;
-		public ushort ConnectionId { get; set; }
+		public ushort Id { get; set; }
 
 		public GameConnection(Session session) : base(session)
 		{
@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 
 		public void OnDisconnect()
 		{
-			AccountsManager.Instance.RemoveAccount(ConnectionId);
+			AccountsManager.Instance.RemoveAccount(Id);
 
 			if (ActiveCharacter == null) return;
 			

@@ -32,7 +32,7 @@ namespace AikaEmu.GameServer.Packets.Client
 
 			var pran = new Pran
 			{
-				Id = 10270,
+				Id = 10241,
 				Hp = 2000,
 				Mp = 2000,
 				MaxHp = 2000,
@@ -84,9 +84,19 @@ namespace AikaEmu.GameServer.Packets.Client
 //
 //            Connection.SendPacket(new Unk1C41());
 			Connection.SendPacket(new InitialUnk2027());
+			Connection.SendPacket(new Unk3057());
 			Connection.SendPacket(new Unk303D(character));
 			Connection.SendPacket(new CurNationInfo());
 
+			Connection.SendPacket(new UpdateNationGovernment(Connection.Id, new Nation
+			{
+				Id = 2,
+				Name = "test",
+				Settlement = 10000,
+				TaxCitizen = 10,
+				TaxVisitor = 15,
+				StabilizationTime = 78
+			}));
 			Connection.SendPacket(new UpdateSiegeInfo()); // TODO - move better place
 			Connection.SendPacket(new UpdateReliques()); // TODO - move better place
 

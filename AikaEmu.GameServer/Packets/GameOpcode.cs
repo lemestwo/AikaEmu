@@ -13,12 +13,14 @@ namespace AikaEmu.GameServer.Packets
 		UpdatePranExperience = 0x1016,
 		PranEffect = 0x1017,
 		SendXpGoldAnimation = 0x101B,
+		UpdateEquipDur = 0x102B,
 		CurNationInfo = 0x1028,
 		UpdateNationGuild = 0x1030,
 		UpdateReliques = 0x1036,
 		UpdatePremiumStash = 0x1038,
-		XTrap = 0x1039,
+		UpdateCash = 0x1039,
 		UpdateAccountLevel = 0x104F,
+		SendXpMessage = 0x1053,
 		ApplyBuff = 0x106F,
 		UpdateBuffs = 0x1070,
 		UpdateTitleList = 0x107D,
@@ -38,10 +40,13 @@ namespace AikaEmu.GameServer.Packets
 		UpdatePosition = 0x30BF,
 		UpdateItem = 0x3C0E,
 		ResponseDeleteCharToken = 0x3F33,
+		UpdatePuzzleEvent = 0x3F34,
 
 		Unk101F = 0x101F,
+		Unk1027 = 0x1027,
 		Unk102C = 0x102C,
 		Unk1031 = 0x1031,
+		Unk1054 = 0x1054,
 		Unk107E = 0x107E, // Seems to be related to quest completion
 		UnkTitleLink2 = 0x1086,
 		Unk1C41 = 0x1C41,
@@ -51,7 +56,8 @@ namespace AikaEmu.GameServer.Packets
 		Unk30A2 = 0x30A2,
 		Unk30A5 = 0x30A5,
 		UnkTitleLink = 0x30A6,
-		Unk3CBE = 0x3CBE,
+		Unk3C7C = 0x3C7C,
+		FinishedInGameState = 0x3CBE,
 		Unk3F1B = 0x3F1B,
 		Unk3F34 = 0x3F34,
 		Unk4756 = 0x4756,
@@ -59,6 +65,8 @@ namespace AikaEmu.GameServer.Packets
 
 	public enum ClientOpcode : ushort
 	{
+		RequestUpdateCash = 0x200A,
+		RequestDeleteChar = 0x2403,
 		ReturnCharacterSelect = 0x2468,
 		RequestEnterGame = 0x24C1,
 		RenamePran = 0x2F02,
@@ -72,8 +80,8 @@ namespace AikaEmu.GameServer.Packets
 		MoveItem = 0x340F,
 		RequestToken = 0x3C02,
 		SendChatMessage = 0x3C86,
-		IngameState = 0x3CBE,
+		InGameState = 0x3CBE,
 		RequestDeleteCharToken = 0x3F33,
-		RequestDeleteChar = 0x2403,
+		PuzzleEventRequest = 0x3F34,
 	}
 }

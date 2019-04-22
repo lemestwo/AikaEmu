@@ -26,7 +26,7 @@ namespace AikaEmu.GameServer.Packets.Game
 			stream.Write(0);
 			stream.Write(_character.Id);
 			stream.Write(_character.Name, 16);
-			stream.Write((byte) 0); // server
+			stream.Write((byte) 2); // server
 			stream.Write((ushort) _character.CharClass);
 			stream.Write((byte) 0);
 			stream.Write(_character.CharAttributes);
@@ -158,19 +158,20 @@ namespace AikaEmu.GameServer.Packets.Game
 			stream.Write((byte) 173);
 			stream.Write((byte) 92);
 
-			stream.Write("", 48);
+			stream.Write("", 44);
+			stream.Write(4);
 			stream.Write((ushort) 55477);
 			stream.Write((ushort) 23727);
 			stream.Write("", 12);
 
 			stream.Write("TestPran", 16); // pran name?
 			stream.Write("TestPran", 16); // pran name?
-			
+
 			stream.Write((byte) 10); // +4684
-			stream.Write((byte) 10); // +4685
+			stream.Write((byte) 11); // +4685
 			stream.Write((short) 0); // empty
 			return stream;
-			
+
 			/*
 			 
 			 12-16

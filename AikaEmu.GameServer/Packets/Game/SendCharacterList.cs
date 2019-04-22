@@ -53,7 +53,7 @@ namespace AikaEmu.GameServer.Packets.Game
 		private static void WriteChar(PacketStream stream, Character character)
 		{
 			stream.Write(character.Name, 16, true);
-			stream.Write((ushort) 0);
+			stream.Write((ushort) 2);
 			stream.Write((ushort) character.CharClass);
 			stream.Write(character.BodyTemplate);
 

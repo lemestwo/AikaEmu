@@ -4,17 +4,18 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-    public class Unk30A2 : GamePacket
+    public class Unk1027 : GamePacket
     {
-        public Unk30A2(ushort conId)
+        public Unk1027(ushort conId)
         {
-            Opcode = (ushort) GameOpcode.Unk30A2;
+            Opcode = (ushort) GameOpcode.Unk1027;
             SenderId = conId;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(0);
+            stream.Write((ushort) 0); // id?
+            stream.Write((ushort) 0);
             stream.Write(0);
             return stream;
         }

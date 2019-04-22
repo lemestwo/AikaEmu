@@ -4,11 +4,12 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Packets.Game
 {
-    public class Unk3CBE : GamePacket
+    public class FinishedInGameState : GamePacket
     {
-        public Unk3CBE()
+        public FinishedInGameState()
         {
-            Opcode = (ushort) GameOpcode.Unk3CBE;
+            Opcode = (ushort) GameOpcode.FinishedInGameState;
+            SenderId = 0;
         }
 
         public override PacketStream Write(PacketStream stream)

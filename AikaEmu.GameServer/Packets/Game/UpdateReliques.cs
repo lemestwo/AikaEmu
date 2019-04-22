@@ -16,7 +16,7 @@ namespace AikaEmu.GameServer.Packets.Game
 		{
 			for (var i = 0; i < 24; i++)
 			{
-				stream.Write((ushort) (12000 + i)); // itemId
+				stream.Write((ushort) (12010 + i)); // itemId
 			}
 
 			stream.Write((ushort) 0); // unk

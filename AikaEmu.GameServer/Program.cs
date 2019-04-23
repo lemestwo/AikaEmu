@@ -8,7 +8,7 @@ namespace AikaEmu.GameServer
         {
             try
             {
-                GameServer.Instance.Start();
+                GameServer.Run();
             }
             catch (Exception e)
             {

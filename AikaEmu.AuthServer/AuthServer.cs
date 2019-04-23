@@ -1,76 +1,87 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using AikaEmu.AuthServer.Configuration;
+using System.Reflection;
 using AikaEmu.AuthServer.Managers;
-using AikaEmu.AuthServer.Models;
-using AikaEmu.AuthServer.Network;
 using AikaEmu.AuthServer.Network.AuthServer;
 using AikaEmu.AuthServer.Network.GameServer;
-using AikaEmu.Shared;
-using AikaEmu.Shared.Database;
-using AikaEmu.Shared.Network;
+using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.Shared.Network.Type;
-using Microsoft.Extensions.Configuration;
+using NLog;
+using NLog.Config;
 
 namespace AikaEmu.AuthServer
 {
-    public class AuthServer : BaseProgram
-    {
-        public static readonly AuthServer Instance = new AuthServer();
-        public DatabaseManager DatabaseManager { get; private set; }
-        private AuthConfig _authConfig = new AuthConfig();
+	public static class AuthServer
+	{
+		private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private Server _authServer;
-        private Server _gameAuthServer;
+		private static Server _authServer;
+		private static Server _gameAuthServer;
 
-        public override void Start()
-        {
-            Console.Title = "AikaEmu AuthServer (LOADING)";
-            base.Start();
+		public static void Run()
+		{
+			Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
 
-            // Basic Setup
-            SetupConfig(ref _authConfig);
-            SetupDatabase(DatabaseManager = new DatabaseManager(), _authConfig.Database);
-            AuthGameManager.Instance.Init();
+			Console.Title = "AikaEmu AuthServer (LOADING)";
 
-            // Auth Server Setup
-            var cNetwork = _authConfig.Network;
-            var networkAddress = new IPEndPoint(cNetwork.Host.Equals("*") ? IPAddress.Any : IPAddress.Parse(cNetwork.Host), cNetwork.Port);
-            _authServer = new Server(networkAddress, 10, new AuthProtocol());
-            _authServer.Start();
-            Log.Info("AuthServer listening at {0}:{1}.", cNetwork.Host.Equals("*") ? "0.0.0.0" : cNetwork.Host, cNetwork.Port);
+			// LogManager
+			SetupLogManager();
 
-            // Game-Auth Server Setup
-            var cIntNetwork = _authConfig.InternalNetwork;
-            var intNetAddress = new IPEndPoint(cIntNetwork.Host.Equals("*") ? IPAddress.Any : IPAddress.Parse(cIntNetwork.Host), cIntNetwork.Port);
-            _gameAuthServer = new Server(intNetAddress, 10, new GameAuthProtocol());
-            _gameAuthServer.Start();
-            Log.Info("GameAuthServer listening at {0}:{1}.", cIntNetwork.Host.Equals("*") ? "0.0.0.0" : cIntNetwork.Host, cIntNetwork.Port);
+			// Data Setup
+			AppConfigManager.Instance.Init();
+			DatabaseManager.Instance.Init(AppConfigManager.Instance.AuthServerConfig.Database);
+			AuthGameManager.Instance.Init();
 
-            // Console Setup
-            Console.Title = "AikaEmu AuthServer (RUNNING)";
-            Log.Warn("AikaEmu Authentication Server started with success.");
+			// AuthServer Setup
+			var cNetwork = AppConfigManager.Instance.AuthServerConfig.Network;
+			var networkAddress = new IPEndPoint(cNetwork.Host.Equals("*") ? IPAddress.Any : IPAddress.Parse(cNetwork.Host), cNetwork.Port);
+			_authServer = new Server(networkAddress, 10, new AuthProtocol());
+			_authServer.Start();
+			Log.Debug("AuthServer listening at {0}:{1}.", cNetwork.Host.Equals("*") ? "0.0.0.0" : cNetwork.Host, cNetwork.Port);
 
-            // Wait for input
-            Console.ReadLine();
+			// InternalServer Setup
+			var cIntNetwork = AppConfigManager.Instance.AuthServerConfig.InternalNetwork;
+			var intNetAddress = new IPEndPoint(cIntNetwork.Host.Equals("*") ? IPAddress.Any : IPAddress.Parse(cIntNetwork.Host), cIntNetwork.Port);
+			_gameAuthServer = new Server(intNetAddress, 10, new GameAuthProtocol());
+			_gameAuthServer.Start();
+			Log.Debug("InternalServer listening at {0}:{1}.", cIntNetwork.Host.Equals("*") ? "0.0.0.0" : cIntNetwork.Host, cIntNetwork.Port);
 
-            Log.Info("Starting shutdown proccess...");
-            // Stop Server
-            if (_authServer.IsStarted)
-            {
-                _authServer.Stop();
-                Log.Info("AuthServer stopped.");
-            }
+			// Console Setup
+			Console.Title = "AikaEmu AuthServer (RUNNING)";
+			Log.Info("AikaEmu Authentication Server started with success.");
 
-            if (_gameAuthServer.IsStarted)
-            {
-                _gameAuthServer.Stop();
-                Log.Info("GameAuthServer stopped.");
-            }
+			// Wait for input
+			Console.ReadLine();
 
-            // TODO - PROPER SHUTDOWN
-        }
-    }
+			Log.Info("Starting shutdown proccess...");
+			// Stop Server
+			if (_authServer.IsStarted)
+			{
+				_authServer.Stop();
+				Log.Info("AuthServer stopped.");
+			}
+
+			if (_gameAuthServer.IsStarted)
+			{
+				_gameAuthServer.Stop();
+				Log.Info("GameAuthServer stopped.");
+			}
+
+			// TODO - PROPER SHUTDOWN
+		}
+
+		private static void SetupLogManager()
+		{
+			var filePath = Directory.GetCurrentDirectory() + "\\NLog.config";
+			if (File.Exists(filePath))
+			{
+				LogManager.Configuration = new XmlLoggingConfiguration(filePath, false);
+			}
+			else
+			{
+				throw new Exception("NLog.config not found.");
+			}
+		}
+	}
 }

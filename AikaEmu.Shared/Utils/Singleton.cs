@@ -2,7 +2,7 @@ using System.Reflection;
 
 namespace AikaEmu.Shared.Utils
 {
-    public class Singleton<T> where T : class
+    public abstract class Singleton<T> where T : class
     {
         private static T _instance;
 
@@ -14,10 +14,6 @@ namespace AikaEmu.Shared.Utils
 
                 return _instance;
             }
-        }
-
-        protected Singleton()
-        {
         }
 
         private static void OnInit()

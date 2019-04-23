@@ -58,8 +58,4 @@
       <EmbeddedResource Remove="Database\**" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Models\Account" />
-    </ItemGroup>
-
 </Project>

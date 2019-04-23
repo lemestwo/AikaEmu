@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Char;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Packets.Game;
-using MySql.Data.MySqlClient;
+using AikaEmu.GameServer.Network.Packets.Game;
 using NLog;
 
 namespace AikaEmu.GameServer.Models
@@ -48,7 +47,7 @@ namespace AikaEmu.GameServer.Models
 		public void SendCharacterList()
 		{
 			AccCharLobby = new Dictionary<uint, Character>();
-			using (var sql = GameServer.Instance.DatabaseManager.GetConnection())
+			using (var sql = DatabaseManager.Instance.GetConnection())
 			using (var command = sql.CreateCommand())
 			{
 				command.CommandText = "SELECT * FROM characters WHERE acc_id=@acc_id";

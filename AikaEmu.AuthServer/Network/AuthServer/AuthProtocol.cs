@@ -17,7 +17,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
             _log.Info("Client ({0}) connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
             try
             {
-                AuthConnectionsManager.Instance.Add(new AuthConnection(session));
+                AuthConnManager.Instance.Add(new AuthConnection(session));
             }
             catch (Exception e)
             {
@@ -30,9 +30,9 @@ namespace AikaEmu.AuthServer.Network.AuthServer
         {
             try
             {
-                var con = AuthConnectionsManager.Instance.GetConnection(session.Id);
+                var con = AuthConnManager.Instance.GetConnection(session.Id);
                 if (con != null)
-                    AuthConnectionsManager.Instance.Remove(session.Id);
+                    AuthConnManager.Instance.Remove(session.Id);
             }
             catch (Exception e)
             {
@@ -45,7 +45,7 @@ namespace AikaEmu.AuthServer.Network.AuthServer
 
         public override void OnReceive(Session session, byte[] buff, int bytes)
         {
-            var connection = AuthConnectionsManager.Instance.GetConnection(session.Id);
+            var connection = AuthConnManager.Instance.GetConnection(session.Id);
             if (connection == null) return;
 
             try

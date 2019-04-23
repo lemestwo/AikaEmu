@@ -1,13 +1,28 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Packets.Game;
+using AikaEmu.GameServer.Network.Packets.Game;
+using MySql.Data.MySqlClient;
 using NLog;
 
 namespace AikaEmu.GameServer.Models.Char.Inventory
 {
+	public enum SlotType : byte
+	{
+		Equipments = 0,
+		Inventory = 1,
+		Bank = 2,
+
+		PranEquipments = 5,
+		PranInventory = 6,
+
+		Unk7 = 7,
+		Unk10 = 10, // 0xA
+	}
+
 	public class CharInventory
 	{
 		private readonly Logger _log = LogManager.GetCurrentClassLogger();
@@ -25,19 +40,19 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 				switch (type)
 				{
 					case SlotType.Equipments:
-						_items.Add(type, new Item[15]);
+						_items.Add(type, new Item[16]);
 						break;
 					case SlotType.Inventory:
-						_items.Add(type, new Item[85]);
+						_items.Add(type, new Item[84]);
 						break;
 					case SlotType.Bank:
-						_items.Add(type, new Item[1]); // 84 & 85 (Pran Stone) (2 per account)
+						_items.Add(type, new Item[86]); // accountBound
 						break;
 					case SlotType.PranEquipments:
-						_items.Add(type, new Item[15]);
+						_items.Add(type, new Item[16]);
 						break;
 					case SlotType.PranInventory:
-						_items.Add(type, new Item[41]);
+						_items.Add(type, new Item[42]);
 						break;
 					default:
 						// TODO - Implement
@@ -67,7 +82,7 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 			return null;
 		}
 
-		public bool SwapSameType(SlotType slotType, ushort slotFrom, ushort slotTo)
+		public void SwapSameSlotType(SlotType slotType, ushort slotFrom, ushort slotTo)
 		{
 			var item1 = GetItem(slotType, slotFrom);
 			var item2 = GetItem(slotType, slotTo);
@@ -83,51 +98,48 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 
 			_character.Connection.SendPacket(new UpdateItem(_items[slotType][slotTo], false));
 			_character.Connection.SendPacket(new UpdateItem(_items[slotType][slotFrom], false));
-
-			return true;
 		}
 
 		public void Init()
 		{
-			using (var sql = GameServer.Instance.DatabaseManager.GetConnection())
-			using (var command = sql.CreateCommand())
+			using (var sql = DatabaseManager.Instance.GetConnection())
 			{
-				command.CommandText = "SELECT * FROM items WHERE char_id=@char_id";
-				command.Parameters.AddWithValue("@char_id", _character.Id);
-				command.Prepare();
-				using (var reader = command.ExecuteReader())
+				using (var command = sql.CreateCommand())
 				{
-					while (reader.Read())
+					command.CommandText = "SELECT * FROM items WHERE char_id=@char_id";
+					command.Parameters.AddWithValue("@char_id", _character.Id);
+					command.Prepare();
+					using (var reader = command.ExecuteReader())
 					{
-						var item = new Item
+						while (reader.Read())
 						{
-							Id = reader.GetUInt32("id"),
-							ItemId = reader.GetUInt16("item_id"),
-							SlotType = (SlotType) reader.GetByte("slot_type"),
-							Slot = reader.GetUInt16("slot"),
-							Effect1 = reader.GetByte("effect1"),
-							Effect2 = reader.GetByte("effect2"),
-							Effect3 = reader.GetByte("effect3"),
-							Effect1Value = reader.GetByte("effect1value"),
-							Effect2Value = reader.GetByte("effect2value"),
-							Effect3Value = reader.GetByte("effect3value"),
-							Durability = reader.GetByte("dur"),
-							DurMax = reader.GetByte("dur_max"),
-							Quantity = reader.GetByte("refinement"),
-							ItemTime = reader.GetUInt16("time")
-						};
+							var item = new Item
+							{
+								Id = reader.GetUInt32("id"),
+								ItemId = reader.GetUInt16("item_id"),
+								SlotType = (SlotType) reader.GetByte("slot_type"),
+								Slot = reader.GetUInt16("slot"),
+								Effect1 = reader.GetByte("effect1"),
+								Effect2 = reader.GetByte("effect2"),
+								Effect3 = reader.GetByte("effect3"),
+								Effect1Value = reader.GetByte("effect1value"),
+								Effect2Value = reader.GetByte("effect2value"),
+								Effect3Value = reader.GetByte("effect3value"),
+								Durability = reader.GetByte("dur"),
+								DurMax = reader.GetByte("dur_max"),
+								Quantity = reader.GetByte("refinement"),
+								ItemTime = reader.GetUInt16("time")
+							};
 
-						// Check if item exists in json data
-						if (!DataManager.Instance.ItemsData.Exists(item.ItemId)) continue;
+							// Check if item exists in json data
+							if (!DataManager.Instance.ItemsData.Exists(item.ItemId)) continue;
 
-						if (item.SlotType == SlotType.Equipments && item.Slot < 16 ||
-						    item.SlotType == SlotType.Inventory && item.Slot < 86 ||
-						    item.SlotType == SlotType.Bank && item.Slot < 2)
-						{
-							if (item.SlotType == SlotType.Bank)
-								item.Slot = item.Slot == 0 ? (ushort) 84 : (ushort) 85;
-
-							_items[item.SlotType][item.Slot] = item;
+							if (item.SlotType == SlotType.Equipments && item.Slot < 16 ||
+							    item.SlotType == SlotType.Inventory && item.Slot < 84 ||
+							    item.SlotType == SlotType.Bank && item.Slot < 86)
+							{
+								_items[item.SlotType][item.Slot] = item;
+							}
 						}
 					}
 				}
@@ -142,17 +154,17 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 			}
 		}
 
-		public bool Save()
+		public void Save(MySqlConnection conn = null, MySqlTransaction trans = null)
 		{
-			using (var sql = GameServer.Instance.DatabaseManager.GetConnection())
-			using (var transaction = sql.BeginTransaction())
+			using (var sql = conn ?? DatabaseManager.Instance.GetConnection())
+			using (var transaction = trans ?? sql.BeginTransaction())
 			{
-				foreach (var (key, items) in _items)
+				foreach (var items in _items.Values)
 				{
-					if (key == SlotType.PranInventory || key == SlotType.PranEquipments) continue;
-
 					foreach (var item in items)
 					{
+						if (item == null || item.ItemId == 0) continue;
+
 						using (var command = sql.CreateCommand())
 						{
 							command.CommandText =
@@ -180,10 +192,11 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 					}
 				}
 
+				if (trans != null) return;
+
 				try
 				{
 					transaction.Commit();
-					return true;
 				}
 				catch (Exception e)
 				{
@@ -197,7 +210,7 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 						_log.Error(exception);
 					}
 
-					return false;
+					_character.Connection.Close();
 				}
 			}
 		}

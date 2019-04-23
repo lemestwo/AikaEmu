@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 			try
 			{
 				if (SenderId == ushort.MaxValue)
-					SenderId = AikaEmu.GameServer.GameServer.Instance.SystemSender;
+					SenderId = AikaEmu.GameServer.GameServer.SystemSender;
 
 				var packet = new PacketStream().Write(0).Write(SenderId).Write(Opcode).Write(Time);
 				packet.Write(this);

@@ -1,4 +1,4 @@
-namespace Aika_BinToJson.Models
+namespace AikaEmu.GameServer.Models.Data.JsonModel
 {
     public class PranExpListJson
     {

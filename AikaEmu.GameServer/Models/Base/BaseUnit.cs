@@ -8,7 +8,7 @@ namespace AikaEmu.GameServer.Models.Base
 {
 	public abstract class BaseUnit
 	{
-		public virtual uint Id { get; set; }
+		public uint Id { get; set; }
 		public ushort Level { get; set; }
 		public string Name { get; set; }
 		public Position Position { get; set; }

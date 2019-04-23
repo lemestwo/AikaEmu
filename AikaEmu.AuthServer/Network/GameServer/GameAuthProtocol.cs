@@ -15,17 +15,17 @@ namespace AikaEmu.AuthServer.Network.GameServer
         public override void OnConnect(Session session)
         {
             var template = new GameAuthConnection(session);
-            IntConnectionsManager.Instance.Add(template);
+            InternalConnManager.Instance.Add(template);
             _log.Info("Gameserver ({0}) connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
         }
 
         public override void OnDisconnect(Session session)
         {
-            IntConnectionsManager.Instance.Remove(session.Id);
+            InternalConnManager.Instance.Remove(session.Id);
             var gsId = session.GetAttribute("gsId");
             if (gsId != null)
                 AuthGameManager.Instance.Remove((byte) gsId);
-            IntConnectionsManager.Instance.Remove(session.Id);
+            InternalConnManager.Instance.Remove(session.Id);
             _log.Info("Gameserver ({0}) disconnected.", session.Ip.ToString());
         }
 
@@ -33,7 +33,7 @@ namespace AikaEmu.AuthServer.Network.GameServer
         {
             try
             {
-                var connection = IntConnectionsManager.Instance.GetConnection(session.Id);
+                var connection = InternalConnManager.Instance.GetConnection(session.Id);
                 if (connection == null || buff.Length < 2) return;
 
                 var stream = new PacketStream();

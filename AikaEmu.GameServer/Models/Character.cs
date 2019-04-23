@@ -5,7 +5,7 @@ using AikaEmu.GameServer.Models.Char;
 using AikaEmu.GameServer.Models.Char.Inventory;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Packets.Game;
+using AikaEmu.GameServer.Network.Packets.Game;
 using NLog;
 
 namespace AikaEmu.GameServer.Models
@@ -15,13 +15,10 @@ namespace AikaEmu.GameServer.Models
 		private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
 		public Account Account { get; set; }
-
 		public GameConnection Connection => Account.Connection;
 		public ushort ConnectionId => Connection.Account.ConnectionId;
 
 		public uint Slot { get; set; }
-		public CharAttributes CharAttributes { get; set; }
-		public CharClass CharClass { get; set; }
 		public ulong Money { get; set; }
 		public ulong BankMoney { get; set; }
 		public ulong Experience { get; set; }
@@ -30,6 +27,8 @@ namespace AikaEmu.GameServer.Models
 		public int InfamyPoints { get; set; }
 		public string Token { get; set; }
 
+		public CharAttributes CharAttributes { get; set; }
+		public CharClass CharClass { get; set; }
 		public CharInventory Inventory { get; private set; }
 
 		public void Init()
@@ -50,10 +49,10 @@ namespace AikaEmu.GameServer.Models
 
 		public bool Save()
 		{
-			using (var sql = GameServer.Instance.DatabaseManager.GetConnection())
-			using (var transaction = sql.BeginTransaction())
+			using (var connection = DatabaseManager.Instance.GetConnection())
+			using (var transaction = connection.BeginTransaction())
 			{
-				using (var command = sql.CreateCommand())
+				using (var command = connection.CreateCommand())
 				{
 					command.CommandText =
 						"REPLACE INTO `characters`" +
@@ -89,7 +88,7 @@ namespace AikaEmu.GameServer.Models
 					command.ExecuteNonQuery();
 				}
 
-				Inventory?.Save();
+				Inventory?.Save(connection, transaction);
 
 				try
 				{

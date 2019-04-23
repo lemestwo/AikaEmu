@@ -5,7 +5,7 @@ using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Base;
 using AikaEmu.GameServer.Models.Unit;
-using AikaEmu.GameServer.Packets.Game;
+using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Utils;
 using NLog;
 

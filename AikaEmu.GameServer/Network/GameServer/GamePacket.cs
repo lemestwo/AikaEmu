@@ -1,6 +1,9 @@
 using System;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Base;
+using AikaEmu.GameServer.Models.Char;
+using AikaEmu.GameServer.Models.Character;
+using AikaEmu.GameServer.Models.Pran;
+using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;

@@ -22,8 +22,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			stream.Write("Guild 3", 20); // Judge
 			stream.Write("Guild 4", 20); // Treasurer
 
-			stream.Write(0); // unk 28 01 00 00
-			stream.Write(0); // unk 79 01 36 01
+			stream.Write((short) 296); // unk
+			stream.Write((short) 0); // unk 
+			stream.Write((short) 377); // unk 
+			stream.Write((short) 310); // unk 
 
 			stream.Write((int) _nation.Id);
 			stream.Write(_nation.Settlement);

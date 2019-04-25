@@ -4,7 +4,7 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Models.Unit
 {
-    public class BodyTemplate : BasePacket
+    public class BodyTemplate
     {
         public byte Width { get; set; }
         public byte Chest { get; set; }
@@ -22,15 +22,6 @@ namespace AikaEmu.GameServer.Models.Unit
             Chest = temp[1];
             Leg = temp[2];
             Body = temp[3];
-        }
-
-        public override PacketStream Write(PacketStream stream)
-        {
-            stream.Write(Width);
-            stream.Write(Chest);
-            stream.Write(Leg);
-            stream.Write(Body);
-            return stream;
         }
     }
 }

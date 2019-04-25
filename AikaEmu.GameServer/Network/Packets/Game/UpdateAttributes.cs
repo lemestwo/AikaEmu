@@ -6,9 +6,9 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 {
 	public class UpdateAttributes : GamePacket
 	{
-		private readonly CharAttributes _attr;
+		private readonly Attributes _attr;
 
-		public UpdateAttributes(CharAttributes attr)
+		public UpdateAttributes(Attributes attr)
 		{
 			_attr = attr;
 

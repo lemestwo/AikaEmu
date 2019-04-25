@@ -39,6 +39,8 @@ namespace AikaEmu.GameServer.Network
 		SendTokenResult = 0x309D,
 		UpdatePosition = 0x30BF,
 		UpdateItem = 0x3C0E,
+		UpdateMapInfo = 0x3C79,
+		SendChatMessage = 0x3C86,
 		ResponseDeleteCharToken = 0x3F33,
 		UpdatePuzzleEvent = 0x3F34,
 
@@ -79,6 +81,7 @@ namespace AikaEmu.GameServer.Network
 		SetActiveTitle = 0x3061,
 		MoveItem = 0x340F,
 		RequestToken = 0x3C02,
+		RequestMapInfo = 0x3C79,
 		SendChatMessage = 0x3C86,
 		InGameState = 0x3CBE,
 		RequestDeleteCharToken = 0x3F33,

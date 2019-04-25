@@ -1,7 +1,8 @@
+using AikaEmu.GameServer.Models.Character;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 
-namespace AikaEmu.GameServer.Models.Char.Inventory
+namespace AikaEmu.GameServer.Models.Item
 {
 	public class Item : BasePacket
 	{

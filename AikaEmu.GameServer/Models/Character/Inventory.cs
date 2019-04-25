@@ -3,12 +3,11 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
-using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using MySql.Data.MySqlClient;
 using NLog;
 
-namespace AikaEmu.GameServer.Models.Char.Inventory
+namespace AikaEmu.GameServer.Models.Character
 {
 	public enum SlotType : byte
 	{
@@ -23,36 +22,36 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 		Unk10 = 10, // 0xA
 	}
 
-	public class CharInventory
+	public class Inventory
 	{
 		private readonly Logger _log = LogManager.GetCurrentClassLogger();
-		private readonly Character _character;
-		private readonly Dictionary<SlotType, Item[]> _items;
+		private readonly Models.Character.Character _character;
+		private readonly Dictionary<SlotType, Item.Item[]> _items;
 		private readonly object _lockObject = new object();
 
-		public CharInventory(Character character)
+		public Inventory(Models.Character.Character character)
 		{
 			_character = character;
 
-			_items = new Dictionary<SlotType, Item[]>();
+			_items = new Dictionary<SlotType, Item.Item[]>();
 			foreach (SlotType type in Enum.GetValues(typeof(SlotType)))
 			{
 				switch (type)
 				{
 					case SlotType.Equipments:
-						_items.Add(type, new Item[16]);
+						_items.Add(type, new Item.Item[16]);
 						break;
 					case SlotType.Inventory:
-						_items.Add(type, new Item[84]);
+						_items.Add(type, new Item.Item[84]);
 						break;
 					case SlotType.Bank:
-						_items.Add(type, new Item[86]); // accountBound
+						_items.Add(type, new Item.Item[86]); // accountBound
 						break;
 					case SlotType.PranEquipments:
-						_items.Add(type, new Item[16]);
+						_items.Add(type, new Item.Item[16]);
 						break;
 					case SlotType.PranInventory:
-						_items.Add(type, new Item[42]);
+						_items.Add(type, new Item.Item[42]);
 						break;
 					default:
 						// TODO - Implement
@@ -61,9 +60,9 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 			}
 		}
 
-		public ConcurrentDictionary<ushort, Item> GetItemsBySlotType(SlotType slot)
+		public ConcurrentDictionary<ushort, Item.Item> GetItemsBySlotType(SlotType slot)
 		{
-			var list = new ConcurrentDictionary<ushort, Item>();
+			var list = new ConcurrentDictionary<ushort, Item.Item>();
 
 			foreach (var item in _items[slot])
 				if (item?.ItemId > 0)
@@ -72,7 +71,7 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 			return list;
 		}
 
-		public Item GetItem(SlotType slotType, ushort slot)
+		public Item.Item GetItem(SlotType slotType, ushort slot)
 		{
 			foreach (var item in _items[slotType])
 			{
@@ -113,7 +112,7 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 					{
 						while (reader.Read())
 						{
-							var item = new Item
+							var item = new Item.Item
 							{
 								Id = reader.GetUInt32("id"),
 								ItemId = reader.GetUInt16("item_id"),
@@ -149,7 +148,7 @@ namespace AikaEmu.GameServer.Models.Char.Inventory
 			{
 				for (ushort i = 0; i < value.Length; i++)
 				{
-					if (_items[key][i] == null) _items[key][i] = new Item(key, i);
+					if (_items[key][i] == null) _items[key][i] = new Item.Item(key, i);
 				}
 			}
 		}

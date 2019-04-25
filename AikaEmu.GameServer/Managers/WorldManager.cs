@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Base;
+using AikaEmu.GameServer.Models.Char;
+using AikaEmu.GameServer.Models.Character;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Utils;
@@ -26,6 +27,11 @@ namespace AikaEmu.GameServer.Managers
 			_mobs = new ConcurrentDictionary<uint, Mob>();
 		}
 
+		public List<Character> GetOnlineCharacters()
+		{
+			return _characters.Values.ToList();
+		}
+		
 		public static void InitBasicSpawn()
 		{
 			foreach (var npc in DataManager.Instance.NpcPosData.GetAllNpc())

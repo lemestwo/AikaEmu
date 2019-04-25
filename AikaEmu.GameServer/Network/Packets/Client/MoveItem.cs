@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Models.Char.Inventory;
+using AikaEmu.GameServer.Models.Character;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

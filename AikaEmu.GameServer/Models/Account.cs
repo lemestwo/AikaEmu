@@ -4,6 +4,8 @@ using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Char;
+using AikaEmu.GameServer.Models.Character;
+using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -29,8 +31,8 @@ namespace AikaEmu.GameServer.Models
 		public AccLevel Level { get; set; } = AccLevel.Default;
 		public GameConnection Connection { get; }
 		public ushort ConnectionId => Connection.Id;
-		public Dictionary<uint, Character> AccCharLobby { get; private set; }
-		public Character ActiveCharacter { get; set; }
+		public Dictionary<uint, Character.Character> AccCharLobby { get; private set; }
+		public Character.Character ActiveCharacter { get; set; }
 
 		public Account(uint accId, GameConnection conn)
 		{
@@ -39,14 +41,14 @@ namespace AikaEmu.GameServer.Models
 			Connection.Id = (ushort) IdConnectionManager.Instance.GetNextId();
 		}
 
-		public Character GetSlotCharacter(uint slot)
+		public Character.Character GetSlotCharacter(uint slot)
 		{
 			return AccCharLobby.ContainsKey(slot) ? AccCharLobby[slot] : null;
 		}
 
 		public void SendCharacterList()
 		{
-			AccCharLobby = new Dictionary<uint, Character>();
+			AccCharLobby = new Dictionary<uint, Character.Character>();
 			using (var sql = DatabaseManager.Instance.GetConnection())
 			using (var command = sql.CreateCommand())
 			{
@@ -57,12 +59,12 @@ namespace AikaEmu.GameServer.Models
 				{
 					while (reader.Read())
 					{
-						var template = new Character
+						var template = new Character.Character
 						{
 							Id = reader.GetUInt32("id"),
 							Slot = reader.GetUInt32("slot"),
 							Name = reader.GetString("name"),
-							CharClass = (CharClass) reader.GetUInt16("class"),
+							Professions = (Professions) reader.GetUInt16("class"),
 							Level = reader.GetUInt16("level"),
 							BodyTemplate = new BodyTemplate
 							{
@@ -77,7 +79,7 @@ namespace AikaEmu.GameServer.Models
 								CoordX = reader.GetFloat("x"),
 								CoordY = reader.GetFloat("y"),
 							},
-							CharAttributes = new CharAttributes(reader.GetUInt16("str"), reader.GetUInt16("agi"), reader.GetUInt16("int"),
+							Attributes = new Attributes(reader.GetUInt16("str"), reader.GetUInt16("agi"), reader.GetUInt16("int"),
 								reader.GetUInt16("const"), reader.GetUInt16("spi")),
 							Experience = reader.GetUInt64("exp"),
 							Money = reader.GetUInt64("money"),
@@ -101,7 +103,7 @@ namespace AikaEmu.GameServer.Models
 		public void CreateCharacter(uint slot, string name, ushort face, ushort hair, bool isRanch)
 		{
 			var charClass = GetClassByFace(face);
-			if (AccCharLobby.Count > 3 || slot >= 3 || charClass == CharClass.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != 1)
+			if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Professions.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != 1)
 			{
 				SendCharacterList();
 				return;
@@ -126,11 +128,11 @@ namespace AikaEmu.GameServer.Models
 
 			var configs = DataManager.Instance.CharInitial;
 			var charInitials = configs.GetInitial((ushort) charClass);
-			var template = new Character
+			var template = new Character.Character
 			{
 				Id = IdCharacterManager.Instance.GetNextId(),
 				Account = this,
-				CharClass = charClass,
+				Professions = charClass,
 				Name = name,
 				Position = new Position
 				{
@@ -146,7 +148,7 @@ namespace AikaEmu.GameServer.Models
 				Level = 1,
 				Money = 0,
 				Token = string.Empty,
-				CharAttributes = new CharAttributes(charInitials.Attributes),
+				Attributes = new Attributes(charInitials.Attributes),
 				Experience = 1,
 				PvpPoints = 0,
 				HonorPoints = 0,
@@ -160,15 +162,15 @@ namespace AikaEmu.GameServer.Models
 			SendCharacterList();
 		}
 
-		private static CharClass GetClassByFace(ushort face)
+		private static Professions GetClassByFace(ushort face)
 		{
-			if (face >= 10 && face < 15) return CharClass.Warrior;
-			if (face >= 20 && face < 25) return CharClass.Paladin;
-			if (face >= 30 && face < 35) return CharClass.Rifleman;
-			if (face >= 40 && face < 45) return CharClass.DualGunner;
-			if (face >= 50 && face < 55) return CharClass.Warlock;
-			if (face >= 60 && face < 65) return CharClass.Cleric;
-			return CharClass.Undefined;
+			if (face >= 10 && face < 15) return Professions.Warrior;
+			if (face >= 20 && face < 25) return Professions.Paladin;
+			if (face >= 30 && face < 35) return Professions.Rifleman;
+			if (face >= 40 && face < 45) return Professions.DualGunner;
+			if (face >= 50 && face < 55) return Professions.Warlock;
+			if (face >= 60 && face < 65) return Professions.Cleric;
+			return Professions.Undefined;
 		}
 	}
 }

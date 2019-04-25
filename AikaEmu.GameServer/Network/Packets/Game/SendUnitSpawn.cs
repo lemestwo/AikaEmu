@@ -1,8 +1,10 @@
 using System;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Base;
-using AikaEmu.GameServer.Models.Char.Inventory;
+using AikaEmu.GameServer.Models.Char;
+using AikaEmu.GameServer.Models.Character;
+using AikaEmu.GameServer.Models.Pran;
+using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -57,7 +59,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 				stream.Write(character.Mp);
 				stream.Write(character.Mp); // TODO - MAX
 				stream.Write((byte) 10); // unk - Can go up to 70
-				stream.Write((byte) 45); // unk
+				stream.Write((byte) 61); // unk
 				stream.Write((byte) 1); //spawnType
 				stream.Write(character.BodyTemplate.Width);
 				stream.Write(character.BodyTemplate.Chest);
@@ -80,12 +82,12 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 				stream.Write("", 32); // title
 				stream.Write(0);
 
-				stream.Write((ushort) 0); // unk (byte)
-				stream.Write((ushort) 0); // unk
+				stream.Write((ushort) 8192); // unk (byte)
+				stream.Write((ushort) 57); // unk
 				stream.Write((ushort) 0); // unk (byte)
 				stream.Write((ushort) 0); // unk (byte) >0 <64 unique behavior
 				stream.Write(0);
-				stream.Write(0); // test maybe title class
+				stream.Write(25); // test maybe title class
 			}
 			else if (_unit is Npc npc)
 			{
@@ -125,10 +127,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
 				var equips = pran.Account.ActiveCharacter.Inventory.GetItemsBySlotType(SlotType.PranEquipments);
 //				stream.Write(equips.ContainsKey(0) ? equips[0].ItemId : (ushort) 0);
-				stream.Write((ushort) 105);
-				stream.Write(equips.ContainsKey(1) ? equips[1].ItemId : (ushort) 9866); // TODO - Remove placeholder items
-				stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 6267);
-				stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 9909);
+				stream.Write((ushort) 106);
+				stream.Write(equips.ContainsKey(1) ? equips[1].ItemId : (ushort) 0); // TODO - Remove placeholder items
+				stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0);
+				stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 0);
 				stream.Write(equips.ContainsKey(4) ? equips[4].ItemId : (ushort) 0);
 				stream.Write(equips.ContainsKey(5) ? equips[5].ItemId : (ushort) 0);
 				stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) 151);
@@ -137,12 +139,13 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
 				stream.Write(pran.Position.CoordX);
 				stream.Write(pran.Position.CoordY);
-				stream.Write(0);
+				stream.Write(180); // rotation?
 
-				stream.Write(pran.Hp);
-				stream.Write(pran.MaxHp);
-				stream.Write(pran.Mp);
-				stream.Write(pran.MaxMp);
+				// TODO - Maybe inverted
+				stream.Write(pran.Hp); // hp
+				stream.Write(pran.MaxHp); // mp
+				stream.Write(pran.Mp); // maxHp
+				stream.Write(pran.MaxMp); // maxMp
 
 				stream.Write((byte) 0); // unk 
 				stream.Write((byte) 61); // unk fixed value
@@ -154,10 +157,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 				stream.Write((ushort)(pran.Id));
 
 				stream.Write("", 204);
-				stream.Write(24);
+				stream.Write(24); // unk
 				stream.Write("", 156);
 
-				stream.Write(pran.Account.ActiveCharacter.Name + "'s Pran", 32);
+				stream.Write(pran.Account.ActiveCharacter.Name + " 's Pran", 32);
 				stream.Write("", 20);
 			}
 

@@ -15,7 +15,9 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             for (var i = 0; i < 32; i++)
             {
-                stream.Write(i == 2 ? 16 : 0);
+                if (i == 2) stream.Write(272);
+                else if (i == 3) stream.Write(16);
+                else stream.Write( 0);
             }
 
             return stream;

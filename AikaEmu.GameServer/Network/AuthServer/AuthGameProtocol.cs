@@ -47,7 +47,7 @@ namespace AikaEmu.GameServer.Network.AuthServer
 					if (Enum.IsDefined(typeof(AuthGameOpcode), opcode))
 					{
 						var pName = Enum.GetName(typeof(AuthGameOpcode), opcode);
-						var pType = Type.GetType($"AikaEmu.GameServer.Packets.AG.{pName}");
+						var pType = Type.GetType($"AikaEmu.GameServer.Network.Packets.AG.{pName}");
 						var packet = (AuthGamePacket) Activator.CreateInstance(pType);
 						packet.Opcode = opcode;
 						packet.Connection = connection;

@@ -1,4 +1,5 @@
 using AikaEmu.GameServer.Models;
+using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

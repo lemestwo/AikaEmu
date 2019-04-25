@@ -20,7 +20,7 @@ namespace AikaEmu.AuthServer.Packets.Game
         {
             stream.Write(_accId);
             stream.Write(_key);
-            stream.Write(0L);
+            stream.Write(2L); // nationId?
             return stream;
         }
     }

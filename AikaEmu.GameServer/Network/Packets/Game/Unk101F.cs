@@ -5,9 +5,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 {
     public class Unk101F : GamePacket
     {
-        public Unk101F()
+        public Unk101F(ushort conId)
         {
             Opcode = (ushort) GameOpcode.Unk101F;
+            SenderId = conId;
         }
 
         public override PacketStream Write(PacketStream stream)

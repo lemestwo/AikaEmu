@@ -9,7 +9,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 		protected override void Read(PacketStream stream)
 		{
 			// TODO
-			Connection.SendPacket(new UpdateCash(Connection.Id));
+			Connection.SendPacket(new UpdateCash(100000));
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 		public UpdateDungeonTimer()
 		{
 			Opcode = (ushort) GameOpcode.UpdateDungeonTimer;
-			SenderId = 0; // ?
+			SenderId = 0; 
 		}
 
 		public override PacketStream Write(PacketStream stream)

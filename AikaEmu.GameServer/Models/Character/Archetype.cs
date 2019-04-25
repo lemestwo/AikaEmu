@@ -1,6 +1,6 @@
 namespace AikaEmu.GameServer.Models.Char
 {
-	public enum CharArchetype
+	public enum Archetype
 	{
 		// TODO - Right numbers
 		Fighter = 1,

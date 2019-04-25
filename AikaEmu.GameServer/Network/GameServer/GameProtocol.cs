@@ -95,7 +95,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 							if (Enum.IsDefined(typeof(ClientOpcode), opcode))
 							{
 								var pName = Enum.GetName(typeof(ClientOpcode), opcode);
-								var pType = Type.GetType($"AikaEmu.GameServer.Packets.Client.{pName}");
+								var pType = Type.GetType($"AikaEmu.GameServer.Network.Packets.Client.{pName}");
 								var packet = (GamePacket) Activator.CreateInstance(pType);
 								packet.Opcode = opcode;
 								packet.Connection = connection;

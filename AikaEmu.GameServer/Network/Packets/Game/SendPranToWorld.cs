@@ -1,5 +1,5 @@
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Pran;
+using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -21,12 +21,12 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write(_pran.Name, 16);
             // 63 = fire / 73 = water / 83 = air
             stream.Write((byte) 63); // profession
-            stream.Write((byte) 120); // food (max is 120)
+            stream.Write(_pran.Food); // food (max is 120)
             // 0 - cute / 1 - smart
             // 2 - sexy / 3 - energetic
             // 4 - tough / 5 - corrupt
-            stream.Write((short) 2); // personality
-            stream.Write(225); // devotion % (max is 225?)
+            stream.Write((short) _pran.Personality); // personality
+            stream.Write(_pran.Devotion); // devotion % (max is 225?)
 
             stream.Write(_pran.Hp);
             stream.Write(_pran.MaxHp);
@@ -50,17 +50,15 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             // 6 = hair icon
             for (var i = 0; i < 16; i++)
             {
-                if (i == 0) stream.Write((ushort) 106);
-                else if (i == 1) stream.Write((ushort) 9866);
-                else if (i == 6) stream.Write((ushort) 151);
+                if (i == 0) stream.Write((ushort) _pran.Face);
+                else if (i == 6) stream.Write((ushort) _pran.Hair);
                 else stream.Write((ushort) 0);
                 stream.Write("", 18);
             }
 
             for (var i = 0; i < 42; i++)
             {
-                if (i == 0) stream.Write((ushort) 4542);
-                else if (i == 40) stream.Write((ushort) 5301);
+                if (i == 40) stream.Write((ushort) 5301);
                 else if (i == 41) stream.Write((ushort) 5301);
                 else stream.Write((ushort) 0);
                 stream.Write("", 18);

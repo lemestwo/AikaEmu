@@ -3,9 +3,9 @@ using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Character;
+using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Chat;
-using AikaEmu.GameServer.Models.Item;
+using AikaEmu.GameServer.Models.ItemM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -69,7 +69,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                     case "move":
                         var newPos = new Position
                         {
-                            WorldId = 1, // TODO
+                            NationId = 1, // TODO
                             CoordX = Convert.ToSingle(arg1),
                             CoordY = Convert.ToSingle(arg2)
                         };
@@ -87,7 +87,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                             Name = DataManager.Instance.MnData.GetUnitName(arg1),
                             Position = new Position
                             {
-                                WorldId = 1,
+                                NationId = 1,
                                 CoordX = Connection.ActiveCharacter.Position.CoordX + 2.0f,
                                 CoordY = Connection.ActiveCharacter.Position.CoordY + 2.0f
                             },

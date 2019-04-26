@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using AikaEmu.GameServer.Models.Data.JsonModel;
 using AikaEmu.Shared.Utils;
 
@@ -25,7 +27,12 @@ namespace AikaEmu.GameServer.Models.Data
 
         public ushort GetItemSlot(ushort id)
         {
-            return _items.ContainsKey(id) ? _items[id].ItemSlot : ushort.MaxValue;
+            return _items.ContainsKey(id) ? _items[id].ItemType : ushort.MaxValue;
+        }
+
+        public ItemsJson GetItemData(ushort id)
+        {
+            return _items.ContainsKey(id) ? _items[id] : null;
         }
     }
 }

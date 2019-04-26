@@ -1,7 +1,6 @@
 using System;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Char;
-using AikaEmu.GameServer.Models.Character;
+using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

@@ -30,7 +30,7 @@ namespace AikaEmu.GameServer.Models.Unit
         {
             Position = new Position
             {
-                WorldId = world,
+                NationId = world,
                 CoordX = x,
                 CoordY = y,
                 Rotation = 0

@@ -39,7 +39,7 @@ namespace AikaEmu.GameServer.Models.Data
                     Name = DataManager.Instance.MnData.GetUnitName(npc.NpcId),
                     Position = new Position
                     {
-                        WorldId = 1,
+                        NationId = 1,
                         CoordX = npc.CoordX,
                         CoordY = npc.CoordY
                     },

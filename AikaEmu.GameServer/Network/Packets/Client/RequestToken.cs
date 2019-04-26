@@ -1,7 +1,7 @@
 using System;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Pran;
+using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -22,8 +22,9 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             if (character == null) return;
 
             Connection.Account.ActiveCharacter = character;
+            character.Init();
+            character.ActivatePran();
             WorldManager.Instance.Spawn(character);
-
 
             for (var i = 0; i < 4; i++)
             {
@@ -36,46 +37,26 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.SendPacket(new Unk102C());
             // Client -> 3CBE
 
-            var pran = new Pran(null,0) // TODO - ERROR
+            if (character.ActivePran != null)
             {
-                Id = 10241,
-                Hp = 1000,
-                Mp = 2000,
-                MaxHp = 1000,
-                MaxMp = 2000,
-                Name = "TestPran",
-                Position = new Position
-                {
-                    WorldId = 1,
-                    CoordX = Connection.ActiveCharacter.Position.CoordX + 2.0f,
-                    CoordY = Connection.ActiveCharacter.Position.CoordY + 2.0f
-                },
-                BodyTemplate = new BodyTemplate
-                {
-                    Width = 8,
-                    Chest = 121,
-                    Leg = 119,
-                    Body = 0
-                },
-                Account = Connection.Account,
-                Experience = 607632600,
-                DefMag = 100,
-                DefPhy = 100,
-                Level = 99,
-            };
+                var pran = character.ActivePran;
+                pran.Spawn();
+                Connection.SendPacket(new SendUnitSpawn(pran));
+                Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+                Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+                Connection.SendPacket(new UpdatePranExperience(pran));
+                Connection.SendPacket(new SendPranToWorld(pran));
+            }
 
-            Connection.SendPacket(new SendUnitSpawn(pran));
-            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
-            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
 
             Connection.SendPacket(new Unk303D(character));
-            Connection.SendPacket(new UpdatePranExperience(pran));
+
             // TODO - Update pran Stone in Bank (84/85)
             Connection.SendPacket(new Unk101F(Connection.Id));
             Connection.SendPacket(new UpdateDungeonTimer());
 
             // Send to world
-            Connection.SendPacket(new SendPranToWorld(pran));
+
             Connection.SendPacket(new SendToWorld(character));
 
             Connection.SendPacket(new UpdateStatus());
@@ -106,8 +87,10 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             Connection.SendPacket(new SendUnitSpawn(character));
             WorldManager.Instance.ShowVisibleUnits(character);
-            Connection.SendPacket(new SendUnitSpawn(pran, true));
-            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+
+//            Connection.SendPacket(new SendUnitSpawn(pran, true));
+//            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+
 
             Connection.SendPacket(new ApplyBuff(0));
             Connection.SendPacket(new UpdateHpMp(character));

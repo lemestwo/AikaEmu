@@ -46,25 +46,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                 switch (command[0])
                 {
                     case "additem":
-                        var item = new Item
-                        {
-                            Id = 1,
-                            ItemId = arg1,
-                            SlotType = SlotType.Inventory,
-                            Slot = arg2,
-                            Effect1 = 50,
-                            Effect2 = 55,
-                            Effect3 = 60,
-                            Effect1Value = 100,
-                            Effect2Value = 150,
-                            Effect3Value = 200,
-                            Durability = 200,
-                            DurMax = 200,
-                            Quantity = Convert.ToByte(arg3),
-                            DisableDurplus = 1,
-                            ItemTime = 0,
-                        };
-                        Connection.SendPacket(new UpdateItem(item, true));
+                        Connection.ActiveCharacter.Inventory.AddItem(SlotType.Inventory, (byte) arg2, arg1);
                         break;
                     case "move":
                         var newPos = new Position
@@ -101,8 +83,37 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         };
                         WorldManager.Instance.Spawn(temp);
                         break;
-                    case "test":
-                        Connection.SendPacket(new Unk1054());
+                    case "testnpc":
+                        for (var i = 0u; i < arg1; i++)
+                        {
+                            var npc = new Npc
+                            {
+                                Id = IdUnitSpawnManager.Instance.GetNextId(),
+                                NpcId = 41,
+                                Hp = 2000,
+                                Mp = 2000,
+                                MaxHp = 2000,
+                                MaxMp = 2000,
+                                Name = "Effects "+i,
+                                Position = new Position
+                                {
+                                    NationId = 1,
+                                    CoordX = Connection.ActiveCharacter.Position.CoordX,
+                                    CoordY = (float)(Connection.ActiveCharacter.Position.CoordY + i),
+                                    Rotation = 0
+                                },
+                                BodyTemplate = new BodyTemplate
+                                {
+                                    Width = 7,
+                                    Chest = 119,
+                                    Leg = 119,
+                                    Body = 219
+                                }
+                            };
+                            Connection.SendPacket(new SendUnitSpawn(npc));
+                            Connection.SendPacket(new SetEffectOnHead(npc.Id, i));
+                        }
+
                         break;
                 }
             }

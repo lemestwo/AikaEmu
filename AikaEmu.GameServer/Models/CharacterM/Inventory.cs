@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
+using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.ItemM;
 using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -20,8 +22,8 @@ namespace AikaEmu.GameServer.Models.CharacterM
         PranEquipments = 5,
         PranInventory = 6,
 
-        Unk7 = 7,
-        Unk10 = 10, // 0xA
+//        Unk7 = 7,
+//        Unk10 = 10, // 0xA
     }
 
     public class Inventory
@@ -47,7 +49,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                         _items.Add(type, new Item[84]);
                         break;
                     case SlotType.Bank:
-                        _items.Add(type, new Item[86]); // accountBound
+                        _items.Add(type, new Item[86]);
                         break;
                     case SlotType.PranEquipments:
                         _items.Add(type, new Item[16]);
@@ -56,8 +58,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                         _items.Add(type, new Item[42]);
                         break;
                     default:
-                        // TODO - Implement
-                        break;
+                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -82,42 +83,133 @@ namespace AikaEmu.GameServer.Models.CharacterM
 
             return null;
         }
-        
-        public void SwapSameSlotType(SlotType slotType, ushort slotFrom, ushort slotTo)
+
+        public void AddItem(SlotType slotType, byte quantity, ushort itemId)
         {
-            var item1 = GetItem(slotType, slotFrom);
-            var item2 = GetItem(slotType, slotTo);
+            var freeSlot = GetFreeSlot(slotType);
+            if (freeSlot <= 0) return;
+
+            var item = new Item(slotType, freeSlot, itemId)
+            {
+                Id = IdItemManager.Instance.GetNextId(),
+                Quantity = quantity,
+                Durability = 100,
+            };
+            _items[slotType][freeSlot] = item;
+            _character.SendPacket(new UpdateItem(item, true));
+        }
+
+        public ushort GetFreeSlot(SlotType slotType)
+        {
+            for (ushort i = 0; i < _items[slotType].Length; i++)
+            {
+                if (_items[slotType][i] == null || _items[slotType][i].ItemId <= 0) return i;
+            }
+
+            return 0;
+        }
+
+        public int GetFreeSlots(SlotType slotType)
+        {
+            var i = 0;
+            lock (_lockObject)
+            {
+                i += _items[slotType].Count(item => item == null);
+            }
+
+            return i;
+        }
+
+        public void UseItem(SlotType slotType, ushort slot, int data)
+        {
+            var item = GetItem(slotType, slot);
+            if (item == null) return;
+
+            var itemType = item.ItemData.ItemType;
+            if (itemType <= 0) return;
+
+            var type = Type.GetType("AikaEmu.GameServer.Models.ItemM.UseItem." + itemType);
+            if (type == null)
+            {
+                _log.Error("UseItem {0} not implemented.", itemType);
+                return;
+            }
+
+            var useItem = (IUseItem) Activator.CreateInstance(type);
+            useItem.Init(data);
+        }
+
+        public void SwapItems(SlotType typeFrom, SlotType typeTo, ushort slotFrom, ushort slotTo)
+        {
+            var item1 = GetItem(typeFrom, slotFrom);
+            var item2 = GetItem(typeTo, slotTo);
 
             // TODO - Check if can swap
             lock (_lockObject)
             {
-                item1.Slot = slotTo;
-                item2.Slot = slotFrom;
-                _items[slotType][slotFrom] = item2;
-                _items[slotType][slotTo] = item1;
+                _items[typeFrom][slotFrom] = item2;
+                _items[typeTo][slotTo] = item1;
+                if (item1 != null)
+                {
+                    _items[typeTo][slotTo].Slot = slotTo;
+                    _items[typeTo][slotTo].SlotType = typeTo;
+                    _character.SendPacket(new UpdateItem(_items[typeTo][slotTo], false));
+                }
+                else
+                {
+                    _character.SendPacket(new UpdateItem(new Item(typeTo, slotTo, 0), false));
+                }
+
+                if (item2 != null)
+                {
+                    _items[typeFrom][slotFrom].Slot = slotFrom;
+                    _items[typeFrom][slotFrom].SlotType = typeFrom;
+                    _character.SendPacket(new UpdateItem(_items[typeFrom][slotFrom], false));
+                }
+                else
+                {
+                    _character.SendPacket(new UpdateItem(new Item(typeFrom, slotFrom, 0), false));
+                }
             }
 
-            _character.Connection.SendPacket(new UpdateItem(_items[slotType][slotTo], false));
-            _character.Connection.SendPacket(new UpdateItem(_items[slotType][slotFrom], false));
+            PartialSave();
         }
 
-        public void Init()
+        public void Init(SlotType slot)
         {
             using (var sql = DatabaseManager.Instance.GetConnection())
             {
                 using (var command = sql.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM items WHERE char_id=@char_id";
-                    command.Parameters.AddWithValue("@char_id", _character.Id);
+                    if (slot == SlotType.Inventory || slot == SlotType.Equipments)
+                    {
+                        command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=@char_id";
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@char_id", _character.Id);
+                    }
+                    else if (slot == SlotType.Bank)
+                    {
+                        command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=0";
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                    }
+                    else if (slot == SlotType.PranInventory || slot == SlotType.PranEquipments)
+                    {
+                        command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND pran_id=@pran_id";
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@pran_id", _character.ActivePran.DbId);
+                    }
+
                     command.Prepare();
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var item = new Item
+                            var item = new Item(reader.GetUInt16("item_id"))
                             {
                                 Id = reader.GetUInt32("id"),
-                                ItemId = reader.GetUInt16("item_id"),
+                                AccId = reader.GetUInt32("acc_id"),
+                                CharId = reader.GetUInt32("char_id"),
+                                PranId = reader.GetUInt32("pran_id"),
                                 SlotType = (SlotType) reader.GetByte("slot_type"),
                                 Slot = reader.GetUInt16("slot"),
                                 Effect1 = reader.GetByte("effect1"),
@@ -132,13 +224,15 @@ namespace AikaEmu.GameServer.Models.CharacterM
                                 ItemTime = reader.GetUInt16("time")
                             };
 
-                            // Check if item exists in json data
-                            if (!DataManager.Instance.ItemsData.Exists(item.ItemId)) continue;
-                            item.ItemData = DataManager.Instance.ItemsData.GetItemData(item.ItemId);
-                            
+                            // Check if item exists json data
+                            if (item.ItemData == null) continue;
+
+                            // Check if in-range of the array
                             if (item.SlotType == SlotType.Equipments && item.Slot < 16 ||
                                 item.SlotType == SlotType.Inventory && item.Slot < 84 ||
-                                item.SlotType == SlotType.Bank && item.Slot < 86)
+                                item.SlotType == SlotType.Bank && item.Slot < 86 ||
+                                item.SlotType == SlotType.PranInventory && item.Slot < 42 ||
+                                item.SlotType == SlotType.PranEquipments && item.Slot < 16)
                             {
                                 _items[item.SlotType][item.Slot] = item;
                             }
@@ -146,56 +240,14 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     }
                 }
             }
-
-            foreach (var (key, value) in _items)
-            {
-                for (ushort i = 0; i < value.Length; i++)
-                {
-                    if (_items[key][i] == null) _items[key][i] = new Item(key, i);
-                }
-            }
         }
 
-        public void Save(MySqlConnection conn = null, MySqlTransaction trans = null)
+        public void PartialSave()
         {
-            using (var sql = conn ?? DatabaseManager.Instance.GetConnection())
-            using (var transaction = trans ?? sql.BeginTransaction())
+            using (var connection = DatabaseManager.Instance.GetConnection())
+            using (var transaction = connection.BeginTransaction())
             {
-                foreach (var items in _items.Values)
-                {
-                    foreach (var item in items)
-                    {
-                        if (item == null || item.ItemId == 0) continue;
-
-                        using (var command = sql.CreateCommand())
-                        {
-                            command.CommandText =
-                                "REPLACE INTO `items`" +
-                                "(`id`, `item_id`, `char_id`, `slot_type`, `slot`, `effect1`, `effect2`, `effect3`, `effect1value`, `effect2value`, `effect3value`, `dur`, `dur_max`, `refinement`, `time`)" +
-                                "VALUES (@id, @item_id, @char_id, @slot_type, @slot, @effect1, @effect2, @effect3, @effect1value, @effect2value, @effect3value, @dur, @dur_max, @refinement, @time);";
-
-                            command.Parameters.AddWithValue("@id", item.Id);
-                            command.Parameters.AddWithValue("@item_id", item.ItemId);
-                            command.Parameters.AddWithValue("@char_id", _character.Id);
-                            command.Parameters.AddWithValue("@slot_type", (byte) item.SlotType);
-                            command.Parameters.AddWithValue("@slot", item.Slot);
-                            command.Parameters.AddWithValue("@effect1", item.Effect1);
-                            command.Parameters.AddWithValue("@effect2", item.Effect2);
-                            command.Parameters.AddWithValue("@effect3", item.Effect3);
-                            command.Parameters.AddWithValue("@effect1value", item.Effect1Value);
-                            command.Parameters.AddWithValue("@effect2value", item.Effect2Value);
-                            command.Parameters.AddWithValue("@effect3value", item.Effect3Value);
-                            command.Parameters.AddWithValue("@dur", item.Durability);
-                            command.Parameters.AddWithValue("@dur_max", item.DurMax);
-                            command.Parameters.AddWithValue("@refinement", item.Quantity);
-                            command.Parameters.AddWithValue("@time", item.ItemTime);
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-
-                if (trans != null) return;
-
+                Save(connection, transaction);
                 try
                 {
                     transaction.Commit();
@@ -210,9 +262,58 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     catch (Exception exception)
                     {
                         _log.Error(exception);
+                        _character.Connection.Close();
                     }
 
                     _character.Connection.Close();
+                }
+            }
+        }
+
+        public void Save(MySqlConnection connection, MySqlTransaction transaction)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                foreach (var items in _items.Values)
+                {
+                    foreach (var item in items)
+                    {
+                        if (item == null || item.ItemId == 0) continue;
+
+                        command.CommandText =
+                            "REPLACE INTO `items`" +
+                            "(`id`, `item_id`, `char_id`, `acc_id`,`pran_id`,`slot_type`, `slot`, `effect1`, `effect2`, `effect3`, `effect1value`, `effect2value`, `effect3value`, `dur`, `dur_max`, `refinement`, `time`)" +
+                            "VALUES (@id, @item_id, @char_id, @acc_id, @pran_id, @slot_type, @slot, @effect1, @effect2, @effect3, @effect1value, @effect2value, @effect3value, @dur, @dur_max, @refinement, @time);";
+
+                        command.Parameters.AddWithValue("@id", item.Id);
+                        command.Parameters.AddWithValue("@item_id", item.ItemId);
+                        command.Parameters.AddWithValue("@char_id",
+                            item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments
+                                ? _character.Id
+                                : 0);
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@pran_id",
+                            item.SlotType == SlotType.PranInventory || item.SlotType == SlotType.PranEquipments
+                                ? _character.ActivePran?.DbId ?? 0
+                                : 0);
+                        command.Parameters.AddWithValue("@slot_type", (byte) item.SlotType);
+                        command.Parameters.AddWithValue("@slot", item.Slot);
+                        command.Parameters.AddWithValue("@effect1", item.Effect1);
+                        command.Parameters.AddWithValue("@effect2", item.Effect2);
+                        command.Parameters.AddWithValue("@effect3", item.Effect3);
+                        command.Parameters.AddWithValue("@effect1value", item.Effect1Value);
+                        command.Parameters.AddWithValue("@effect2value", item.Effect2Value);
+                        command.Parameters.AddWithValue("@effect3value", item.Effect3Value);
+                        command.Parameters.AddWithValue("@dur", item.Durability);
+                        command.Parameters.AddWithValue("@dur_max", item.DurMax);
+                        command.Parameters.AddWithValue("@refinement", item.Quantity);
+                        command.Parameters.AddWithValue("@time", item.ItemTime);
+                        command.ExecuteNonQuery();
+                        command.Parameters.Clear();
+                    }
                 }
             }
         }

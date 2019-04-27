@@ -30,7 +30,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
         public Attributes Attributes { get; set; }
         public Professions Professions { get; set; }
         public Inventory Inventory { get; private set; }
-        public Pran ActivePran { get; set; }
+        public Pran ActivePran { get; private set; }
 
         public void ActivatePran()
         {
@@ -42,11 +42,24 @@ namespace AikaEmu.GameServer.Models.CharacterM
                 ActivePran = pran;
             }
         }
-        
+
         public void Init()
         {
             Inventory = new Inventory(this);
-            Inventory.Init();
+            Inventory.Init(SlotType.Inventory);
+            Inventory.Init(SlotType.Equipments);
+            Inventory.Init(SlotType.Bank);
+            if (ActivePran != null)
+            {
+                Inventory.Init(SlotType.PranInventory);
+                Inventory.Init(SlotType.PranEquipments);
+            }
+        }
+
+        public void PartialInit()
+        {
+            Inventory = new Inventory(this);
+            Inventory.Init(SlotType.Equipments);
         }
 
         public void SendPacket(GamePacket packet)
@@ -66,6 +79,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
         public override void SetPosition(Position pos)
         {
             Position = pos;
+            ActivePran?.SetPosition(pos);
 
             if (AbosoluteDistance(pos.CoordX, Position.CoordX) > 150 || AbosoluteDistance(pos.CoordY, Position.CoordY) > 150)
                 Connection.SendPacket(new UpdatePosition(this, 1));
@@ -80,10 +94,13 @@ namespace AikaEmu.GameServer.Models.CharacterM
             {
                 using (var command = connection.CreateCommand())
                 {
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+
                     command.CommandText =
                         "REPLACE INTO `characters`" +
-                        "(`id`,`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `money`, `hp`, `mp`, `x`, `y`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`, `updated_at`)" +
-                        "VALUES (@id, @acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @money, @hp, @mp, @x, @y, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token, @updated_at)";
+                        "(`id`,`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `money`, `hp`, `mp`, `x`, `y`, `rotation`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`, `updated_at`)" +
+                        "VALUES (@id, @acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @money, @hp, @mp, @x, @y, @rotation, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token, @updated_at)";
 
                     command.Parameters.AddWithValue("@id", Id);
                     command.Parameters.AddWithValue("@acc_id", Account.Id);
@@ -101,6 +118,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     command.Parameters.AddWithValue("@mp", Mp);
                     command.Parameters.AddWithValue("@x", Position.CoordX);
                     command.Parameters.AddWithValue("@y", Position.CoordY);
+                    command.Parameters.AddWithValue("@rotation", Position.Rotation);
                     command.Parameters.AddWithValue("@honor", HonorPoints);
                     command.Parameters.AddWithValue("@pvp", PvpPoints);
                     command.Parameters.AddWithValue("@infamy", InfamyPoints);

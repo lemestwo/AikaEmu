@@ -20,15 +20,16 @@ namespace AikaEmu.GameServer.Models.Unit
 
         public virtual void SetPosition(float x, float y)
         {
-            Position.CoordX = x;
-            Position.CoordY = y;
+            var pos = (Position) Position.Clone();
+            pos.CoordX = x;
+            pos.CoordY = y;
 
-            WorldManager.Instance.ShowVisibleUnits(this);
+            SetPosition(pos);
         }
 
         public virtual void SetPosition(byte world, float x, float y)
         {
-            Position = new Position
+            var pos = new Position
             {
                 NationId = world,
                 CoordX = x,
@@ -36,19 +37,22 @@ namespace AikaEmu.GameServer.Models.Unit
                 Rotation = 0
             };
 
-            WorldManager.Instance.ShowVisibleUnits(this);
+            SetPosition(pos);
         }
 
         public virtual void SetPosition(Position pos)
         {
             Position = pos;
+
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 
         public virtual void SetRotation(int rotation)
         {
-            Position.Rotation = rotation;
-            WorldManager.Instance.ShowVisibleUnits(this);
+            var pos = (Position) Position.Clone();
+            pos.Rotation = rotation;
+
+            SetPosition(pos);
         }
 
         public virtual void Spawn()

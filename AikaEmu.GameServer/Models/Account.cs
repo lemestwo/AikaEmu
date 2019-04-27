@@ -5,6 +5,7 @@ using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Chat;
+using AikaEmu.GameServer.Models.ItemM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -79,6 +80,7 @@ namespace AikaEmu.GameServer.Models
                                 NationId = 1,
                                 CoordX = reader.GetFloat("x"),
                                 CoordY = reader.GetFloat("y"),
+                                Rotation = reader.GetInt16("rotation"),
                             },
                             Attributes = new Attributes(reader.GetUInt16("str"), reader.GetUInt16("agi"), reader.GetUInt16("int"),
                                 reader.GetUInt16("const"), reader.GetUInt16("spi")),
@@ -92,7 +94,7 @@ namespace AikaEmu.GameServer.Models
                             Token = reader.GetString("token"),
                             Account = this
                         };
-                        template.Init();
+                        template.PartialInit();
                         AccCharLobby.Add(template.Slot, template);
                     }
                 }
@@ -104,7 +106,7 @@ namespace AikaEmu.GameServer.Models
         public void CreateCharacter(uint slot, string name, ushort face, ushort hair, bool isRanch)
         {
             var charClass = GetClassByFace(face);
-            if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Professions.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != 1)
+            if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Professions.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != ItemType.Hair)
             {
                 SendCharacterList();
                 return;

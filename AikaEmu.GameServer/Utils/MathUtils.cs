@@ -7,6 +7,7 @@ namespace AikaEmu.GameServer.Utils
     {
         public static Position CalculateNextFollowPosition(float distance, Position position)
         {
+            // BUG - not working properly
             var newPos = (Position) position.Clone();
             newPos.CoordX = distance * (float) Math.Cos(position.Rotation) + position.CoordX;
             newPos.CoordY = distance * (float) Math.Sin(position.Rotation) + position.CoordY;

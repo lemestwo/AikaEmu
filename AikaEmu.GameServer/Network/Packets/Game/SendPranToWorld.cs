@@ -20,18 +20,15 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             stream.Write(_pran.Name, 16);
             // 63 = fire / 73 = water / 83 = air
-            stream.Write((byte) 63); // profession
+            stream.Write((byte) _pran.Class); // profession
             stream.Write(_pran.Food); // food (max is 120)
-            // 0 - cute / 1 - smart
-            // 2 - sexy / 3 - energetic
-            // 4 - tough / 5 - corrupt
-            stream.Write((short) _pran.Personality); // personality
+            stream.Write((short) _pran.Personality); 
             stream.Write(_pran.Devotion); // devotion % (max is 225?)
-
-            stream.Write(_pran.Hp);
+            
             stream.Write(_pran.MaxHp);
-            stream.Write(_pran.Mp);
+            stream.Write(_pran.Hp);
             stream.Write(_pran.MaxMp);
+            stream.Write(_pran.Mp);
             stream.Write(_pran.Experience);
             stream.Write(_pran.DefPhy);
             stream.Write(_pran.DefMag);

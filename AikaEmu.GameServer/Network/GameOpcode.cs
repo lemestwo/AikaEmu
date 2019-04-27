@@ -75,7 +75,7 @@ namespace AikaEmu.GameServer.Network
 		CreateCharacter = 0x2F04,
 		RotationUnit = 0x3005,
 		UnkClientRequest = 0x3006,
-		UseItem = 0x301D,
+		RequestUseItem = 0x301D,
 		RequestTokenResult = 0x309D,
 		MoveUnit = 0x30BF,
 		SetActiveTitle = 0x3061,

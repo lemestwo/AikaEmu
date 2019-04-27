@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Data.JsonModel;
+using AikaEmu.GameServer.Models.ItemM;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data
@@ -20,14 +22,9 @@ namespace AikaEmu.GameServer.Models.Data
                 _items.Add(itemsList.LoopId, itemsList);
         }
 
-        public bool Exists(ushort id)
+        public ItemType GetItemSlot(ushort id)
         {
-            return _items.ContainsKey(id);
-        }
-
-        public ushort GetItemSlot(ushort id)
-        {
-            return _items.ContainsKey(id) ? _items[id].ItemType : ushort.MaxValue;
+            return _items.ContainsKey(id) ? _items[id].ItemType : ItemType.Default;
         }
 
         public ItemsJson GetItemData(ushort id)

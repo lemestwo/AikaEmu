@@ -5,8 +5,8 @@ namespace AikaEmu.GameServer.Managers.Id
     public class IdPranSpawnManager : IdFactory
     {
         private static IdPranSpawnManager _instance;
-        private const uint FirstId = 0x000007D1; // 2001
-        private const uint LastId = 0x00000FFF; // 4095
+        private const uint FirstId = 0x00002800; // 10240
+        private const uint LastId = 0x0000FFFF; // 
         private static readonly uint[] Exclude = { };
         private static readonly string[,] ObjTables = {{ }};
 

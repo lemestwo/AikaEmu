@@ -22,20 +22,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			stream.Write(_isNotice);
 			stream.Write((byte) _item.SlotType);
 			stream.Write(_item.Slot);
-			stream.Write(_item.ItemId);
-			stream.Write(_item.ItemId);
-			stream.Write(_item.Id);
-			stream.Write(_item.Effect1);
-			stream.Write(_item.Effect2);
-			stream.Write(_item.Effect3);
-			stream.Write((byte) (_item.Effect1Value >> 1));
-			stream.Write((byte) (_item.Effect2Value >> 1));
-			stream.Write((byte) (_item.Effect3Value >> 1));
-			stream.Write(_item.Durability);
-			stream.Write(_item.DurMax);
-			stream.Write((byte) (_item.Quantity << 4)); // TODO - << 4 for refinements, without for quantity
-			stream.Write(_item.DisableDurplus);
-			stream.Write(_item.ItemTime);
+			stream.Write(_item);
 
 			return stream;
 		}

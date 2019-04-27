@@ -24,9 +24,9 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			stream.Write(_unit.Position.CoordX);
 			stream.Write(_unit.Position.CoordY);
 			stream.Write(0); // unk
-			stream.Write((ushort) 0); // TODO - rotation
+			stream.Write((ushort) 45); // TODO - rotation
 			stream.Write(_state); // tp = 1 / move = 0 / 4 = fly? / if (& 2 > 0) unique behavior
-			stream.Write((byte) 0); // TODO - Movement Speed (0 for TP)
+			stream.Write((byte) 70); // TODO - Movement Speed (0 for TP)
 
 			stream.Write((byte) 0); // if > 0 replace state in client
 			stream.Write((byte) 0); // data +29

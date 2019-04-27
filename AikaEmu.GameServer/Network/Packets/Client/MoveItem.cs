@@ -14,8 +14,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var slotFrom = stream.ReadUInt16();
 
             Log.Debug("MoveItem, From: {0}/{1} -> {2}/{3}", typeFrom, slotFrom, typeTo, slotTo);
-            if (typeTo == typeFrom && (typeTo == SlotType.Inventory))
-                Connection.ActiveCharacter.Inventory.SwapSameSlotType(typeTo, slotFrom, slotTo);
+
+            Connection.ActiveCharacter.Inventory.SwapItems(typeFrom, typeTo, slotFrom, slotTo);
         }
     }
 }

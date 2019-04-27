@@ -1,3 +1,5 @@
+using AikaEmu.GameServer.Models.ItemM;
+
 namespace AikaEmu.GameServer.Models.Data.JsonModel
 {
     public class ItemsJson
@@ -8,7 +10,7 @@ namespace AikaEmu.GameServer.Models.Data.JsonModel
         public string Description { get; set; }
         public bool IsLootBox { get; set; }
         public uint CaeliumId { get; set; }
-        public ushort ItemType { get; set; }
+        public ItemType ItemType { get; set; }
         public uint HonorCost { get; set; }
         public uint MedalCost { get; set; }
         public uint BuyPrice { get; set; }

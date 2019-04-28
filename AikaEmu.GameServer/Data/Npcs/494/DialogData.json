@@ -1,0 +1,55 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Troca pela Medalha da Coragem",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 1515,
+      "Text": "[Repetição] 25 Medalhas de Honra>1 Medalha da Coragem",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 1516,
+      "Text": "[Repetição] 25 Medalhas do Heroísmo>1 Medalha da Coragem",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 1517,
+      "Text": "[Repetição] 250 Medalhas de Honra>10 Medalhas da Coragem",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 1520,
+      "Text": "[Repetição] 25 Medalhas do Heroísmo>10 Medalhas da Coragem",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

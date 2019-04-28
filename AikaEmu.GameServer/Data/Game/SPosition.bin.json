@@ -5,7 +5,7 @@
     "Coord": [3450, 688],
     "Map": 1,
     "Location": 1,
-    "Unk2": 0,
+    "TpLevel": 0,
     "MapName": "Regenshein",
     "RegionName": "Estrada Central Regenshein"
   }, {
@@ -14,7 +14,7 @@
   "Coord": [3470, 937],
   "Map": 2,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Fazenda Vogels"
 }, {
@@ -23,7 +23,7 @@
   "Coord": [3376, 678],
   "Map": 1,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Regenshein",
   "RegionName": "Portão Frontal"
 }, {
@@ -32,7 +32,7 @@
   "Coord": [3456, 1039],
   "Map": 2,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Moinho Gewand"
 }, {
@@ -41,7 +41,7 @@
   "Coord": [3556, 988],
   "Map": 2,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Moinho da Farinha"
 }, {
@@ -50,7 +50,7 @@
   "Coord": [3648, 1206],
   "Map": 2,
   "Location": 4,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Fazenda Joshua"
 }, {
@@ -59,7 +59,7 @@
   "Coord": [3218, 1448],
   "Map": 2,
   "Location": 5,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Fazenda de Cogumelos 4ª Fragrância"
 }, {
@@ -68,7 +68,7 @@
   "Coord": [3438, 1576],
   "Map": 5,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Amarkand",
   "RegionName": "Posto 9CD"
 }, {
@@ -77,7 +77,7 @@
   "Coord": [3630, 1389],
   "Map": 2,
   "Location": 6,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Fazenda Dichterin"
 }, {
@@ -86,7 +86,7 @@
   "Coord": [3146, 1243],
   "Map": 2,
   "Location": 7,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Verband",
   "RegionName": "Armazém de Burton"
 }, {
@@ -95,7 +95,7 @@
   "Coord": [3240, 3646],
   "Map": 3,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Parque Ursula",
   "RegionName": "Parque Ursula"
 }, {
@@ -104,7 +104,7 @@
   "Coord": [3278, 1647],
   "Map": 5,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Amarkand",
   "RegionName": "Praça Mágica da Água Sagrada"
 }, {
@@ -113,7 +113,7 @@
   "Coord": [2864, 1569],
   "Map": 4,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Estrada Bifurcada Halperin",
   "RegionName": "Posto de Guarda Halperin"
 }, {
@@ -122,7 +122,7 @@
   "Coord": [2678, 2104],
   "Map": 7,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Deserto de Sigmund",
   "RegionName": "Oásis Fitna"
 }, {
@@ -131,7 +131,7 @@
   "Coord": [3759, 1794],
   "Map": 5,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Amarkand",
   "RegionName": "Pca Mágica da Terra Amarela"
 }, {
@@ -140,7 +140,7 @@
   "Coord": [3103, 3446],
   "Map": 6,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Caverna Hekla",
   "RegionName": "Entrada da Caverna Hekla"
 }, {
@@ -149,7 +149,7 @@
   "Coord": [3529, 3478],
   "Map": 6,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Caverna Hekla",
   "RegionName": "Entrada de Evgenia"
 }, {
@@ -158,7 +158,7 @@
   "Coord": [3731, 2159],
   "Map": 5,
   "Location": 4,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Amarkand",
   "RegionName": "Pca Mágica do Sol"
 }, {
@@ -167,7 +167,7 @@
   "Coord": [3271, 2189],
   "Map": 5,
   "Location": 5,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Amarkand",
   "RegionName": "Pca Mágica de Zephyr"
 }, {
@@ -176,7 +176,7 @@
   "Coord": [2210, 1705],
   "Map": 8,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mina L'enfer",
   "RegionName": "Base de Resistência L'enfer"
 }, {
@@ -185,7 +185,7 @@
   "Coord": [2186, 1985],
   "Map": 9,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mt. Hessen",
   "RegionName": "Posto da Árvore Eterna"
 }, {
@@ -194,7 +194,7 @@
   "Coord": [2015, 1906],
   "Map": 9,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mt. Hessen",
   "RegionName": "Base Avançada de Iota"
 }, {
@@ -203,7 +203,7 @@
   "Coord": [1673, 2118],
   "Map": 10,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Basilan",
   "RegionName": "Praça de Basilan"
 }, {
@@ -212,7 +212,7 @@
   "Coord": [1917, 1500],
   "Map": 11,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Área Apicultura Carmo"
 }, {
@@ -221,7 +221,7 @@
   "Coord": [2235, 1221],
   "Map": 11,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Lagoa Sadua"
 }, {
@@ -230,7 +230,7 @@
   "Coord": [2485, 1391],
   "Map": 11,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Estrada do Totem"
 }, {
@@ -239,7 +239,7 @@
   "Coord": [2642, 1395],
   "Map": 12,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Parte de Ashwood",
   "RegionName": "Caverna do Altar"
 }, {
@@ -248,7 +248,7 @@
   "Coord": [2989, 1427],
   "Map": 12,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Parte de Ashwood",
   "RegionName": "Base Avançada Sigma"
 }, {
@@ -257,7 +257,7 @@
   "Coord": [1857, 1083],
   "Map": 11,
   "Location": 4,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Altar da Ascensão"
 }, {
@@ -266,7 +266,7 @@
   "Coord": [2441, 913],
   "Map": 13,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Termes",
   "RegionName": "Campo do Estranho"
 }, {
@@ -275,7 +275,7 @@
   "Coord": [2380, 615],
   "Map": 13,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Termes",
   "RegionName": "Residência Kamuron"
 }, {
@@ -284,7 +284,7 @@
   "Coord": [2682, 684],
   "Map": 13,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Termes",
   "RegionName": "Terra Santa Kamuron"
 }, {
@@ -293,7 +293,7 @@
   "Coord": [2628, 1793],
   "Map": 7,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Deserto de Sigmund",
   "RegionName": "Entrada da Mina L'enfer"
 }, {
@@ -302,7 +302,7 @@
   "Coord": [2962, 2204],
   "Map": 7,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Deserto de Sigmund",
   "RegionName": "Acampamento do grupo de Exploração"
 }, {
@@ -311,7 +311,7 @@
   "Coord": [2254, 1601],
   "Map": 8,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mina L'enfer",
   "RegionName": "Árvore do viajante"
 }, {
@@ -320,7 +320,7 @@
   "Coord": [1823, 1742],
   "Map": 9,
   "Location": 3,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mt. Hessen",
   "RegionName": "Fonte Tynio"
 }, {
@@ -329,7 +329,7 @@
   "Coord": [2195, 2150],
   "Map": 9,
   "Location": 4,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Mt. Hessen",
   "RegionName": "Lugar de recolhimento de caçadores"
 }, {
@@ -338,7 +338,7 @@
   "Coord": [2241, 1394],
   "Map": 11,
   "Location": 5,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Base avan?da Kido"
 }, {
@@ -347,7 +347,7 @@
   "Coord": [2351, 1166],
   "Map": 11,
   "Location": 6,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Ungor",
   "RegionName": "Anantor"
 }, {
@@ -356,7 +356,7 @@
   "Coord": [2978, 648],
   "Map": 13,
   "Location": 4,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Termes",
   "RegionName": "Entrada da Torre Giovanni"
 }, {
@@ -365,7 +365,7 @@
   "Coord": [1189, 3665],
   "Map": 14,
   "Location": 1,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Vale Hama",
   "RegionName": "Lago de Gelo"
 }, {
@@ -374,7 +374,7 @@
   "Coord": [551, 2840],
   "Map": 15,
   "Location": 1,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Mt. Aboel",
   "RegionName": "Caverna Lycan"
 }, {
@@ -383,7 +383,7 @@
   "Coord": [1287, 2805],
   "Map": 16,
   "Location": 1,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Floresta Argent",
   "RegionName": "Solo Sagrado Lenape"
 }, {
@@ -392,7 +392,7 @@
   "Coord": [912, 3638],
   "Map": 17,
   "Location": 1,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Epheso",
   "RegionName": "Posto do Exército"
 }, {
@@ -401,7 +401,7 @@
   "Coord": [1578, 2261],
   "Map": 10,
   "Location": 2,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Basilan",
   "RegionName": "Doca de Basilan"
 }, {
@@ -410,7 +410,7 @@
   "Coord": [937, 1674],
   "Map": 18,
   "Location": 1,
-  "Unk2": 2,
+  "TpLevel": 2,
   "MapName": "Karena",
   "RegionName": "Antal-ya"
 }, {
@@ -419,7 +419,7 @@
   "Coord": [397, 2179],
   "Map": 18,
   "Location": 2,
-  "Unk2": 2,
+  "TpLevel": 2,
   "MapName": "Karena",
   "RegionName": "Merque"
 }, {
@@ -428,7 +428,7 @@
   "Coord": [902, 2167],
   "Map": 18,
   "Location": 3,
-  "Unk2": 2,
+  "TpLevel": 2,
   "MapName": "Karena",
   "RegionName": "Floresta Eldin"
 }, {
@@ -437,7 +437,7 @@
   "Coord": [1897, 3791],
   "Map": 19,
   "Location": 1,
-  "Unk2": 4,
+  "TpLevel": 4,
   "MapName": "Disceroa",
   "RegionName": "Rota A0180"
 }, {
@@ -446,7 +446,7 @@
   "Coord": [1981, 3632],
   "Map": 19,
   "Location": 2,
-  "Unk2": 4,
+  "TpLevel": 4,
   "MapName": "Disceroa",
   "RegionName": "Colônia"
 }, {
@@ -455,7 +455,7 @@
   "Coord": [461, 340],
   "Map": 19,
   "Location": 3,
-  "Unk2": 4,
+  "TpLevel": 4,
   "MapName": "Disceroa",
   "RegionName": "Área do Massacre Elter"
 }, {
@@ -464,7 +464,7 @@
   "Coord": [947, 902],
   "Map": 19,
   "Location": 4,
-  "Unk2": 4,
+  "TpLevel": 4,
   "MapName": "Disceroa",
   "RegionName": "Entrada do Abismo"
 }, {
@@ -473,7 +473,7 @@
   "Coord": [1234, 838],
   "Map": 19,
   "Location": 5,
-  "Unk2": 4,
+  "TpLevel": 4,
   "MapName": "Disceroa",
   "RegionName": "Terra da Lamentação"
 }, {
@@ -482,7 +482,7 @@
   "Coord": [2230, 613],
   "Map": 20,
   "Location": 1,
-  "Unk2": 0,
+  "TpLevel": 0,
   "MapName": "Floresta Zeelant",
   "RegionName": "Posto de Observação do Túnel"
 }, {
@@ -491,7 +491,7 @@
   "Coord": [1202, 3546],
   "Map": 14,
   "Location": 2,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Vale Hama",
   "RegionName": "Zona de Pesca de Leopold"
 }, {
@@ -500,7 +500,7 @@
   "Coord": [1027, 3368],
   "Map": 14,
   "Location": 3,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Vale Hama",
   "RegionName": "Campo do Clã Lahom"
 }, {
@@ -509,7 +509,7 @@
   "Coord": [545, 3027],
   "Map": 15,
   "Location": 2,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Mt. Aboel",
   "RegionName": "Base do Clã Hueron"
 }, {
@@ -518,7 +518,7 @@
   "Coord": [1116, 2961],
   "Map": 16,
   "Location": 2,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Floresta Argent",
   "RegionName": "Campo Argent"
 }, {
@@ -527,7 +527,7 @@
   "Coord": [1416, 2935],
   "Map": 16,
   "Location": 3,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Floresta Argent",
   "RegionName": "Floresta da Oração"
 }, {
@@ -536,7 +536,7 @@
   "Coord": [1217, 2682],
   "Map": 16,
   "Location": 4,
-  "Unk2": 1,
+  "TpLevel": 1,
   "MapName": "Floresta Argent",
   "RegionName": "Floresta do Tributo Silencioso"
 }

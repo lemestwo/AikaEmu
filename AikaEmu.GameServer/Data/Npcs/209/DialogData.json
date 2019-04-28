@@ -1,0 +1,19 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 26,
+      "SubOptionId": 0,
+      "Text": "Entrar na Ranking Dungeon",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Data.JsonModel;

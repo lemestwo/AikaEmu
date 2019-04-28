@@ -1,0 +1,25 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 46,
+      "SubOptionId": 0,
+      "Text": "Habilidade de Guilda",
+      "Unk": 0
+    },
+    {
+      "OptionId": 5,
+      "SubOptionId": 0,
+      "Text": "Loja",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

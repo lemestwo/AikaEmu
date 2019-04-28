@@ -6,6 +6,7 @@ using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.ItemM;
+using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;

@@ -1,3 +1,4 @@
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Data.JsonModel;

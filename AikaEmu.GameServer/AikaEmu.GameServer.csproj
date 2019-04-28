@@ -28,100 +28,7 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
       <None Remove="Database\**" />
-      <None Remove="Data\Character\CharacterConfig.json" />
-      <Content Include="Data\Character\CharacterConfig.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ItemList.bin.json" />
-      <Content Include="Data\Game\ItemList.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\npcpos.bin.json" />
-      <Content Include="Data\Game\npcpos.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\MobPos.bin.json" />
-      <Content Include="Data\Game\MobPos.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\MobEffects.json" />
-      <Content Include="Data\Game\MobEffects.csv.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ExpList.bin.json" />
-      <Content Include="Data\Game\ExpList.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\GearCore.bin.json" />
-      <Content Include="Data\Game\GearCore.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ItemEffect.bin.json" />
-      <Content Include="Data\Game\ItemEffect.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\MakeItems.bin.json" />
-      <Content Include="Data\Game\MakeItems.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Map.bin.json" />
-      <Content Include="Data\Game\Map.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\MN.bin.json" />
-      <Content Include="Data\Game\MN.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ObjPos.bin.json" />
-      <Content Include="Data\Game\ObjPos.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\PranExpList.bin.json" />
-      <Content Include="Data\Game\PranExpList.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Quest.bin.json" />
-      <Content Include="Data\Game\Quest.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Recipe.bin.json" />
-      <Content Include="Data\Game\Recipe.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\RecipeRate.bin.json" />
-      <Content Include="Data\Game\RecipeRate.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Reinforce2.bin.json" />
-      <Content Include="Data\Game\Reinforce2.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Reinforce3.bin.json" />
-      <Content Include="Data\Game\Reinforce3.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ReinforceA.bin.json" />
-      <Content Include="Data\Game\ReinforceA.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\ReinforceW.bin.json" />
-      <Content Include="Data\Game\ReinforceW.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\SetItem.bin.json" />
-      <Content Include="Data\Game\SetItem.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\SkillData.bin.json" />
-      <Content Include="Data\Game\SkillData.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\Title.bin.json" />
-      <Content Include="Data\Game\Title.bin.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <None Remove="Data\Game\SPosition.bin.json" />
-      <Content Include="Data\Game\SPosition.bin.json">
+      <Content Include="Data\**\*">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
@@ -132,6 +39,10 @@
 
     <ItemGroup>
       <EmbeddedResource Remove="Database\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Npcs" />
     </ItemGroup>
 
 </Project>

@@ -81,9 +81,22 @@ namespace AikaEmu.GameServer.Models.CharacterM
             Position = pos;
             ActivePran?.SetPosition(pos);
 
-            if (AbosoluteDistance(pos.CoordX, Position.CoordX) > 150 || AbosoluteDistance(pos.CoordY, Position.CoordY) > 150)
-                Connection.SendPacket(new UpdatePosition(this, 1));
+//            if (AbosoluteDistance(pos.CoordX, Position.CoordX) > 150 || AbosoluteDistance(pos.CoordY, Position.CoordY) > 150)
+//                Connection.SendPacket(new UpdatePosition(this, 1));
 
+            WorldManager.Instance.ShowVisibleUnits(this);
+        }
+
+        public void TeleportTo(float x, float y)
+        {
+            var pos = (Position) Position.Clone();
+            pos.CoordX = x;
+            pos.CoordY = y;
+
+            Position = pos;
+            ActivePran?.SetPosition(pos);
+
+            Connection.SendPacket(new UpdatePosition(this, 1));
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Data.JsonModel;
+using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.Shared.Utils;
 

@@ -13,5 +13,10 @@ namespace AikaEmu.GameServer.Utils
             newPos.CoordY = distance * (float) Math.Sin(position.Rotation) + position.CoordY;
             return newPos;
         }
+
+        public static bool CheckInRange(Position a, Position b, int dist)
+        {
+            return (a.CoordX - b.CoordX) * (a.CoordX - b.CoordX) + (a.CoordY - b.CoordY) * (a.CoordY - b.CoordY) < dist * dist;
+        }
     }
 }

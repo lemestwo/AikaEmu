@@ -136,7 +136,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
             }
 
             var useItem = (IUseItem) Activator.CreateInstance(type);
-            useItem.Init(data);
+            useItem.Init(_character, item, data);
         }
 
         public void SwapItems(SlotType typeFrom, SlotType typeTo, ushort slotFrom, ushort slotTo)

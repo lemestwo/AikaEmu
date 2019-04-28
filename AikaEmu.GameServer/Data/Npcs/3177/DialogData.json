@@ -1,0 +1,37 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 74,
+      "SubOptionId": 0,
+      "Text": "Refinação de Pedras",
+      "Unk": 0
+    },
+    {
+      "OptionId": 76,
+      "SubOptionId": 0,
+      "Text": "Combinação de Pedras",
+      "Unk": 0
+    },
+    {
+      "OptionId": 75,
+      "SubOptionId": 0,
+      "Text": "Encantamento de Pedras",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fecha",
+      "Unk": 0
+    }
+  ]
+}

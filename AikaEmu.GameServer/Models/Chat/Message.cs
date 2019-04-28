@@ -36,7 +36,8 @@ namespace AikaEmu.GameServer.Models.Chat
             stream.Write((byte) _sender);
             stream.Write((byte) _type);
             stream.Write((byte) 0); // unk
-            stream.Write(_message, 128, _type == MessageType.Error);
+            stream.Write(_message, 126, _type == MessageType.Error);
+            stream.Write((short) 0); // 2 empty bytes
             return stream;
         }
     }

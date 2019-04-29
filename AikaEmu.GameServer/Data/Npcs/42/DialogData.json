@@ -1,0 +1,55 @@
+{
+  "NpcId": 0,
+  "SoundId": 7,
+  "SoundType": 1,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 2,
+      "Text": "Data de entrega",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 22,
+      "SubOptionId": 2,
+      "Text": "Aceitar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 21,
+      "SubOptionId": 2,
+      "Text": "Menu",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 2,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

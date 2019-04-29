@@ -1,0 +1,19 @@
+{
+  "NpcId": 0,
+  "SoundId": 903,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

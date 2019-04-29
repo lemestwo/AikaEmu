@@ -33,7 +33,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             }
 
             Connection.SendPacket(new Unk1031());
-            Connection.SendPacket(new Unk303D(character));
+            Connection.SendPacket(new Unk303D(character, 0));
             Connection.SendPacket(new Unk102C());
             // Client -> 3CBE
 
@@ -49,7 +49,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             }
 
 
-            Connection.SendPacket(new Unk303D(character));
+            Connection.SendPacket(new Unk303D(character, 1));
 
             // TODO - Update pran Stone in Bank (84/85)
             Connection.SendPacket(new Unk101F(Connection.Id));
@@ -67,7 +67,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.SendPacket(new InitialUnk2027());
 
             // TODO - Sends quests
-            Connection.SendPacket(new Unk303D(character));
+            Connection.SendPacket(new Unk303D(character, 0));
 
             var nation = new Nation
             {
@@ -84,7 +84,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.SendPacket(new UpdateSiegeInfo());
             Connection.SendPacket(new UpdateReliques());
             Connection.SendPacket(new CurNationInfo(nation));
-
+            Connection.SendPacket(new Unk303D(character, 1));
             Connection.SendPacket(new SendUnitSpawn(character));
             WorldManager.Instance.ShowVisibleUnits(character);
 

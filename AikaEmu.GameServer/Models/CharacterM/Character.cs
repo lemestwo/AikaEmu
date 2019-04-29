@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.ItemM;
+using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
@@ -32,6 +33,9 @@ namespace AikaEmu.GameServer.Models.CharacterM
         public Inventory Inventory { get; private set; }
         public Pran ActivePran { get; private set; }
 
+        public ShopType OpenedShopType { get; set; }
+        public uint OpenedShopNpcConId { get; set; }
+
         public void ActivatePran()
         {
             var item = Inventory.GetItem(SlotType.Equipments, (ushort) ItemType.PranStone);
@@ -49,6 +53,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
             Inventory.Init(SlotType.Inventory);
             Inventory.Init(SlotType.Equipments);
             Inventory.Init(SlotType.Bank);
+            InitBankMoney();
             if (ActivePran != null)
             {
                 Inventory.Init(SlotType.PranInventory);
@@ -100,6 +105,27 @@ namespace AikaEmu.GameServer.Models.CharacterM
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 
+        private void InitBankMoney()
+        {
+            using (var sql = DatabaseManager.Instance.GetConnection())
+            using (var command = sql.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM bank_gold WHERE acc_id=@acc_id";
+                command.Parameters.AddWithValue("@acc_id", Id);
+                command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.Read())
+                    {
+                        BankMoney = 0;
+                        return;
+                    }
+
+                    BankMoney = reader.GetUInt64("gold");
+                }
+            }
+        }
+
         public bool Save()
         {
             using (var connection = DatabaseManager.Instance.GetConnection())
@@ -141,6 +167,19 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     command.Parameters.AddWithValue("@const", Attributes.Constitution);
                     command.Parameters.AddWithValue("@spi", Attributes.Spirit);
                     command.Parameters.AddWithValue("@token", Token);
+                    command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
+                    command.ExecuteNonQuery();
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.Connection = connection;
+                    command.Transaction = transaction;
+
+                    command.CommandText =
+                        "REPLACE INTO `bank_gold` (`acc_id`,`gold`,`updated_at`) VALUES (@acc_id, @gold, @updated_at)";
+                    command.Parameters.AddWithValue("@acc_id", Account.Id);
+                    command.Parameters.AddWithValue("@gold", BankMoney);
                     command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
                     command.ExecuteNonQuery();
                 }

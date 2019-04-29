@@ -1,0 +1,31 @@
+{
+  "NpcId": 0,
+  "SoundId": 811,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 5,
+      "SubOptionId": 0,
+      "Text": "Loja",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 12,
+      "SubOptionId": 0,
+      "Text": "Terminei de ouvir.",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

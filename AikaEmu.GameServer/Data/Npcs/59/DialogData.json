@@ -1,0 +1,49 @@
+{
+  "NpcId": 0,
+  "SoundId": 8,
+  "SoundType": 1,
+  "DialogData": [
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 14,
+      "Text": "Relatando a presença",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 22,
+      "SubOptionId": 14,
+      "Text": "Aceitar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 21,
+      "SubOptionId": 14,
+      "Text": "Menu",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 14,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

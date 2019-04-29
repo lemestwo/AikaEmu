@@ -1,0 +1,43 @@
+{
+  "NpcId": 0,
+  "SoundId": 962,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 5,
+      "SubOptionId": 0,
+      "Text": "Loja",
+      "Unk": 0
+    },
+    {
+      "OptionId": 31,
+      "SubOptionId": 0,
+      "Text": "Consertar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 32,
+      "SubOptionId": 0,
+      "Text": "Consertar tudo",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

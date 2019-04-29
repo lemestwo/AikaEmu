@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AikaEmu.GameServer.Models.Data.Npcs;
+using AikaEmu.GameServer.Models.NpcM.Dialog;
 using AikaEmu.GameServer.Models.Sound;
 using AikaEmu.GameServer.Models.Unit;
 
@@ -28,10 +29,23 @@ namespace AikaEmu.GameServer.Models.NpcM
         public SoundType SoundType { get; set; }
 
         public List<NpcDialogData> DialogList { get; set; }
+        
+        public StoreType StoreType { get; set; }
+        public ushort[] StoreItems { get; set; }
 
         public Npc()
         {
             DialogList = new List<NpcDialogData>();
+        }
+
+        public NpcDialogData GetDialog(DialogType type)
+        {
+            foreach (var dialog in DialogList)
+            {
+                if (dialog.OptionId == type) return dialog;
+            }
+
+            return null;
         }
     }
 }

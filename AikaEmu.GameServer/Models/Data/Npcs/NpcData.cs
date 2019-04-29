@@ -14,6 +14,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
     {
         public NpcSpawnJson NpcSpawnJson { get; set; }
         public NpcDialogJson NpcDialogJson { get; set; }
+        public NpcStoreJson NpcStoreJson { get; set; }
     }
 
     public class NpcData
@@ -43,6 +44,10 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
                                 JsonUtil.DeserializeFile(file, out NpcSpawnJson spawn);
                                 collection.NpcSpawnJson = spawn;
                                 break;
+                            case "StoreData":
+                                JsonUtil.DeserializeFile(file, out NpcStoreJson store);
+                                collection.NpcStoreJson = store;
+                                break;
                         }
                     }
 
@@ -64,8 +69,6 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
 
             foreach (var npc in _npcs.Values)
             {
-                // TODO - Find if npc data is in the client
-                // Hair, BodyTemplate, Hp, Mp
                 var temp = new Npc
                 {
                     Id = IdUnitSpawnManager.Instance.GetNextId(),
@@ -108,6 +111,12 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
                     temp.SoundId = npc.NpcDialogJson.SoundId;
                     temp.SoundType = npc.NpcDialogJson.SoundType;
                     temp.DialogList = npc.NpcDialogJson.DialogData;
+                }
+
+                if (npc.NpcStoreJson != null && npc.NpcStoreJson.Items.Length == 40)
+                {
+                    temp.StoreType = (StoreType) npc.NpcStoreJson.StoreType;
+                    temp.StoreItems = npc.NpcStoreJson.Items;
                 }
 
                 list.Add(temp);

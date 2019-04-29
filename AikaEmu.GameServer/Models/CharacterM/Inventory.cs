@@ -33,6 +33,12 @@ namespace AikaEmu.GameServer.Models.CharacterM
         private readonly Dictionary<SlotType, Item[]> _items;
         private readonly object _lockObject = new object();
 
+        public void SendBankData()
+        {
+            var items = GetItemsBySlotType(SlotType.Bank);
+            _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
+        }
+
         public Inventory(Character character)
         {
             _character = character;
@@ -84,19 +90,21 @@ namespace AikaEmu.GameServer.Models.CharacterM
             return null;
         }
 
-        public void AddItem(SlotType slotType, byte quantity, ushort itemId)
+        public bool AddItem(SlotType slotType, uint quantity, ushort itemId)
         {
             var freeSlot = GetFreeSlot(slotType);
-            if (freeSlot <= 0) return;
+            if (freeSlot <= 0) return false;
 
             var item = new Item(slotType, freeSlot, itemId)
             {
                 Id = IdItemManager.Instance.GetNextId(),
-                Quantity = quantity,
+                Quantity = (byte) quantity,
                 Durability = 100,
             };
             _items[slotType][freeSlot] = item;
             _character.SendPacket(new UpdateItem(item, true));
+
+            return true;
         }
 
         public ushort GetFreeSlot(SlotType slotType)

@@ -61,8 +61,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write("", 18);
             }
 
-            stream.Write((ushort) 0); // unk
-            stream.Write((ushort) 0); // unk
+            stream.Write((byte) 30); // pran quick skill
+            stream.Write((byte) 58); // pran quick skill
+            stream.Write((byte) 75); // pran quick skill
+            stream.Write((byte) 0); // unk
 
             stream.Write(0);
             stream.Write(0);

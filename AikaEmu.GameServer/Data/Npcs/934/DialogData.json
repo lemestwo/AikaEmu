@@ -1,0 +1,67 @@
+{
+  "NpcId": 0,
+  "SoundId": 8,
+  "SoundType": 1,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 823,
+      "Text": "Caverna do Altar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 829,
+      "Text": "Esquema de Limpeza",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 880,
+      "Text": "[Difícil] Vingança em 100 Dias",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 24,
+      "SubOptionId": 823,
+      "Text": "Recompensa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 21,
+      "SubOptionId": 823,
+      "Text": "Menu",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 823,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

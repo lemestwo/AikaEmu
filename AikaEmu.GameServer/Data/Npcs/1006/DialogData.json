@@ -1,0 +1,49 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 3,
+      "SubOptionId": 0,
+      "Text": "Teleporte",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 1,
+      "Text": "Ursula",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 9,
+      "Text": "Basilan[2,500 Golds]",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 53,
+      "Text": "Asteria[Parte Alta]",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 54,
+      "Text": "Asteria[Parte Baixa]",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

@@ -7,18 +7,17 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 {
     public class OpenNpcShop : GamePacket
     {
-        private readonly ShopType _shoptype;
+        private readonly ShopType _shopType;
 
-        public OpenNpcShop(ShopType shoptype)
+        public OpenNpcShop(ShopType shopType)
         {
-            _shoptype = shoptype;
-
+            _shopType = shopType;
             Opcode = (ushort) GameOpcode.OpenNpcShop;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write((uint) _shoptype);
+            stream.Write((uint) _shopType);
             return stream;
         }
     }

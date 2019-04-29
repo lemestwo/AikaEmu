@@ -50,13 +50,9 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         Connection.ActiveCharacter.Inventory.AddItem(SlotType.Inventory, (byte) arg2, arg1);
                         break;
                     case "move":
-                        var newPos = new Position
-                        {
-                            NationId = 1, // TODO
-                            CoordX = Convert.ToSingle(arg1),
-                            CoordY = Convert.ToSingle(arg2)
-                        };
-                        Connection.ActiveCharacter.SetPosition(newPos);
+                        var x = Convert.ToSingle(arg1);
+                        var y = Convert.ToSingle(arg2);
+                        Connection.ActiveCharacter.TeleportTo(x, y);
                         break;
                     case "mobspawn":
                         var temp = new Mob
@@ -95,12 +91,12 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                                 Mp = 2000,
                                 MaxHp = 2000,
                                 MaxMp = 2000,
-                                Name = "Effects "+i,
+                                Name = "Effects " + i,
                                 Position = new Position
                                 {
                                     NationId = 1,
                                     CoordX = Connection.ActiveCharacter.Position.CoordX,
-                                    CoordY = (float)(Connection.ActiveCharacter.Position.CoordY + i),
+                                    CoordY = (float) (Connection.ActiveCharacter.Position.CoordY + i),
                                     Rotation = 0
                                 },
                                 BodyTemplate = new BodyTemplate
@@ -115,6 +111,10 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                             Connection.SendPacket(new SetEffectOnHead(npc.Id, i));
                         }
 
+                        break;
+                    case "openshop":
+                        Connection.ActiveCharacter.OpenedShopType = (ShopType) arg1;
+                        Connection.SendPacket(new OpenNpcShop((ShopType) arg1));
                         break;
                 }
             }

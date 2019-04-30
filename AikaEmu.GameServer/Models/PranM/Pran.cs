@@ -45,7 +45,7 @@ namespace AikaEmu.GameServer.Models.PranM
 
         public override void SetPosition(Position pos)
         {
-            Position = MathUtils.CalculateNextFollowPosition(2, pos);
+            Position = MathUtils.CalculateNextFollowPosition(1, pos);
             SendPacketAround(new UpdatePosition(this, 0));
         }
 
@@ -113,7 +113,7 @@ namespace AikaEmu.GameServer.Models.PranM
                         Chest = reader.GetByte("chest"),
                         Leg = reader.GetByte("leg")
                     };
-                    Position = MathUtils.CalculateNextFollowPosition(2, Account.ActiveCharacter.Position);
+                    Position = MathUtils.CalculateNextFollowPosition(1, Account.ActiveCharacter.Position);
                 }
             }
 

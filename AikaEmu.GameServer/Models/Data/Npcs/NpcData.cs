@@ -1,31 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using AikaEmu.GameServer.Managers.Id;
-using AikaEmu.GameServer.Models.Data.JsonModel;
 using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data.Npcs
 {
-    public class NpcColection
+    public class NpcData : BaseData<NpcColection>
     {
-        public NpcSpawnJson NpcSpawnJson { get; set; }
-        public NpcDialogJson NpcDialogJson { get; set; }
-        public NpcStoreJson NpcStoreJson { get; set; }
-    }
-
-    public class NpcData
-    {
-        private readonly Dictionary<ushort, NpcColection> _npcs;
-        public int Count => _npcs.Count;
-
         public NpcData(string path)
         {
-            _npcs = new Dictionary<ushort, NpcColection>();
-
             try
             {
                 foreach (var dir in Directory.GetDirectories(path))
@@ -53,7 +39,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
 
                     if (collection.NpcSpawnJson?.NpcId > 0)
                     {
-                        _npcs.Add(collection.NpcSpawnJson.NpcId, collection);
+                        Objects.Add(collection.NpcSpawnJson.NpcId, collection);
                     }
                 }
             }
@@ -67,7 +53,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
         {
             var list = new List<Npc>();
 
-            foreach (var npc in _npcs.Values)
+            foreach (var npc in Objects.Values)
             {
                 var temp = new Npc
                 {

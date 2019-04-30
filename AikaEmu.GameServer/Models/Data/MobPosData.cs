@@ -8,24 +8,20 @@ using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data
 {
-    public class MobPosData
+    public class MobPosData : BaseData<MobPosJson>
     {
-        private readonly Dictionary<ushort, MobPosJson> _mobs;
-        public int Count => _mobs.Count;
-
         public MobPosData(string path)
         {
-            _mobs = new Dictionary<ushort, MobPosJson>();
             JsonUtil.DeserializeFile(path, out List<MobPosJson> mobPosData);
             foreach (var mobPos in mobPosData)
-                _mobs.Add(mobPos.LoopId, mobPos);
+                Objects.Add(mobPos.LoopId, mobPos);
         }
-        
+
         public IEnumerable<Mob> GetAllMob()
         {
             var list = new List<Mob>();
 
-            foreach (var mob in _mobs.Values)
+            foreach (var mob in Objects.Values)
             {
                 foreach (var mobI in mob.Position)
                 {

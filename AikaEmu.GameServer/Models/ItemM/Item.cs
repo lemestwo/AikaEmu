@@ -9,7 +9,7 @@ namespace AikaEmu.GameServer.Models.ItemM
 {
     public class Item : BasePacket
     {
-        public uint Id { get; set; } = 0;
+        public uint DbId { get; set; } = 0;
         public ushort ItemId { get; set; } = 0;
         public uint AccId { get; set; }
         public uint CharId { get; set; }
@@ -36,19 +36,20 @@ namespace AikaEmu.GameServer.Models.ItemM
             ItemData = DataManager.Instance.ItemsData.GetItemData(ItemId);
         }
 
-        public Item(SlotType slotType, ushort slot, ushort itemId)
+        public Item(SlotType slotType, ushort slot, ushort itemId, bool loadData = true)
         {
             SlotType = slotType;
             Slot = slot;
             ItemId = itemId;
-            ItemData = DataManager.Instance.ItemsData.GetItemData(ItemId);
+            if (loadData)
+                ItemData = DataManager.Instance.ItemsData.GetItemData(ItemId);
         }
 
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write(ItemId);
             stream.Write(ItemId);
-            stream.Write(Id);
+            stream.Write(DbId);
             stream.Write(Effect1);
             stream.Write(Effect2);
             stream.Write(Effect3);

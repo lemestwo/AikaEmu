@@ -21,6 +21,8 @@ namespace AikaEmu.GameServer.Managers
                 return;
             }
 
+            if (quantity <= 0) return;
+
             var npc = WorldManager.Instance.GetNpc(npcConId);
             if (npc == null) return;
 
@@ -32,11 +34,13 @@ namespace AikaEmu.GameServer.Managers
             if (character.Money < item.BuyPrice * quantity) return;
 
             if (!character.Inventory.AddItem(SlotType.Inventory, quantity, npc.StoreItems[index])) return;
-            
+
             character.SendPacket(new Unk303D(character, 0));
             character.Money -= item.BuyPrice * quantity;
             character.SendPacket(new UpdateCharGold(character));
             character.SendPacket(new Unk303D(character, 1));
+
+            character.Save(PartialSave.Inventory);
         }
 
         public void StartDialog(Character character, uint npcId, DialogType optionId, int unk)

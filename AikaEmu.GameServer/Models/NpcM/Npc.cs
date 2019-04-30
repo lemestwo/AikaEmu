@@ -29,7 +29,7 @@ namespace AikaEmu.GameServer.Models.NpcM
         public SoundType SoundType { get; set; }
 
         public List<NpcDialogData> DialogList { get; set; }
-        
+
         public StoreType StoreType { get; set; }
         public ushort[] StoreItems { get; set; }
 

@@ -7,6 +7,7 @@ using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
+using MySql.Data.MySqlClient;
 using NLog;
 
 namespace AikaEmu.GameServer.Models.CharacterM
@@ -40,7 +41,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
         {
             var item = Inventory.GetItem(SlotType.Equipments, (ushort) ItemType.PranStone);
             if (item == null) return;
-            var pran = new Pran(Account, item.Id);
+            var pran = new Pran(Account, item.DbId);
             if (pran.Load())
             {
                 ActivePran = pran;
@@ -49,22 +50,28 @@ namespace AikaEmu.GameServer.Models.CharacterM
 
         public void Init()
         {
-            Inventory = new Inventory(this);
-            Inventory.Init(SlotType.Inventory);
-            Inventory.Init(SlotType.Equipments);
-            Inventory.Init(SlotType.Bank);
-            InitBankMoney();
-            if (ActivePran != null)
+            using (var connection = DatabaseManager.Instance.GetConnection())
             {
-                Inventory.Init(SlotType.PranInventory);
-                Inventory.Init(SlotType.PranEquipments);
+                Inventory = new Inventory(this);
+                Inventory.Init(connection, SlotType.Inventory);
+                Inventory.Init(connection, SlotType.Equipments);
+                Inventory.Init(connection, SlotType.Bank);
+                InitBankMoney(connection);
+                if (ActivePran != null)
+                {
+                    Inventory.Init(connection, SlotType.PranInventory);
+                    Inventory.Init(connection, SlotType.PranEquipments);
+                }
             }
         }
 
         public void PartialInit()
         {
-            Inventory = new Inventory(this);
-            Inventory.Init(SlotType.Equipments);
+            using (var sql = DatabaseManager.Instance.GetConnection())
+            {
+                Inventory = new Inventory(this);
+                Inventory.Init(sql, SlotType.Equipments);
+            }
         }
 
         public void SendPacket(GamePacket packet)
@@ -105,10 +112,9 @@ namespace AikaEmu.GameServer.Models.CharacterM
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 
-        private void InitBankMoney()
+        private void InitBankMoney(MySqlConnection connection)
         {
-            using (var sql = DatabaseManager.Instance.GetConnection())
-            using (var command = sql.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM bank_gold WHERE acc_id=@acc_id";
                 command.Parameters.AddWithValue("@acc_id", Id);
@@ -126,7 +132,23 @@ namespace AikaEmu.GameServer.Models.CharacterM
             }
         }
 
-        public bool Save()
+        private void SaveBankMoney(MySqlConnection connection, MySqlTransaction transaction)
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                command.CommandText =
+                    "REPLACE INTO `bank_gold` (`acc_id`,`gold`,`updated_at`) VALUES (@acc_id, @gold, @updated_at)";
+                command.Parameters.AddWithValue("@acc_id", Account.Id);
+                command.Parameters.AddWithValue("@gold", BankMoney);
+                command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public bool Save(PartialSave partialSave = PartialSave.All)
         {
             using (var connection = DatabaseManager.Instance.GetConnection())
             using (var transaction = connection.BeginTransaction())
@@ -171,20 +193,22 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     command.ExecuteNonQuery();
                 }
 
-                using (var command = connection.CreateCommand())
+                switch (partialSave)
                 {
-                    command.Connection = connection;
-                    command.Transaction = transaction;
-
-                    command.CommandText =
-                        "REPLACE INTO `bank_gold` (`acc_id`,`gold`,`updated_at`) VALUES (@acc_id, @gold, @updated_at)";
-                    command.Parameters.AddWithValue("@acc_id", Account.Id);
-                    command.Parameters.AddWithValue("@gold", BankMoney);
-                    command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
-                    command.ExecuteNonQuery();
+                    case PartialSave.All:
+                        SaveBankMoney(connection, transaction);
+                        Inventory?.Save(connection, transaction);
+                        break;
+                    case PartialSave.Inventory:
+                        SaveBankMoney(connection, transaction);
+                        Inventory?.Save(connection, transaction);
+                        break;
+                    case PartialSave.OnlyMoney:
+                        SaveBankMoney(connection, transaction);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(partialSave), partialSave, null);
                 }
-
-                Inventory?.Save(connection, transaction);
 
                 try
                 {

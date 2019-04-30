@@ -116,6 +116,9 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         Connection.ActiveCharacter.OpenedShopType = (ShopType) arg1;
                         Connection.SendPacket(new OpenNpcShop((ShopType) arg1));
                         break;
+                    case "quest":
+                        Connection.SendPacket(new SendQuestInfo());
+                        break;
                 }
             }
         }

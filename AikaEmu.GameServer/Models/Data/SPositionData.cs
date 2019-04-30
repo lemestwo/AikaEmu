@@ -12,22 +12,18 @@ namespace AikaEmu.GameServer.Models.Data
         Unk2 = 2,
     }
 
-    public class SPositionData
+    public class SPositionData : BaseData<SPositionJson>
     {
-        private readonly Dictionary<ushort, SPositionJson> _positions;
-        public int Count => _positions.Count;
-
         public SPositionData(string path)
         {
-            _positions = new Dictionary<ushort, SPositionJson>();
             JsonUtil.DeserializeFile(path, out List<SPositionJson> sPositionJson);
             foreach (var pos in sPositionJson)
-                _positions.Add(pos.LoopId, pos);
+                Objects.Add(pos.LoopId, pos);
         }
 
         public (float x, float y) GetPosition(ushort id, TpLevel tpLevel)
         {
-            return _positions.ContainsKey(id) && _positions[id].TpLevel <= tpLevel ? (_positions[id].Coord[0], _positions[id].Coord[1]) : (0, 0);
+            return Objects.ContainsKey(id) && Objects[id].TpLevel <= tpLevel ? (Objects[id].Coord[0], Objects[id].Coord[1]) : (0, 0);
         }
     }
 }

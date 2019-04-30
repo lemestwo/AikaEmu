@@ -31,17 +31,15 @@ namespace AikaEmu.GameServer.Models.CharacterM
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly Character _character;
         private readonly Dictionary<SlotType, Item[]> _items;
+        private const byte MaxStack = 255;
+        private const int MaxMoney = 2_000_000_000; // 2b
+        private readonly List<uint> _removedItems;
         private readonly object _lockObject = new object();
-
-        public void SendBankData()
-        {
-            var items = GetItemsBySlotType(SlotType.Bank);
-            _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
-        }
 
         public Inventory(Character character)
         {
             _character = character;
+            _removedItems = new List<uint>();
 
             _items = new Dictionary<SlotType, Item[]>();
             foreach (SlotType type in Enum.GetValues(typeof(SlotType)))
@@ -69,92 +67,269 @@ namespace AikaEmu.GameServer.Models.CharacterM
             }
         }
 
+        public void MoveMoney(SlotType slotType, long amount)
+        {
+            // TODO - Guild bank use same function?
+            if (slotType != SlotType.Bank) return;
+            if (amount > MaxMoney || amount < MaxMoney * -1 || amount == 0)
+            {
+                // TODO - ERROR MSG TOO MUCH GOLD TRANSFERING
+                return;
+            }
+
+            var isDeposit = amount > 0;
+            lock (_lockObject)
+            {
+                if (isDeposit && _character.Money < (ulong) amount)
+                {
+                    // TODO - ERROR MSG DONT HAVE THAT MUCH MONEY
+                    return;
+                }
+
+                if (!isDeposit && _character.BankMoney < (ulong) (amount * -1))
+                {
+                    // TODO - ERROR MSG DONT HAVE THAT MUCH MONEY
+                    return;
+                }
+
+                _character.Money -= (ulong) amount;
+                _character.BankMoney += (ulong) amount;
+
+                _character.SendPacket(new UpdateCharGold(_character));
+                _character.Save(PartialSave.OnlyMoney);
+            }
+        }
+
+        public void MergeItems(ushort slotFrom, ushort slotTo)
+        {
+            lock (_lockObject)
+            {
+                var itemFrom = GetItem(SlotType.Inventory, slotFrom);
+                var itemTo = GetItem(SlotType.Inventory, slotTo);
+                if (itemFrom == null || itemTo == null || !itemFrom.ItemId.Equals(itemTo.ItemId) || !itemFrom.ItemData.IsLootBox ||
+                    !itemTo.ItemData.IsLootBox) return;
+
+                if (itemFrom.Quantity + itemTo.Quantity > MaxStack)
+                {
+                    SwapItems(SlotType.Inventory, SlotType.Inventory, slotFrom, slotTo);
+                    return;
+                }
+
+                itemTo.Quantity += itemFrom.Quantity;
+                DeleteItem(SlotType.Inventory, slotFrom, false);
+                _items[itemTo.SlotType][itemTo.Slot] = itemTo;
+                _character.SendPacket(new UpdateItem(itemTo, false));
+
+                _character.Save(PartialSave.Inventory);
+            }
+        }
+
+        public void SplitItem(SlotType slotType, ushort slot, uint quantity)
+        {
+            if (quantity >= MaxStack || slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
+
+            lock (_lockObject)
+            {
+                var item = GetItem(slotType, slot);
+                if (!item.ItemData.IsLootBox || item.Quantity <= quantity) return;
+
+                if (AddItem(slotType, quantity, item.ItemId, false))
+                {
+                    item.Quantity -= (byte) quantity;
+                    _items[item.SlotType][item.Slot] = item;
+                    _character.SendPacket(new UpdateItem(item, false));
+                }
+
+                _character.Save(PartialSave.Inventory);
+            }
+        }
+
+        public void SendBankData()
+        {
+            var items = GetItemsBySlotType(SlotType.Bank);
+            _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
+        }
+
+        public void DeleteItem(SlotType slotType, ushort slot, bool save = true)
+        {
+            lock (_lockObject)
+            {
+                if (slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
+
+                var item = GetItem(slotType, slot);
+                if (item == null) return;
+
+                _removedItems.Add(item.DbId);
+                _items[slotType][slot] = null;
+                IdItemManager.Instance.ReleaseId(item.DbId);
+                _character.SendPacket(new UpdateItem(new Item(slotType, slot, 0, false), false));
+
+                if (save)
+                    _character.Save(PartialSave.Inventory);
+            }
+        }
+
         public ConcurrentDictionary<ushort, Item> GetItemsBySlotType(SlotType slot)
         {
-            var list = new ConcurrentDictionary<ushort, Item>();
+            lock (_lockObject)
+            {
+                var list = new ConcurrentDictionary<ushort, Item>();
 
-            foreach (var item in _items[slot])
-                if (item?.ItemId > 0)
-                    list.TryAdd(item.Slot, item);
+                foreach (var item in _items[slot])
+                    if (item?.ItemId > 0)
+                        list.TryAdd(item.Slot, item);
 
-            return list;
+                return list;
+            }
         }
 
         public Item GetItem(SlotType slotType, ushort slot)
         {
-            foreach (var item in _items[slotType])
-            {
-                if (item?.Slot == slot) return item;
-            }
-
-            return null;
-        }
-
-        public bool AddItem(SlotType slotType, uint quantity, ushort itemId)
-        {
-            var freeSlot = GetFreeSlot(slotType);
-            if (freeSlot <= 0) return false;
-
-            var item = new Item(slotType, freeSlot, itemId)
-            {
-                Id = IdItemManager.Instance.GetNextId(),
-                Quantity = (byte) quantity,
-                Durability = 100,
-            };
-            _items[slotType][freeSlot] = item;
-            _character.SendPacket(new UpdateItem(item, true));
-
-            return true;
-        }
-
-        public ushort GetFreeSlot(SlotType slotType)
-        {
-            for (ushort i = 0; i < _items[slotType].Length; i++)
-            {
-                if (_items[slotType][i] == null || _items[slotType][i].ItemId <= 0) return i;
-            }
-
-            return 0;
-        }
-
-        public int GetFreeSlots(SlotType slotType)
-        {
-            var i = 0;
             lock (_lockObject)
             {
-                i += _items[slotType].Count(item => item == null);
-            }
+                foreach (var item in _items[slotType])
+                {
+                    if (item?.Slot == slot) return item;
+                }
 
-            return i;
+                return null;
+            }
+        }
+
+        public bool AddItem(SlotType slotType, uint quantity, ushort itemId, bool isNotice = true)
+        {
+            lock (_lockObject)
+            {
+                var freeSlots = GetFreeSlots(slotType);
+                var itemData = DataManager.Instance.ItemsData.GetItemData(itemId);
+                if (itemData == null) return false;
+
+                // If item is stackable
+                if (itemData.IsLootBox)
+                {
+                    var stacks = Math.DivRem(quantity, MaxStack, out var remainder);
+                    if (remainder != 0) stacks++;
+                    if (stacks <= 0) return false;
+
+                    // TODO - MSG ERROR NOT ENOUGH SPACE
+                    if (freeSlots < stacks) return false;
+                    for (var i = 0; i < stacks; i++)
+                    {
+                        var freeSlot = GetFirstFreeSlot(slotType);
+                        var item = new Item(slotType, freeSlot, itemId)
+                        {
+                            DbId = IdItemManager.Instance.GetNextId(),
+                            Quantity = (byte) (quantity > MaxStack ? MaxStack : quantity),
+                            Durability = (byte) itemData.Durability,
+                            DurMax = (byte) itemData.Durability,
+                        };
+                        quantity -= item.Quantity;
+                        _items[slotType][freeSlot] = item;
+                        _character.SendPacket(new UpdateItem(item, isNotice));
+                    }
+
+                    return true;
+                }
+
+                // If item don't stack
+                // TODO - MSG ERROR NOT ENOUGH SPACE
+                if (freeSlots < quantity) return false;
+
+                for (var i = 0; i < quantity; i++)
+                {
+                    var freeSlot = GetFirstFreeSlot(slotType);
+                    var item = new Item(slotType, freeSlot, itemId)
+                    {
+                        DbId = IdItemManager.Instance.GetNextId(),
+                        Quantity = 0,
+                        Durability = (byte) itemData.Durability,
+                        DurMax = (byte) itemData.Durability,
+                    };
+                    _items[slotType][freeSlot] = item;
+                    _character.SendPacket(new UpdateItem(item, isNotice));
+                }
+
+                return true;
+            }
+        }
+
+        private ushort GetFirstFreeSlot(SlotType slotType)
+        {
+            lock (_lockObject)
+            {
+                var bags = GetBags(slotType);
+                for (ushort i = 0; i < bags * 20; i++)
+                {
+                    if (_items[slotType][i] == null || _items[slotType][i].ItemId <= 0) return i;
+                }
+
+                return 0;
+            }
+        }
+
+        private int GetFreeSlots(SlotType slotType)
+        {
+            lock (_lockObject)
+            {
+                var i = 0;
+                if (slotType == SlotType.Inventory || slotType == SlotType.Bank || slotType == SlotType.PranInventory)
+                {
+                    var bags = GetBags(slotType);
+                    for (ushort j = 0; j < bags * 20; j++)
+                        if (_items[slotType][j] == null || _items[slotType][j].ItemId <= 0)
+                            i++;
+                }
+
+                return i;
+            }
+        }
+
+        private int GetBags(SlotType slotType)
+        {
+            lock (_lockObject)
+            {
+                var bags = 0;
+                if (slotType == SlotType.Inventory || slotType == SlotType.Bank || slotType == SlotType.PranInventory)
+                {
+                    for (var i = 0; i < 4; i++)
+                        if (_items[slotType][80 + i] != null && _items[slotType][80 + i].ItemData.ItemType == ItemType.Bag)
+                            bags++;
+                }
+
+                return bags;
+            }
         }
 
         public void UseItem(SlotType slotType, ushort slot, int data)
         {
-            var item = GetItem(slotType, slot);
-            if (item == null) return;
-
-            var itemType = item.ItemData.ItemType;
-            if (itemType <= 0) return;
-
-            var type = Type.GetType("AikaEmu.GameServer.Models.ItemM.UseItem." + itemType);
-            if (type == null)
+            lock (_lockObject)
             {
-                _log.Error("UseItem {0} not implemented.", itemType);
-                return;
-            }
+                var item = GetItem(slotType, slot);
+                if (item == null) return;
 
-            var useItem = (IUseItem) Activator.CreateInstance(type);
-            useItem.Init(_character, item, data);
+                var itemType = item.ItemData.ItemType;
+                if (itemType <= 0) return;
+
+                var type = Type.GetType("AikaEmu.GameServer.Models.ItemM.UseItem." + itemType);
+                if (type == null)
+                {
+                    _log.Error("UseItem {0} not implemented.", itemType);
+                    return;
+                }
+
+                var useItem = (IUseItem) Activator.CreateInstance(type);
+                useItem.Init(_character, item, data);
+            }
         }
 
         public void SwapItems(SlotType typeFrom, SlotType typeTo, ushort slotFrom, ushort slotTo)
         {
-            var item1 = GetItem(typeFrom, slotFrom);
-            var item2 = GetItem(typeTo, slotTo);
-
-            // TODO - Check if can swap
             lock (_lockObject)
             {
+                var item1 = GetItem(typeFrom, slotFrom);
+                var item2 = GetItem(typeTo, slotTo);
+
+                // TODO - Check if can swap
                 _items[typeFrom][slotFrom] = item2;
                 _items[typeTo][slotTo] = item1;
                 if (item1 != null)
@@ -165,7 +340,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                 }
                 else
                 {
-                    _character.SendPacket(new UpdateItem(new Item(typeTo, slotTo, 0), false));
+                    _character.SendPacket(new UpdateItem(new Item(typeTo, slotTo, 0, false), false));
                 }
 
                 if (item2 != null)
@@ -176,110 +351,94 @@ namespace AikaEmu.GameServer.Models.CharacterM
                 }
                 else
                 {
-                    _character.SendPacket(new UpdateItem(new Item(typeFrom, slotFrom, 0), false));
+                    _character.SendPacket(new UpdateItem(new Item(typeFrom, slotFrom, 0, false), false));
                 }
-            }
 
-            PartialSave();
+                _character.Save(PartialSave.Inventory);
+            }
         }
 
-        public void Init(SlotType slot)
+        public void Init(MySqlConnection connection, SlotType slot)
         {
-            using (var sql = DatabaseManager.Instance.GetConnection())
+            using (var command = connection.CreateCommand())
             {
-                using (var command = sql.CreateCommand())
+                switch (slot)
                 {
-                    if (slot == SlotType.Inventory || slot == SlotType.Equipments)
-                    {
+                    case SlotType.Inventory:
+                    case SlotType.Equipments:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=@char_id";
                         command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
                         command.Parameters.AddWithValue("@char_id", _character.Id);
-                    }
-                    else if (slot == SlotType.Bank)
-                    {
+                        break;
+                    case SlotType.Bank:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=0";
                         command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
-                    }
-                    else if (slot == SlotType.PranInventory || slot == SlotType.PranEquipments)
-                    {
+                        break;
+                    case SlotType.PranInventory:
+                    case SlotType.PranEquipments:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND pran_id=@pran_id";
                         command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
                         command.Parameters.AddWithValue("@pran_id", _character.ActivePran.DbId);
-                    }
+                        break;
+                }
 
-                    command.Prepare();
-                    using (var reader = command.ExecuteReader())
+                command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        var item = new Item(reader.GetUInt16("item_id"))
                         {
-                            var item = new Item(reader.GetUInt16("item_id"))
-                            {
-                                Id = reader.GetUInt32("id"),
-                                AccId = reader.GetUInt32("acc_id"),
-                                CharId = reader.GetUInt32("char_id"),
-                                PranId = reader.GetUInt32("pran_id"),
-                                SlotType = (SlotType) reader.GetByte("slot_type"),
-                                Slot = reader.GetUInt16("slot"),
-                                Effect1 = reader.GetByte("effect1"),
-                                Effect2 = reader.GetByte("effect2"),
-                                Effect3 = reader.GetByte("effect3"),
-                                Effect1Value = reader.GetByte("effect1value"),
-                                Effect2Value = reader.GetByte("effect2value"),
-                                Effect3Value = reader.GetByte("effect3value"),
-                                Durability = reader.GetByte("dur"),
-                                DurMax = reader.GetByte("dur_max"),
-                                Quantity = reader.GetByte("refinement"),
-                                ItemTime = reader.GetUInt16("time")
-                            };
+                            DbId = reader.GetUInt32("id"),
+                            AccId = reader.GetUInt32("acc_id"),
+                            CharId = reader.GetUInt32("char_id"),
+                            PranId = reader.GetUInt32("pran_id"),
+                            SlotType = (SlotType) reader.GetByte("slot_type"),
+                            Slot = reader.GetUInt16("slot"),
+                            Effect1 = reader.GetByte("effect1"),
+                            Effect2 = reader.GetByte("effect2"),
+                            Effect3 = reader.GetByte("effect3"),
+                            Effect1Value = reader.GetByte("effect1value"),
+                            Effect2Value = reader.GetByte("effect2value"),
+                            Effect3Value = reader.GetByte("effect3value"),
+                            Durability = reader.GetByte("dur"),
+                            DurMax = reader.GetByte("dur_max"),
+                            Quantity = reader.GetByte("refinement"),
+                            ItemTime = reader.GetUInt16("time")
+                        };
 
-                            // Check if item exists json data
-                            if (item.ItemData == null) continue;
+                        // Check if item exists json data
+                        if (item.ItemData == null) continue;
 
-                            // Check if in-range of the array
-                            if (item.SlotType == SlotType.Equipments && item.Slot < 16 ||
-                                item.SlotType == SlotType.Inventory && item.Slot < 84 ||
-                                item.SlotType == SlotType.Bank && item.Slot < 86 ||
-                                item.SlotType == SlotType.PranInventory && item.Slot < 42 ||
-                                item.SlotType == SlotType.PranEquipments && item.Slot < 16)
-                            {
-                                _items[item.SlotType][item.Slot] = item;
-                            }
+                        // Check if in-range of the array
+                        if (item.SlotType == SlotType.Equipments && item.Slot < 16 ||
+                            item.SlotType == SlotType.Inventory && item.Slot < 84 ||
+                            item.SlotType == SlotType.Bank && item.Slot < 86 ||
+                            item.SlotType == SlotType.PranInventory && item.Slot < 42 ||
+                            item.SlotType == SlotType.PranEquipments && item.Slot < 16)
+                        {
+                            _items[item.SlotType][item.Slot] = item;
                         }
                     }
                 }
             }
         }
 
-        public void PartialSave()
-        {
-            using (var connection = DatabaseManager.Instance.GetConnection())
-            using (var transaction = connection.BeginTransaction())
-            {
-                Save(connection, transaction);
-                try
-                {
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    _log.Error(e);
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch (Exception exception)
-                    {
-                        _log.Error(exception);
-                        _character.Connection.Close();
-                    }
-
-                    _character.Connection.Close();
-                }
-            }
-        }
-
         public void Save(MySqlConnection connection, MySqlTransaction transaction)
         {
+            if (_removedItems.Count > 0)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "DELETE FROM items WHERE acc_id=@acc_id AND id IN(" + string.Join(",", _removedItems) + ")";
+                    command.Prepare();
+                    command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                    command.ExecuteNonQuery();
+                }
+
+                _removedItems.Clear();
+            }
+
             using (var command = connection.CreateCommand())
             {
                 command.Connection = connection;
@@ -296,7 +455,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                             "(`id`, `item_id`, `char_id`, `acc_id`,`pran_id`,`slot_type`, `slot`, `effect1`, `effect2`, `effect3`, `effect1value`, `effect2value`, `effect3value`, `dur`, `dur_max`, `refinement`, `time`)" +
                             "VALUES (@id, @item_id, @char_id, @acc_id, @pran_id, @slot_type, @slot, @effect1, @effect2, @effect3, @effect1value, @effect2value, @effect3value, @dur, @dur_max, @refinement, @time);";
 
-                        command.Parameters.AddWithValue("@id", item.Id);
+                        command.Parameters.AddWithValue("@id", item.DbId);
                         command.Parameters.AddWithValue("@item_id", item.ItemId);
                         command.Parameters.AddWithValue("@char_id",
                             item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments

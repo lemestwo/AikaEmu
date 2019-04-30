@@ -14,7 +14,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write(0);
-            stream.Write(131200); // always this value?
+            stream.Write(128); // always this value?
             stream.Write(0);
             return stream;
         }

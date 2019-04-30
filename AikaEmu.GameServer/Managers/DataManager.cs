@@ -11,12 +11,14 @@ namespace AikaEmu.GameServer.Managers
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly string _curDir;
         public CharInitialData CharInitial { get; private set; }
+        public ExperienceData ExperienceData { get; set; }
+        public ExperienceData PranExperienceData { get; set; }
         public ItemsData ItemsData { get; private set; }
         public MnData MnData { get; private set; }
         public MobEffectsData MobEffectsData { get; private set; }
-//        public NpcPosData NpcPosData { get; private set; }
         public NpcData NpcData { get; private set; }
         public MobPosData MobPosData { get; private set; }
+        public QuestData QuestData { get; private set; }
         public SPositionData SPositionData { get; private set; }
 
         protected DataManager()
@@ -26,34 +28,35 @@ namespace AikaEmu.GameServer.Managers
 
         public void Init()
         {
-            _log.Info("Loading CharacterConfig...");
             CharInitial = new CharInitialData(GetPath("Character\\CharacterConfig"));
+            _log.Info("Loaded CharacterConfig...");
 
-            _log.Info("Loading ItemList...");
             ItemsData = new ItemsData(GetPath("Game\\ItemList.bin"));
             _log.Info("Loaded {0} items.", ItemsData.Count);
 
-            _log.Info("Loading MN...");
             MnData = new MnData(GetPath("Game\\MN.bin"));
-            _log.Info("Loaded {0} names.", MnData.Count);
+            _log.Info("Loaded {0} monster names.", MnData.Count);
 
-            _log.Info("Loading MobEffects...");
-            MobEffectsData = new MobEffectsData(GetPath("Game\\MobEffects.csv"));
-            _log.Info("Loaded {0} mobs.", MobEffectsData.Count);
-
-            _log.Info("Loading NPCs...");
             NpcData = new NpcData(GetPath("Npcs\\", false));
-            _log.Info("Loaded {0} NPCs.", NpcData.Count);
+            _log.Info("Loaded {0} npcs.", NpcData.Count);
 
-            _log.Info("Loading MobPos...");
+            MobEffectsData = new MobEffectsData(GetPath("Game\\MobEffects.csv"));
+            _log.Info("Loaded {0} mobs effects.", MobEffectsData.Count);
+
             MobPosData = new MobPosData(GetPath("Game\\MobPos.bin"));
             _log.Info("Loaded {0} mobs.", MobPosData.Count);
 
-            _log.Info("Loading SPosition...");
-            SPositionData = new SPositionData(GetPath("Game\\SPosition.bin"));
-            _log.Info("Loaded {0} positions.", SPositionData.Count);
+            QuestData = new QuestData(GetPath("Game\\Quest.bin"));
+            _log.Info("Loaded {0} quests.", QuestData.Count);
 
-            // TODO EXP / PRAN XP
+            SPositionData = new SPositionData(GetPath("Game\\SPosition.bin"));
+            _log.Info("Loaded {0} teleport positions.", SPositionData.Count);
+
+            ExperienceData = new ExperienceData(GetPath("Game\\ExpList.bin"));
+            _log.Info("Loaded {0} levels experience.", ExperienceData.Count);
+            
+            PranExperienceData = new ExperienceData(GetPath("Game\\PranExpList.bin"));
+            _log.Info("Loaded {0} pran levels experience.", PranExperienceData.Count);
         }
 
         private string GetPath(string dir, bool json = true)

@@ -1,5 +1,6 @@
 using System.IO;
 using AikaEmu.GameServer.Models.Data;
+using AikaEmu.GameServer.Models.Data.Mobs;
 using AikaEmu.GameServer.Models.Data.Npcs;
 using AikaEmu.Shared.Utils;
 using NLog;
@@ -15,9 +16,8 @@ namespace AikaEmu.GameServer.Managers
         public ExperienceData PranExperienceData { get; set; }
         public ItemsData ItemsData { get; private set; }
         public MnData MnData { get; private set; }
-        public MobEffectsData MobEffectsData { get; private set; }
         public NpcData NpcData { get; private set; }
-        public MobPosData MobPosData { get; private set; }
+        public MobData MobData { get; private set; }
         public QuestData QuestData { get; private set; }
         public SPositionData SPositionData { get; private set; }
 
@@ -40,11 +40,8 @@ namespace AikaEmu.GameServer.Managers
             NpcData = new NpcData(GetPath("Npcs\\", false));
             _log.Info("Loaded {0} npcs.", NpcData.Count);
 
-            MobEffectsData = new MobEffectsData(GetPath("Game\\MobEffects.csv"));
-            _log.Info("Loaded {0} mobs effects.", MobEffectsData.Count);
-
-            MobPosData = new MobPosData(GetPath("Game\\MobPos.bin"));
-            _log.Info("Loaded {0} mobs.", MobPosData.Count);
+            MobData = new MobData(GetPath("Mobs\\", false));
+            _log.Info("Loaded {0} mobs.", MobData.Count);
 
             QuestData = new QuestData(GetPath("Game\\Quest.bin"));
             _log.Info("Loaded {0} quests.", QuestData.Count);

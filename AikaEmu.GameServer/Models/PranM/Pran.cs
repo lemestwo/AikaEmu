@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Models.PranM
         public byte Food { get; set; }
         public int Devotion { get; set; }
         public Dictionary<Personality, ushort> Personalities { get; }
-        public Professions Class { get; set; }
+        public Profession Class { get; set; }
         public uint Experience { get; set; }
         public short Face { get; set; }
         public short Hair { get; set; }
@@ -90,7 +90,7 @@ namespace AikaEmu.GameServer.Models.PranM
                     Name = reader.GetString("name");
                     Food = reader.GetByte("food");
                     Devotion = reader.GetInt32("devotion");
-                    Class = (Professions) reader.GetInt16("class");
+                    Class = (Profession) reader.GetInt16("class");
                     Personalities[Personality.Cute] = reader.GetUInt16("p_cute");
                     Personalities[Personality.Smart] = reader.GetUInt16("p_smart");
                     Personalities[Personality.Sexy] = reader.GetUInt16("p_sexy");

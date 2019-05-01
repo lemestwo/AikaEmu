@@ -4,7 +4,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
     {
         All,
         Inventory,
-        OnlyMoney
-        
+        OnlyMoney,
+        Quests
     }
 }

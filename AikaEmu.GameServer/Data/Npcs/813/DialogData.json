@@ -28,15 +28,15 @@
       "Unk": 0
     },
     {
-      "OptionId": 8,
-      "SubOptionId": 0,
-      "Text": "Fechar",
-      "Unk": 0
-    },
-    {
       "OptionId": 2,
       "SubOptionId": 0,
       "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
       "Unk": 0
     }
   ]

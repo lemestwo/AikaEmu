@@ -6,10 +6,10 @@ namespace AikaEmu.GameServer.Models.NpcM.Dialog
     public class NpcDialog : GamePacket
     {
         private readonly DialogType _type;
-        private readonly DialogSubType3 _subType;
+        private readonly uint _subType;
         private readonly string _text;
 
-        public NpcDialog(DialogType type, DialogSubType3 subType, string text)
+        public NpcDialog(DialogType type, uint subType, string text)
         {
             _type = type;
             _subType = subType;
@@ -19,7 +19,7 @@ namespace AikaEmu.GameServer.Models.NpcM.Dialog
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write((uint) _type);
-            stream.Write((uint) _subType);
+            stream.Write(_subType);
             stream.Write(_text, 60);
             stream.Write(0);
             stream.Write(-1);

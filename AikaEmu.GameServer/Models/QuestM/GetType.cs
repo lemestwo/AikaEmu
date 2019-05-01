@@ -8,7 +8,7 @@ namespace AikaEmu.GameServer.Models.QuestM
         Class = 5, // Requisite
         Unk6 = 6, // Requisite
         ExperienceGuild = 7, // Reward
-        PreRequisite = 9, // Requisite
+        QuestRequire = 9, // Requisite
         Unk10 = 10, // Requisite - Reward
         ItemChoice = 13, // Reward 
         Experience = 14, // Requirement - Reward

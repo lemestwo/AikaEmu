@@ -66,7 +66,7 @@ namespace AikaEmu.GameServer.Models
                             Id = reader.GetUInt32("id"),
                             Slot = reader.GetUInt32("slot"),
                             Name = reader.GetString("name"),
-                            Professions = (Professions) reader.GetUInt16("class"),
+                            Profession = (Profession) reader.GetUInt16("class"),
                             Level = reader.GetUInt16("level"),
                             BodyTemplate = new BodyTemplate
                             {
@@ -106,7 +106,7 @@ namespace AikaEmu.GameServer.Models
         public void CreateCharacter(uint slot, string name, ushort face, ushort hair, bool isRanch)
         {
             var charClass = GetClassByFace(face);
-            if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Professions.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != ItemType.Hair)
+            if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Profession.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != ItemType.Hair)
             {
                 SendCharacterList();
                 return;
@@ -135,7 +135,7 @@ namespace AikaEmu.GameServer.Models
             {
                 Id = IdCharacterManager.Instance.GetNextId(),
                 Account = this,
-                Professions = charClass,
+                Profession = charClass,
                 Name = name,
                 Position = new Position
                 {
@@ -165,15 +165,15 @@ namespace AikaEmu.GameServer.Models
             SendCharacterList();
         }
 
-        private static Professions GetClassByFace(ushort face)
+        private static Profession GetClassByFace(ushort face)
         {
-            if (face >= 10 && face < 15) return Professions.Warrior;
-            if (face >= 20 && face < 25) return Professions.Paladin;
-            if (face >= 30 && face < 35) return Professions.Rifleman;
-            if (face >= 40 && face < 45) return Professions.DualGunner;
-            if (face >= 50 && face < 55) return Professions.Warlock;
-            if (face >= 60 && face < 65) return Professions.Cleric;
-            return Professions.Undefined;
+            if (face >= 10 && face < 15) return Profession.Warrior;
+            if (face >= 20 && face < 25) return Profession.Paladin;
+            if (face >= 30 && face < 35) return Profession.Rifleman;
+            if (face >= 40 && face < 45) return Profession.DualGunner;
+            if (face >= 50 && face < 55) return Profession.Warlock;
+            if (face >= 60 && face < 65) return Profession.Cleric;
+            return Profession.Undefined;
         }
     }
 }

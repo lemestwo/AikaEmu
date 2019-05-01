@@ -80,44 +80,12 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         };
                         WorldManager.Instance.Spawn(temp);
                         break;
-                    case "testnpc":
-                        for (var i = 0u; i < arg1; i++)
-                        {
-                            var npc = new Npc
-                            {
-                                Id = IdUnitSpawnManager.Instance.GetNextId(),
-                                NpcId = 41,
-                                Hp = 2000,
-                                Mp = 2000,
-                                MaxHp = 2000,
-                                MaxMp = 2000,
-                                Name = "Effects " + i,
-                                Position = new Position
-                                {
-                                    NationId = 1,
-                                    CoordX = Connection.ActiveCharacter.Position.CoordX,
-                                    CoordY = (float) (Connection.ActiveCharacter.Position.CoordY + i),
-                                    Rotation = 0
-                                },
-                                BodyTemplate = new BodyTemplate
-                                {
-                                    Width = 7,
-                                    Chest = 119,
-                                    Leg = 119,
-                                    Body = 219
-                                }
-                            };
-                            Connection.SendPacket(new SendUnitSpawn(npc));
-                            Connection.SendPacket(new SetEffectOnHead(npc.Id, i));
-                        }
-
-                        break;
                     case "openshop":
                         Connection.ActiveCharacter.OpenedShopType = (ShopType) arg1;
                         Connection.SendPacket(new OpenNpcShop((ShopType) arg1));
                         break;
-                    case "quest":
-                        Connection.SendPacket(new SendQuestInfo());
+                    case "effect":
+                        Connection.SendPacket(new SetEffectOnHead(arg1, (EffectType) arg2));
                         break;
                 }
             }

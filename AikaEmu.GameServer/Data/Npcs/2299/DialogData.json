@@ -1,0 +1,43 @@
+{
+  "NpcId": 0,
+  "SoundId": 0,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 0,
+      "Text": "Ir para Regenshein",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    },
+    {
+      "OptionId": 3,
+      "SubOptionId": 23,
+      "Text": "Regenshein",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

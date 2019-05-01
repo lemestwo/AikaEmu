@@ -46,8 +46,8 @@ namespace AikaEmu.GameServer.Managers
             foreach (var npc in DataManager.Instance.NpcData.GetAllNpc())
                 npc.Spawn();
 
-//			foreach (var mob in DataManager.Instance.MobPosData.GetAllMob())
-//				mob.Spawn();
+            foreach (var mob in DataManager.Instance.MobData.GetAllMob())
+                mob.Spawn();
         }
 
         public void Spawn(BaseUnit unit)
@@ -106,13 +106,17 @@ namespace AikaEmu.GameServer.Managers
 
                 foreach (var (_, tempUnit) in character.VisibleUnits)
                 {
-                    if (tempUnit is Mob mob)
+                    switch (tempUnit)
                     {
-                        character.Connection.SendPacket(new SendMobSpawn(mob));
-                    }
-                    else
-                    {
-                        character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+                        case Mob mob:
+                            character.Connection.SendPacket(new SendMobSpawn(mob));
+                            break;
+                        case Npc npc:
+                            character.Connection.SendPacket(new SendUnitSpawn(tempUnit, 0, character));
+                            break;
+                        default:
+                            character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+                            break;
                     }
                 }
             }
@@ -132,13 +136,17 @@ namespace AikaEmu.GameServer.Managers
                 foreach (var unitSpawn in spawnUnits)
                 {
                     var tempUnit = newUnits[unitSpawn];
-                    if (tempUnit is Mob mob)
+                    switch (tempUnit)
                     {
-                        character.Connection.SendPacket(new SendMobSpawn(mob));
-                    }
-                    else
-                    {
-                        character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+                        case Mob mob:
+                            character.Connection.SendPacket(new SendMobSpawn(mob));
+                            break;
+                        case Npc npc:
+                            character.Connection.SendPacket(new SendUnitSpawn(tempUnit, 0, character));
+                            break;
+                        default:
+                            character.Connection.SendPacket(new SendUnitSpawn(tempUnit));
+                            break;
                     }
                 }
 

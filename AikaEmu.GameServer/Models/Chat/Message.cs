@@ -5,16 +5,16 @@ namespace AikaEmu.GameServer.Models.Chat
 {
     public enum MessageSender : byte
     {
-        System = 0x10,
-        Unk1 = 0x20,
+        System = 16,
+        Unk1 = 32,
 
-        Unk2 = 0x04,
+        Unk2 = 4,
     }
 
     public enum MessageType : byte
     {
-        Normal = 0x00,
-        Error = 0x01
+        Normal = 0,
+        Error = 1,
     }
 
     public class Message : BasePacket

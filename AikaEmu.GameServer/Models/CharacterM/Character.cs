@@ -30,13 +30,14 @@ namespace AikaEmu.GameServer.Models.CharacterM
         public string Token { get; set; }
 
         public Attributes Attributes { get; set; }
-        public Professions Professions { get; set; }
+        public Profession Profession { get; set; }
         public Inventory Inventory { get; private set; }
         public Pran ActivePran { get; private set; }
+        public Quests Quests { get; private set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
-
+        
         public void ActivatePran()
         {
             var item = Inventory.GetItem(SlotType.Equipments, (ushort) ItemType.PranStone);
@@ -62,6 +63,9 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     Inventory.Init(connection, SlotType.PranInventory);
                     Inventory.Init(connection, SlotType.PranEquipments);
                 }
+
+                Quests = new Quests(this);
+                Quests.Init(connection);
             }
         }
 
@@ -168,7 +172,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     command.Parameters.AddWithValue("@slot", Slot);
                     command.Parameters.AddWithValue("@name", Name);
                     command.Parameters.AddWithValue("@level", Level);
-                    command.Parameters.AddWithValue("@class", (ushort) Professions);
+                    command.Parameters.AddWithValue("@class", (ushort) Profession);
                     command.Parameters.AddWithValue("@width", BodyTemplate.Width);
                     command.Parameters.AddWithValue("@chest", BodyTemplate.Chest);
                     command.Parameters.AddWithValue("@leg", BodyTemplate.Leg);
@@ -198,6 +202,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                     case PartialSave.All:
                         SaveBankMoney(connection, transaction);
                         Inventory?.Save(connection, transaction);
+                        Quests?.Save(connection, transaction);
                         break;
                     case PartialSave.Inventory:
                         SaveBankMoney(connection, transaction);
@@ -205,6 +210,9 @@ namespace AikaEmu.GameServer.Models.CharacterM
                         break;
                     case PartialSave.OnlyMoney:
                         SaveBankMoney(connection, transaction);
+                        break;
+                    case PartialSave.Quests:
+                        Quests?.Save(connection, transaction);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(partialSave), partialSave, null);

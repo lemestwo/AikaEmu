@@ -5,6 +5,7 @@ using System.Linq;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
+using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.ItemM;
 using AikaEmu.GameServer.Models.PranM;
 using AikaEmu.GameServer.Network.Packets.Game;
@@ -31,8 +32,6 @@ namespace AikaEmu.GameServer.Models.CharacterM
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly Character _character;
         private readonly Dictionary<SlotType, Item[]> _items;
-        private const byte MaxStack = 255;
-        private const int MaxMoney = 2_000_000_000; // 2b
         private readonly List<uint> _removedItems;
         private readonly object _lockObject = new object();
 
@@ -71,9 +70,10 @@ namespace AikaEmu.GameServer.Models.CharacterM
         {
             // TODO - Guild bank use same function?
             if (slotType != SlotType.Bank) return;
-            if (amount > MaxMoney || amount < MaxMoney * -1 || amount == 0)
+            var maxMoney = DataManager.Instance.CharInitial.Data.MaxGold;
+            if (amount > maxMoney || amount < maxMoney * -1 || amount == 0)
             {
-                // TODO - ERROR MSG TOO MUCH GOLD TRANSFERING
+                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
                 return;
             }
 
@@ -82,13 +82,13 @@ namespace AikaEmu.GameServer.Models.CharacterM
             {
                 if (isDeposit && _character.Money < (ulong) amount)
                 {
-                    // TODO - ERROR MSG DONT HAVE THAT MUCH MONEY
+                    _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
                     return;
                 }
 
                 if (!isDeposit && _character.BankMoney < (ulong) (amount * -1))
                 {
-                    // TODO - ERROR MSG DONT HAVE THAT MUCH MONEY
+                    _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
                     return;
                 }
 
@@ -109,7 +109,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                 if (itemFrom == null || itemTo == null || !itemFrom.ItemId.Equals(itemTo.ItemId) || !itemFrom.ItemData.IsLootBox ||
                     !itemTo.ItemData.IsLootBox) return;
 
-                if (itemFrom.Quantity + itemTo.Quantity > MaxStack)
+                if (itemFrom.Quantity + itemTo.Quantity > DataManager.Instance.CharInitial.Data.ItemStack)
                 {
                     SwapItems(SlotType.Inventory, SlotType.Inventory, slotFrom, slotTo);
                     return;
@@ -126,7 +126,8 @@ namespace AikaEmu.GameServer.Models.CharacterM
 
         public void SplitItem(SlotType slotType, ushort slot, uint quantity)
         {
-            if (quantity >= MaxStack || slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
+            if (quantity >= DataManager.Instance.CharInitial.Data.ItemStack ||
+                slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
 
             lock (_lockObject)
             {
@@ -207,7 +208,8 @@ namespace AikaEmu.GameServer.Models.CharacterM
                 // If item is stackable
                 if (itemData.IsLootBox)
                 {
-                    var stacks = Math.DivRem(quantity, MaxStack, out var remainder);
+                    var maxStack = DataManager.Instance.CharInitial.Data.ItemStack;
+                    var stacks = Math.DivRem(quantity, maxStack, out var remainder);
                     if (remainder != 0) stacks++;
                     if (stacks <= 0) return false;
 
@@ -219,7 +221,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
                         var item = new Item(slotType, freeSlot, itemId)
                         {
                             DbId = IdItemManager.Instance.GetNextId(),
-                            Quantity = (byte) (quantity > MaxStack ? MaxStack : quantity),
+                            Quantity = (byte) (quantity > maxStack ? maxStack : quantity),
                             Durability = (byte) itemData.Durability,
                             DurMax = (byte) itemData.Durability,
                         };
@@ -267,7 +269,7 @@ namespace AikaEmu.GameServer.Models.CharacterM
             }
         }
 
-        private int GetFreeSlots(SlotType slotType)
+        public int GetFreeSlots(SlotType slotType)
         {
             lock (_lockObject)
             {

@@ -14,12 +14,14 @@ namespace AikaEmu.GameServer.Network.Packets.Game
     public class SendUnitSpawn : GamePacket
     {
         private readonly BaseUnit _unit;
-        private readonly bool _pran2;
+        private readonly byte _spawnType;
+        private readonly Character _character;
 
-        public SendUnitSpawn(BaseUnit unit, bool pran2 = false)
+        public SendUnitSpawn(BaseUnit unit, byte spawnType = 0, Character character = null)
         {
             _unit = unit;
-            _pran2 = pran2;
+            _spawnType = spawnType;
+            _character = character;
 
             Opcode = (ushort) GameOpcode.SendUnitSpawn;
             SetSenderIdWithUnit(_unit);
@@ -61,7 +63,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(character.Mp); // TODO - MAX
                 stream.Write((byte) 10); // unk - Can go up to 70
                 stream.Write((byte) 61); // unk
-                stream.Write((byte) 1); //spawnType
+                stream.Write(_spawnType); //spawnType
                 stream.Write(character.BodyTemplate.Width);
                 stream.Write(character.BodyTemplate.Chest);
                 stream.Write(character.BodyTemplate.Leg);
@@ -119,12 +121,12 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(npc.MaxHp);
                 stream.Write(npc.MaxMp);
                 stream.Write(npc.Unk); // unk - Can go up to 70
-                stream.Write(npc.SpawnType); // spawnType (pran is usualy 2)
+                stream.Write(_spawnType); // spawnType (pran is usualy 2)
                 stream.Write(npc.BodyTemplate.Width);
                 stream.Write(npc.BodyTemplate.Chest);
                 stream.Write(npc.BodyTemplate.Leg);
                 stream.Write(npc.UnkId); // body?
-                stream.Write(npc.Unk2); // unk
+                stream.Write((ushort) (npc.AvailableQuests(_character)?.Count > 0 ? EffectType.QuestStartGreen : EffectType.Default)); // markOnHead
                 stream.Write((short) 0); // unk
                 stream.Write("", 120); // buffs
                 stream.Write("", 240);
@@ -161,7 +163,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
                 stream.Write((byte) 0); // unk 
                 stream.Write((byte) 61); // unk fixed value
-                stream.Write((byte) (_pran2 ? 1 : 0)); // (pran is usualy 2) spawnType
+                stream.Write(_spawnType); // (pran is usualy 2) spawnType
 
                 stream.Write(pran.BodyTemplate.Width);
                 stream.Write(pran.BodyTemplate.Chest);

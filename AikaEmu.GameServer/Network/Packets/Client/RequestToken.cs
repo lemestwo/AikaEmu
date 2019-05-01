@@ -41,9 +41,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             {
                 var pran = character.ActivePran;
                 pran.Spawn();
-                Connection.SendPacket(new SendUnitSpawn(pran));
-                Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
-                Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+                Connection.SendPacket(new SendUnitSpawn(pran, 2));
+                Connection.SendPacket(new SetEffectOnHead(pran.Id, EffectType.Default));
                 Connection.SendPacket(new UpdatePranExperience(pran));
                 Connection.SendPacket(new SendPranToWorld(pran));
             }
@@ -85,7 +84,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.SendPacket(new UpdateReliques());
             Connection.SendPacket(new CurNationInfo(nation));
             Connection.SendPacket(new Unk303D(character, 1));
-            Connection.SendPacket(new SendUnitSpawn(character));
+            Connection.SendPacket(new SendUnitSpawn(character, 1));
             WorldManager.Instance.ShowVisibleUnits(character);
 
 //            Connection.SendPacket(new SendUnitSpawn(pran, true));

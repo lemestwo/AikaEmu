@@ -29,8 +29,8 @@
     },
     {
       "OptionId": 2,
-      "SubOptionId": 1,
-      "Text": "Domesticação errada",
+      "SubOptionId": 5,
+      "Text": "Companheiro sem retorno",
       "Unk": 0
     },
     {
@@ -40,20 +40,20 @@
       "Unk": 0
     },
     {
-      "OptionId": 22,
-      "SubOptionId": 1,
-      "Text": "Aceitar",
+      "OptionId": 24,
+      "SubOptionId": 5,
+      "Text": "Recompensa",
       "Unk": 0
     },
     {
       "OptionId": 21,
-      "SubOptionId": 1,
+      "SubOptionId": 5,
       "Text": "Menu",
       "Unk": 0
     },
     {
       "OptionId": 8,
-      "SubOptionId": 1,
+      "SubOptionId": 5,
       "Text": "Fechar",
       "Unk": 0
     }

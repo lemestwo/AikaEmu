@@ -25,7 +25,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write(_character.Id);
             stream.Write(_character.Name, 16);
             stream.Write((byte) 2); // nation?
-            stream.Write((ushort) _character.Professions);
+            stream.Write((ushort) _character.Profession);
             stream.Write((byte) 0); // unk
             stream.Write(_character.Attributes);
             stream.Write((ushort) 0); // status?

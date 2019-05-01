@@ -1,7 +1,11 @@
 using System;
 using AikaEmu.GameServer.Models.CharacterM;
+using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.NpcM.Dialog;
+using AikaEmu.GameServer.Models.QuestM;
+using AikaEmu.GameServer.Models.Sound;
+using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.GameServer.Utils;
 using AikaEmu.Shared.Utils;
@@ -43,7 +47,7 @@ namespace AikaEmu.GameServer.Managers
             character.Save(PartialSave.Inventory);
         }
 
-        public void StartDialog(Character character, uint npcId, DialogType optionId, int unk)
+        public void StartDialog(Character character, uint npcId, DialogType optionId, uint subOptionId)
         {
             if (character.OpenedShopType != ShopType.None) return;
 
@@ -59,6 +63,13 @@ namespace AikaEmu.GameServer.Managers
                 character.SendPacket(new PlaySound(npc.SoundId, npc.SoundType));
                 character.SendPacket(new ResetChatOptions());
 
+                var quests = npc.AvailableQuests(character);
+                if (quests.Count > 0)
+                {
+                    var temp = new NpcDialog(DialogType.Quest, 0, $"Mission ({quests.Count})");
+                    character.SendPacket(new SendNpcOption(temp));
+                }
+
                 foreach (var dialog in npc.DialogList)
                 {
                     if (dialog.SubOptionId == 0)
@@ -66,28 +77,70 @@ namespace AikaEmu.GameServer.Managers
                         var temp = new NpcDialog(dialog.OptionId, 0, dialog.Text);
                         character.SendPacket(new SendNpcOption(temp));
                     }
-                    else
+                }
+
+                _log.Debug("OpenedChat, NpcId: {0}, Id: {1}", npc.NpcId, npc.Id);
+            }
+            else if (optionId == DialogType.Talk || optionId == DialogType.Quest || optionId == DialogType.Teleport)
+            {
+                character.SendPacket(new ResetChatOptions());
+                switch (optionId)
+                {
+                    case DialogType.Quest when subOptionId <= 0:
                     {
-                        // TODO - IMPLEMENT SUB TYPE
-                        character.SendPacket(new CloseNpcChat());
+                        var quests = npc.AvailableQuests(character);
+                        foreach (var quest in quests)
+                        {
+                            var temp = new NpcDialog(DialogType.Quest, quest.Id, quest.Name);
+                            character.SendPacket(new SendNpcOption(temp));
+                        }
+
+                        character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.ChatClose, 0, "Close")));
                     }
+                        break;
+                    case DialogType.Quest when subOptionId > 0:
+                    {
+                        var quest = npc.GetQuest((ushort) subOptionId);
+                        if (quest == null)
+                        {
+                            character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.ChatClose, 0, "Close")));
+                            return;
+                        }
+
+                        character.SendPacket(new PlaySound(7, SoundType.BGM));
+                        switch (npc.IsQuestAvailable(quest, character))
+                        {
+                            case QuestState.Available:
+                                character.SendPacket(new NpcStartTalk(quest.StartDialog));
+                                character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.QuestAccept, subOptionId, "Accept")));
+                                break;
+                            case QuestState.OnProgress:
+                                character.SendPacket(new NpcStartTalk(quest.UnfinishedDialog));
+                                break;
+                            case QuestState.Completed:
+                                character.SendPacket(new NpcStartTalk(quest.EndDialog));
+                                character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.QuestReward, subOptionId, "Reward")));
+                                break;
+                        }
+
+                        character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.Quest, 0, "Menu")));
+                        character.SendPacket(new SendNpcOption(new NpcDialog(DialogType.ChatClose, 0, "Close")));
+                    }
+                        break;
+                    case DialogType.Talk:
+                        break;
+                    case DialogType.Teleport:
+                        break;
                 }
             }
             else
             {
-                var dialogInfo = npc.GetDialog(optionId);
+                character.SendPacket(new ResetChatOptions());
                 character.SendPacket(new CloseNpcChat());
-                if (dialogInfo == null) return;
 
                 // TODO - CHECK IF CAN OPEN
                 switch (optionId)
                 {
-                    case DialogType.Talk:
-                        break;
-                    case DialogType.Quest:
-                        break;
-                    case DialogType.Teleport:
-                        break;
                     case DialogType.Store:
                     {
                         if (npc.StoreItems != null && npc.StoreType == StoreType.Normal)
@@ -139,8 +192,29 @@ namespace AikaEmu.GameServer.Managers
                     case DialogType.QuestMenu:
                         break;
                     case DialogType.QuestAccept:
+                    {
+                        var questData = npc.GetQuest((ushort) subOptionId);
+                        if (npc.IsQuestAvailable(questData, character) != QuestState.Available) return;
+
+                        var quest = character.Quests.AddQuest(questData);
+                        if (quest != null)
+                        {
+                            character.SendPacket(new SendMessage(
+                                new Message(MessageSender.System, MessageType.Normal, $"You have accepted the mission '{questData.Name}'"),
+                                GameServer.SystemSenderMsg));
+                            character.SendPacket(new SendQuestInfo(quest));
+                            character.SendPacket(new SetEffectOnHead(npc.Id, EffectType.QuestOngoing));
+                            character.SendPacket(new PlaySound(446, SoundType.BGM));
+                        }
+                    }
                         break;
                     case DialogType.QuestReward:
+                    {
+                        var questData = npc.GetQuest((ushort) subOptionId);
+                        if (npc.IsQuestAvailable(questData, character) != QuestState.Completed) return;
+
+                        character.Quests.AddReward(questData.Id);
+                    }
                         break;
                     case DialogType.SaveLocation:
                         break;

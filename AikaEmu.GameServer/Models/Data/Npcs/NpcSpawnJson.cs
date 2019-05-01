@@ -5,6 +5,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
     public class NpcSpawnJson
     {
         public ushort NpcId { get; set; }
+        public ushort NpcIdX { get; set; }
         public ushort Hair { get; set; }
         public ushort Face { get; set; }
         public ushort Helmet { get; set; }
@@ -28,7 +29,6 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
         public byte Chest { get; set; }
         public byte Leg { get; set; }
         public ushort ConId { get; set; }
-        public short Unk2 { get; set; }
         public List<ushort> Buffs { get; }
         public List<int> Unk3 { get; }
         public string Title { get; set; }

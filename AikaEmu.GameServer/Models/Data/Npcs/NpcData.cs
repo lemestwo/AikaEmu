@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Models.Unit;
@@ -59,6 +61,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
                 {
                     Id = IdUnitSpawnManager.Instance.GetNextId(),
                     NpcId = npc.NpcSpawnJson.NpcId,
+                    NpcIdX = npc.NpcSpawnJson.NpcIdX,
                     Hp = npc.NpcSpawnJson.Hp,
                     Mp = npc.NpcSpawnJson.Mp,
                     MaxHp = npc.NpcSpawnJson.MaxHp,
@@ -88,9 +91,9 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
                     Unk = npc.NpcSpawnJson.Unk,
                     SpawnType = (byte) npc.NpcSpawnJson.SpawnType,
                     UnkId = npc.NpcSpawnJson.ConId,
-                    Unk2 = npc.NpcSpawnJson.Unk2,
                     Title = npc.NpcSpawnJson.Title.Trim(),
-                    Unk3 = npc.NpcSpawnJson.Unk4
+                    Unk3 = npc.NpcSpawnJson.Unk4,
+                    Quests = DataManager.Instance.QuestData.GetQuestByNpc(npc.NpcSpawnJson.NpcIdX),
                 };
                 if (npc.NpcDialogJson != null)
                 {

@@ -51,7 +51,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             stream.Write(character.Name, 16, true);
             stream.Write((ushort) 2); // nationId?
-            stream.Write((ushort) character.Professions);
+            stream.Write((ushort) character.Profession);
             stream.Write(character.BodyTemplate.Width);
             stream.Write(character.BodyTemplate.Chest);
             stream.Write(character.BodyTemplate.Leg);

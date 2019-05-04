@@ -1,0 +1,37 @@
+{
+  "NpcId": 63,
+  "SoundId": 991,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 13,
+      "SubOptionId": 0,
+      "Text": "Sala de Espera da Pran",
+      "Unk": 0
+    },
+    {
+      "OptionId": 2,
+      "SubOptionId": 0,
+      "Text": "Missão",
+      "Unk": 0
+    },
+    {
+      "OptionId": 62,
+      "SubOptionId": 0,
+      "Text": "Melhorar Traje",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

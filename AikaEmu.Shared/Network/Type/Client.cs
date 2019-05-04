@@ -7,7 +7,7 @@ using NLog;
 
 namespace AikaEmu.Shared.Network.Type
 {
-    public class Client : IBaseNetwork
+    public class Client : INetwork
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

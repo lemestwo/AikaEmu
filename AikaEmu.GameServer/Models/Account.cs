@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
-using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Chat;
-using AikaEmu.GameServer.Models.ItemM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Item;
+using AikaEmu.GameServer.Models.Item.Const;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using NLog;
@@ -133,7 +136,6 @@ namespace AikaEmu.GameServer.Models
             var charInitials = configs.GetInitial((ushort) charClass);
             var template = new Character
             {
-                Id = IdCharacterManager.Instance.GetNextId(),
                 Account = this,
                 Profession = charClass,
                 Name = name,
@@ -159,8 +161,7 @@ namespace AikaEmu.GameServer.Models
                 BodyTemplate = new BodyTemplate(charInitials.Body)
             };
 
-            if (template.Save())
-                _log.Info("Character ({0}) {1} created with success.", template.Id, name);
+            template.Id = InsertCharacter(template);
 
             SendCharacterList();
         }
@@ -174,6 +175,59 @@ namespace AikaEmu.GameServer.Models
             if (face >= 50 && face < 55) return Profession.Warlock;
             if (face >= 60 && face < 65) return Profession.Cleric;
             return Profession.Undefined;
+        }
+
+        private uint InsertCharacter(Character character)
+        {
+            using (var connection = DatabaseManager.Instance.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            using (var command = connection.CreateCommand())
+            {
+                try
+                {
+                    command.CommandText =
+                        "INSERT INTO `characters`" +
+                        "(`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `money`, `hp`, `mp`, `x`, `y`, `rotation`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`)" +
+                        "VALUES (@acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @money, @hp, @mp, @x, @y, @rotation, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token)";
+
+                    command.Parameters.AddWithValue("@acc_id", Id);
+                    command.Parameters.AddWithValue("@slot", character.Slot);
+                    command.Parameters.AddWithValue("@name", character.Name);
+                    command.Parameters.AddWithValue("@level", character.Level);
+                    command.Parameters.AddWithValue("@class", (ushort) character.Profession);
+                    command.Parameters.AddWithValue("@width", character.BodyTemplate.Width);
+                    command.Parameters.AddWithValue("@chest", character.BodyTemplate.Chest);
+                    command.Parameters.AddWithValue("@leg", character.BodyTemplate.Leg);
+                    command.Parameters.AddWithValue("@body", character.BodyTemplate.Body);
+                    command.Parameters.AddWithValue("@exp", character.Experience);
+                    command.Parameters.AddWithValue("@money", character.Money);
+                    command.Parameters.AddWithValue("@hp", character.Hp);
+                    command.Parameters.AddWithValue("@mp", character.Mp);
+                    command.Parameters.AddWithValue("@x", character.Position.CoordX);
+                    command.Parameters.AddWithValue("@y", character.Position.CoordY);
+                    command.Parameters.AddWithValue("@rotation", character.Position.Rotation);
+                    command.Parameters.AddWithValue("@honor", character.HonorPoints);
+                    command.Parameters.AddWithValue("@pvp", character.PvpPoints);
+                    command.Parameters.AddWithValue("@infamy", character.InfamyPoints);
+                    command.Parameters.AddWithValue("@str", character.Attributes.Strenght);
+                    command.Parameters.AddWithValue("@agi", character.Attributes.Agility);
+                    command.Parameters.AddWithValue("@int", character.Attributes.Intelligence);
+                    command.Parameters.AddWithValue("@const", character.Attributes.Constitution);
+                    command.Parameters.AddWithValue("@spi", character.Attributes.Spirit);
+                    command.Parameters.AddWithValue("@token", character.Token);
+                    command.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return (uint) command.LastInsertedId;
+                }
+                catch (Exception e)
+                {
+                    _log.Error(e.Message);
+                    Connection.Close();
+                    transaction.Rollback();
+                    return 0;
+                }
+            }
         }
     }
 }

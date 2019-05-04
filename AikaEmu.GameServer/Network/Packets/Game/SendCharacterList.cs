@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.CharacterM;
+using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

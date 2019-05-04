@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using AikaEmu.GameServer.Models.NpcM.Dialog;
 using AikaEmu.GameServer.Models.Sound;
+using AikaEmu.GameServer.Models.Units.Npc.Const;
 
 namespace AikaEmu.GameServer.Models.Data.Npcs
 {

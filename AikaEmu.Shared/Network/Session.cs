@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using AikaEmu.Shared.Model.Network;
-using AikaEmu.Shared.Network.Type;
 using NLog;
 
 namespace AikaEmu.Shared.Network
@@ -13,7 +12,7 @@ namespace AikaEmu.Shared.Network
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        private readonly IBaseNetwork _network;
+        private readonly INetwork _network;
         private readonly Dictionary<string, object> _attributes = new Dictionary<string, object>();
         private readonly SocketAsyncEventArgs _writeEventArg = new SocketAsyncEventArgs();
         private ConcurrentQueue<byte[]> _packetQueue = new ConcurrentQueue<byte[]>();
@@ -25,7 +24,7 @@ namespace AikaEmu.Shared.Network
         public SocketAsyncEventArgs ReadEventArg { get; }
         public IPAddress Ip { get; }
 
-        public Session(IBaseNetwork network, SocketAsyncEventArgs readEventArg, Socket socket)
+        public Session(INetwork network, SocketAsyncEventArgs readEventArg, Socket socket)
         {
             Socket = socket;
             Id = (uint) RemoteEndPoint.GetHashCode();
@@ -66,6 +65,7 @@ namespace AikaEmu.Shared.Network
             _packetQueue.TryDequeue(out var result);
             return result;
         }
+
         private void ProccessPackets()
         {
             lock (Socket)

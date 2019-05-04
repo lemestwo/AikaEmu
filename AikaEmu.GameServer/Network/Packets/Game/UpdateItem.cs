@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Models.ItemM;
+using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

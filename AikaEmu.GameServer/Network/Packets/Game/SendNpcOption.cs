@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Models.NpcM.Dialog;
+using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Network;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;

@@ -1,5 +1,5 @@
+using AikaEmu.GameServer.Controller;
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models.NpcM;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var itemIndex = stream.ReadInt32();
             var quantity = stream.ReadUInt32();
 
-            NpcDialogManager.Instance.BuyFromShop(Connection.ActiveCharacter, npcConId, itemIndex, quantity);
+            NpcInteractionController.BuyFromShop(Connection.ActiveCharacter, npcConId, itemIndex, quantity);
         }
     }
 }

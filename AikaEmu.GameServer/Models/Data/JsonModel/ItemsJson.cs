@@ -1,4 +1,5 @@
-using AikaEmu.GameServer.Models.ItemM;
+using AikaEmu.GameServer.Models.Item;
+using AikaEmu.GameServer.Models.Item.Const;
 
 namespace AikaEmu.GameServer.Models.Data.JsonModel
 {

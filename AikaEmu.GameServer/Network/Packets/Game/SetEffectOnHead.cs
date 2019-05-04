@@ -1,4 +1,5 @@
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

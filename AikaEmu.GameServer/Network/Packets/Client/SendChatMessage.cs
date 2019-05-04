@@ -3,11 +3,12 @@ using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Chat;
-using AikaEmu.GameServer.Models.ItemM;
-using AikaEmu.GameServer.Models.NpcM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Const;
+using AikaEmu.GameServer.Models.Units.Npc;
+using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;
@@ -53,32 +54,6 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         var x = Convert.ToSingle(arg1);
                         var y = Convert.ToSingle(arg2);
                         Connection.ActiveCharacter.TeleportTo(x, y);
-                        break;
-                    case "mobspawn":
-                        var temp = new Mob
-                        {
-                            Id = IdMobSpawnManager.Instance.GetNextId(),
-                            MobId = arg1,
-                            Hp = 2000,
-                            Mp = 2000,
-                            MaxHp = 2000,
-                            MaxMp = 2000,
-                            Name = DataManager.Instance.MnData.GetUnitName(arg1),
-                            Position = new Position
-                            {
-                                NationId = 1,
-                                CoordX = Connection.ActiveCharacter.Position.CoordX + 2.0f,
-                                CoordY = Connection.ActiveCharacter.Position.CoordY + 2.0f
-                            },
-                            BodyTemplate = new BodyTemplate
-                            {
-                                Width = 7,
-                                Chest = 119,
-                                Leg = 119,
-                                Body = 0
-                            }
-                        };
-                        WorldManager.Instance.Spawn(temp);
                         break;
                     case "openshop":
                         Connection.ActiveCharacter.OpenedShopType = (ShopType) arg1;

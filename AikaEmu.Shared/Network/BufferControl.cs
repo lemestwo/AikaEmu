@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace AikaEmu.Shared.Network
@@ -13,10 +12,10 @@ namespace AikaEmu.Shared.Network
 
         private byte[] _buffer;
 
-        public BufferControl(int lBytes, int lBuffer)
+        public BufferControl(int byteLenght, int bufferLenght)
         {
-            _byteLenght = lBytes;
-            _bufferLenght = lBuffer;
+            _byteLenght = byteLenght;
+            _bufferLenght = bufferLenght;
 
             _freeIndexPool = new ConcurrentStack<int>();
             _posIndex = 0;

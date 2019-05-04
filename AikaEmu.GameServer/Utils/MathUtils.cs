@@ -1,5 +1,5 @@
 using System;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
 
 namespace AikaEmu.GameServer.Utils
 {

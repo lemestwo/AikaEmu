@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Id;
-using AikaEmu.GameServer.Models.NpcM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Npc;
+using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data.Npcs

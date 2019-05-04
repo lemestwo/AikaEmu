@@ -1,19 +1,11 @@
+using System.Collections.Concurrent;
 using AikaEmu.GameServer.Utils;
+using AikaEmu.Shared.Model;
+using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Managers.Id
 {
-    public class IdMobSpawnManager: IdFactory
+    public class IdMobSpawnManager : IdFactory<IdMobSpawnManager>
     {
-        private static IdMobSpawnManager _instance;
-        private const uint FirstId = 0x00000FFF; // 4095
-        private const uint LastId = 0x000027FF; // 10239
-        private static readonly uint[] Exclude = { };
-        private static readonly string[,] ObjTables = {{ }};
-
-        public static IdMobSpawnManager Instance => _instance ?? (_instance = new IdMobSpawnManager());
-
-        public IdMobSpawnManager() : base("IdMobSpawnManager", FirstId, LastId, ObjTables, Exclude)
-        {
-        }
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AikaEmu.GameServer.Models.Data.JsonModel;
-using AikaEmu.GameServer.Models.Unit;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data

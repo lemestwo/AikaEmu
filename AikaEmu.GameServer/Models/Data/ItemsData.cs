@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AikaEmu.GameServer.Models.CharacterM;
 using AikaEmu.GameServer.Models.Data.JsonModel;
-using AikaEmu.GameServer.Models.ItemM;
+using AikaEmu.GameServer.Models.Item;
+using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data

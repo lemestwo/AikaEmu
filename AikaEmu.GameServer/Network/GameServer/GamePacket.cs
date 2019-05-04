@@ -1,9 +1,10 @@
 using System;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.CharacterM;
-using AikaEmu.GameServer.Models.NpcM;
-using AikaEmu.GameServer.Models.PranM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Mob;
+using AikaEmu.GameServer.Models.Units.Npc;
+using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 using AikaEmu.Shared.Network.Encryption;

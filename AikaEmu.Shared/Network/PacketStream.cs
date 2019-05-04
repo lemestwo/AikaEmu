@@ -13,17 +13,17 @@ namespace AikaEmu.Shared.Network
 
         private const int DefaultSize = 128;
 
-        private Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
+        private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
 
-        #endregion // Data
+        #endregion
 
         #region Properties
 
         public byte[] Buffer { get; private set; }
         public int Count { get; private set; }
         public int Pos { get; set; }
-        public bool IsLittleEndian { get; set; }
-        private EndianBitConverter Converter => (IsLittleEndian ? EndianBitConverter.Little : (EndianBitConverter) EndianBitConverter.Big);
+        private bool IsLittleEndian { get; }
+        private EndianBitConverter Converter => IsLittleEndian ? EndianBitConverter.Little : (EndianBitConverter) EndianBitConverter.Big;
 
         #endregion
 
@@ -35,17 +35,17 @@ namespace AikaEmu.Shared.Network
             get => Buffer[index];
         }
 
-        public static explicit operator PacketStream(byte[] o)
+        public static explicit operator PacketStream(byte[] bytes)
         {
-            return new PacketStream(o);
+            return new PacketStream(bytes);
         }
 
-        public static implicit operator byte[](PacketStream o)
+        public static implicit operator byte[](PacketStream stream)
         {
-            return o.GetBytes();
+            return stream.GetBytes();
         }
 
-        #endregion // Operators & Casts
+        #endregion
 
         #region Constructor
 
@@ -59,19 +59,13 @@ namespace AikaEmu.Shared.Network
             Reserve(count);
         }
 
-        public PacketStream(PacketStream sourcePacketStream)
-        {
-            IsLittleEndian = sourcePacketStream.IsLittleEndian;
-            Replace(sourcePacketStream);
-        }
-
-        public PacketStream(byte[] sourcebytes)
+        public PacketStream(byte[] bytes)
         {
             IsLittleEndian = true;
-            Replace(sourcebytes);
+            Replace(bytes);
         }
 
-        #endregion // Constructor
+        #endregion
 
         #region Replace
 
@@ -159,13 +153,13 @@ namespace AikaEmu.Shared.Network
             return temp;
         }
 
-        #endregion // GetBytes
+        #endregion
 
-        #region Write Primitive Types
+        #region Write Types
 
         public PacketStream Write(bool value, bool isInt = false)
         {
-            return isInt ? Write(value ? 1 : 0) : Write(value ? (byte) 0x01 : (byte) 0x00);
+            return isInt ? Write(value ? 1 : 0) : Write(value ? (byte) 1 : (byte) 0);
         }
 
         public PacketStream Write(byte value)
@@ -179,23 +173,6 @@ namespace AikaEmu.Shared.Network
             if (appendSize)
                 Write((ushort) (value.Length + 2));
             return Insert(Count, value);
-        }
-
-        public PacketStream Write(sbyte value)
-        {
-            return Write((byte) value);
-        }
-
-        public PacketStream Write(char value)
-        {
-            return Write(Converter.GetBytes(value));
-        }
-
-        public PacketStream Write(char[] value)
-        {
-            foreach (var ch in value)
-                Write(ch);
-            return this;
         }
 
         public PacketStream Write(short value)
@@ -233,11 +210,6 @@ namespace AikaEmu.Shared.Network
             return Write(Converter.GetBytes(value));
         }
 
-        public PacketStream Write(double value)
-        {
-            return Write(Converter.GetBytes(value));
-        }
-
         public PacketStream WriteCc(int count)
         {
             var buff = new byte[count];
@@ -246,10 +218,6 @@ namespace AikaEmu.Shared.Network
 
             return Write(buff);
         }
-
-        #endregion // Write Primitive Types
-
-        #region Write Complex Types
 
         public PacketStream Write(BasePacket value)
         {
@@ -260,10 +228,6 @@ namespace AikaEmu.Shared.Network
         {
             return Write(value.GetBytes(), appendSize);
         }
-
-        #endregion // Write Complex Types
-
-        #region Write String Types
 
         public PacketStream Write(string value, int count, bool fillCc = false)
         {
@@ -283,7 +247,7 @@ namespace AikaEmu.Shared.Network
 
         #endregion
 
-        #region Read Primitive Types
+        #region Read Types
 
         public bool ReadBoolean()
         {
@@ -305,29 +269,6 @@ namespace AikaEmu.Shared.Network
             var result = new byte[count];
             System.Buffer.BlockCopy(Buffer, Pos, result, 0, count);
             Pos += count;
-            return result;
-        }
-
-        public char ReadChar()
-        {
-            if (Pos + 2 > Count)
-                throw new Exception();
-
-            var result = Converter.ToChar(Buffer, Pos);
-            Pos += 2;
-
-            return result;
-        }
-
-        public char[] ReadChars(int count)
-        {
-            if (Pos + 2 * count > Count)
-                throw new Exception();
-
-            var result = new char[count];
-            for (var i = 0; i < count; i++)
-                result[i] = ReadChar();
-
             return result;
         }
 
@@ -418,10 +359,6 @@ namespace AikaEmu.Shared.Network
 
             return result;
         }
-
-        #endregion // Read Primitive Types
-
-        #region Read Strings
 
         public string ReadString(int size)
         {

@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Models.QuestM;
+using AikaEmu.GameServer.Models.Quest;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -37,9 +37,9 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write((byte) 0);
 
             foreach (var requireType2 in _quest.QuestData.Requires)
-                stream.Write((byte) requireType2.Quantity2);
+                stream.Write((short) requireType2.Quantity2);
             for (var i = 0; i < 5 - _quest.QuestData.Requires.Count; i++)
-                stream.Write((byte) 0);
+                stream.Write((short) 0);
 
             stream.Write(_quest.IsCompleted);
             stream.Write(_isOld);

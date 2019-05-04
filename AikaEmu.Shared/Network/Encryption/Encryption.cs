@@ -13,7 +13,7 @@ namespace AikaEmu.Shared.Network.Encryption
             var rnd = new Random();
             data[3] = (byte) rnd.Next(0, 255);
             var pos = EncDecKeys[(data[3] & 0xFF) * 2];
-            while (i < (size >> 2))
+            while (i < size >> 2)
             {
                 uint key = EncDecKeys[(pos & 0xFF) * 2 + 1];
                 var buffer = BitConverter.ToUInt32(data, p);
@@ -60,7 +60,7 @@ namespace AikaEmu.Shared.Network.Encryption
             var sum1 = 0u;
             var sum2 = 0u;
             var i = 1;
-            while (i < (size >> 2))
+            while (i < size >> 2)
             {
                 uint key = EncDecKeys[(pos & 0xFF) * 2 + 1];
                 var buffer = BitConverter.ToUInt32(data, p);

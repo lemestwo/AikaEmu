@@ -2,10 +2,11 @@ using System;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.CharacterM;
-using AikaEmu.GameServer.Models.NpcM;
-using AikaEmu.GameServer.Models.PranM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Const;
+using AikaEmu.GameServer.Models.Units.Npc;
+using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

@@ -35,19 +35,16 @@ namespace AikaEmu.GameServer
 
             // Managers
             AppConfigManager.Instance.Init();
+            DatabaseManager.Instance.Init(AppConfigManager.Instance.GameServerConfig.Database);
             DataManager.Instance.Init();
-            DatabaseManager.Instance.Init();
 
             // IdFactory
-            IdCharacterManager.Instance.Init();
             IdConnectionManager.Instance.Init();
-            IdItemManager.Instance.Init();
-            IdUnitSpawnManager.Instance.Init();
-            IdMobSpawnManager.Instance.Init();
-            IdPranSpawnManager.Instance.Init();
+            IdUnitSpawnManager.Instance.Init(3000);
+            IdMobSpawnManager.Instance.Init(5000);
 
             // Spawn
-            WorldManager.InitBasicSpawn();
+            WorldManager.Instance.InitBasicSpawn();
 
             // GameServer Setup
             var cNetwork = AppConfigManager.Instance.GameServerConfig.Network;

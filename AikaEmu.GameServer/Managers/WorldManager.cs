@@ -4,10 +4,11 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.CharacterM;
-using AikaEmu.GameServer.Models.NpcM;
-using AikaEmu.GameServer.Models.PranM;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Mob;
+using AikaEmu.GameServer.Models.Units.Npc;
+using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Utils;
 using NLog;
@@ -31,17 +32,27 @@ namespace AikaEmu.GameServer.Managers
             _prans = new ConcurrentDictionary<uint, Pran>();
         }
 
-        public Npc GetNpc(uint npcId)
+        public Npc GetNpc(uint conId)
         {
-            return _npcs.ContainsKey(npcId) ? _npcs[npcId] : null;
+            return _npcs.ContainsKey(conId) ? _npcs[conId] : null;
         }
 
-        public List<Character> GetOnlineCharacters()
+        public Npc GetNpc(ushort npcId)
+        {
+            foreach (var (_, value) in _npcs)
+            {
+                if (value.NpcId == npcId) return value;
+            }
+
+            return null;
+        }
+
+        public IEnumerable<Character> GetOnlineCharacters()
         {
             return _characters.Values.ToList();
         }
 
-        public static void InitBasicSpawn()
+        public void InitBasicSpawn()
         {
             foreach (var npc in DataManager.Instance.NpcData.GetAllNpc())
                 npc.Spawn();
@@ -159,7 +170,6 @@ namespace AikaEmu.GameServer.Managers
             var list = new Dictionary<uint, BaseUnit>();
 
             // TODO - Make distance 100 configurable
-            // will get erros if more than 16k online
             foreach (var character in _characters.Values)
             {
                 if (character.IsAround(pos, 70) && character.Id != myId) list.Add(character.Id, character);

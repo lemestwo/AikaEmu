@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using AikaEmu.GameServer.Managers.Id;
-using AikaEmu.GameServer.Models.Unit;
+using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Units.Mob;
 using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data.Mobs

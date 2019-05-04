@@ -1,5 +1,6 @@
+using AikaEmu.GameServer.Controller;
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models.NpcM.Dialog;
+using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -13,7 +14,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var chatOption = (DialogType) stream.ReadUInt32();
             var subChatOption = stream.ReadUInt32();
 
-            NpcDialogManager.Instance.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
+            NpcInteractionController.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
         }
     }
 }

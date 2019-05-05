@@ -4,24 +4,24 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Game
 {
-	public class UpdateAttributes : GamePacket
-	{
-		private readonly Attributes _attr;
+    public class UpdateAttributes : GamePacket
+    {
+        private readonly Character _character;
 
-		public UpdateAttributes(Attributes attr)
-		{
-			_attr = attr;
+        public UpdateAttributes(Character character)
+        {
+            _character = character;
 
-			Opcode = (ushort) GameOpcode.UpdateAttributes;
-		}
+            Opcode = (ushort) GameOpcode.UpdateAttributes;
+        }
 
-		public override PacketStream Write(PacketStream stream)
-		{
-			stream.Write(_attr);
-			stream.Write((ushort) 0);
-			stream.Write((ushort) 10); // attr point
-			stream.Write((ushort) 20); // skill point
-			return stream;
-		}
-	}
+        public override PacketStream Write(PacketStream stream)
+        {
+            stream.Write(_character.Attributes);
+            stream.Write((ushort) 0);
+            stream.Write(_character.AttrPoints); // attr point
+            stream.Write(_character.SkillPoints); // skill point
+            return stream;
+        }
+    }
 }

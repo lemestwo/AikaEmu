@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var itemIndex = stream.ReadInt32();
             var quantity = stream.ReadUInt32();
 
-            NpcInteractionController.BuyFromShop(Connection.ActiveCharacter, npcConId, itemIndex, quantity);
+            NpcDialogController.BuyFromShop(Connection.ActiveCharacter, npcConId, itemIndex, quantity);
         }
     }
 }

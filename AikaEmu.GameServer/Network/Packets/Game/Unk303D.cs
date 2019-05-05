@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             _type = type;
             Opcode = (ushort) GameOpcode.Unk303D;
-            SenderId = character.ConnectionId;
+            SenderId = character.Connection.Id;
         }
 
         public override PacketStream Write(PacketStream stream)

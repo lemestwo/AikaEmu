@@ -9,7 +9,7 @@ namespace AikaEmu.GameServer.Models.Data.JsonModel
         public string ItemName { get; set; }
         public string ItemName2 { get; set; }
         public string Description { get; set; }
-        public bool IsLootBox { get; set; }
+        public bool IsStackable { get; set; }
         public uint CaeliumId { get; set; }
         public ItemType ItemType { get; set; }
         public uint HonorCost { get; set; }

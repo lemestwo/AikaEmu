@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Data.JsonModel;
 using AikaEmu.GameServer.Network.Packets.Game;
+using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;
 
 namespace AikaEmu.GameServer.Models.Units.Character
 {
-    public class Quests
+    public class Quests : ISaveData
     {
         private readonly Dictionary<ushort, Quest.Quest> _quests;
         private readonly Character _character;
@@ -150,7 +151,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             }
 
             if (modXp > 0 || modMoney > 0)
-                _character.SendPacketAll(new SendXpGoldAnimation(_character.ConnectionId, modXp, modMoney));
+                _character.SendPacketAll(new SendXpGoldAnimation(_character.Connection.Id, modXp, modMoney));
             _quests[questId].IsDone = true;
             _character.SendPacket(new RemoveQuestInfo(questId));
         }
@@ -190,30 +191,21 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public void Save(MySqlConnection connection, MySqlTransaction transaction)
         {
-            using (var command = connection.CreateCommand())
+            foreach (var quest in _quests.Values)
             {
-                command.Connection = connection;
-                command.Transaction = transaction;
-
-                foreach (var quest in _quests.Values)
+                var parameters = new Dictionary<string, object>
                 {
-                    command.CommandText =
-                        "REPLACE INTO `character_quests`" +
-                        "(`char_id`, `quest_id`, `req_1`, `req_2`, `req_3`, `req_4`, `req_5`, `is_done`,`updated_at`)" +
-                        "VALUES (@char_id, @quest_id, @req_1, @req_2, @req_3, @req_4, @req_5, @is_done, @updated_at);";
-
-                    command.Parameters.AddWithValue("@char_id", _character.Id);
-                    command.Parameters.AddWithValue("@quest_id", quest.Id);
-                    command.Parameters.AddWithValue("@req_1", quest.Completed[0]);
-                    command.Parameters.AddWithValue("@req_2", quest.Completed[1]);
-                    command.Parameters.AddWithValue("@req_3", quest.Completed[2]);
-                    command.Parameters.AddWithValue("@req_4", quest.Completed[3]);
-                    command.Parameters.AddWithValue("@req_5", quest.Completed[4]);
-                    command.Parameters.AddWithValue("@is_done", quest.IsDone);
-                    command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
-                    command.ExecuteNonQuery();
-                    command.Parameters.Clear();
-                }
+                    {"char_id", _character.Id},
+                    {"quest_id", quest.Id},
+                    {"req_1", quest.Completed[0]},
+                    {"req_2", quest.Completed[1]},
+                    {"req_3", quest.Completed[2]},
+                    {"req_4", quest.Completed[3]},
+                    {"req_5", quest.Completed[4]},
+                    {"is_done", quest.IsDone},
+                    {"updated_at", DateTime.UtcNow}
+                };
+                DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "character_quests", parameters, connection, transaction);
             }
         }
     }

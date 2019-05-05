@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			_acc = acc;
 
 			Opcode = (ushort) GameOpcode.UpdateAccountLevel;
-			SenderId = acc.ConnectionId;
+			SenderId = acc.Connection.Id;
 		}
 
 		public override PacketStream Write(PacketStream stream)

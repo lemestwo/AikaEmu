@@ -14,7 +14,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var chatOption = (DialogType) stream.ReadUInt32();
             var subChatOption = stream.ReadUInt32();
 
-            NpcInteractionController.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
+            NpcDialogController.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
         }
     }
 }

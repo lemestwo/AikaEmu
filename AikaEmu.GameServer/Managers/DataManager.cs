@@ -19,6 +19,7 @@ namespace AikaEmu.GameServer.Managers
         public NpcData NpcData { get; private set; }
         public MobData MobData { get; private set; }
         public QuestData QuestData { get; private set; }
+        public SkillDataData SkillData { get; set; }
         public SPositionData SPositionData { get; private set; }
 
         protected DataManager()
@@ -46,12 +47,15 @@ namespace AikaEmu.GameServer.Managers
             QuestData = new QuestData(GetPath("Game\\Quest.bin"));
             _log.Info("Loaded {0} quests.", QuestData.Count);
 
+            SkillData = new SkillDataData(GetPath("Game\\SkillData.bin"));
+            _log.Info("Loaded {0} skills.", SkillData.Count);
+
             SPositionData = new SPositionData(GetPath("Game\\SPosition.bin"));
             _log.Info("Loaded {0} teleport positions.", SPositionData.Count);
 
             ExperienceData = new ExperienceData(GetPath("Game\\ExpList.bin"));
             _log.Info("Loaded {0} levels experience.", ExperienceData.Count);
-            
+
             PranExperienceData = new ExperienceData(GetPath("Game\\PranExpList.bin"));
             _log.Info("Loaded {0} pran levels experience.", PranExperienceData.Count);
         }

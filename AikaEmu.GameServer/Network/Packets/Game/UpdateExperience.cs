@@ -14,7 +14,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			_character = character;
 
 			Opcode = (ushort) GameOpcode.UpdateExperience;
-			SenderId = character.ConnectionId;
+			SenderId = character.Connection.Id;
 		}
 
 		public override PacketStream Write(PacketStream stream)

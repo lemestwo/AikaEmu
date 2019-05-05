@@ -1,13 +1,13 @@
 using System;
+using System.Collections.Generic;
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
-using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
+using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;
 using NLog;
 
@@ -19,12 +19,13 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public Account Account { get; set; }
         public GameConnection Connection => Account.Connection;
-        public ushort ConnectionId => Connection.Account.ConnectionId;
 
-        public uint Slot { get; set; }
+        public byte Slot { get; set; }
         public ulong Money { get; set; }
         public ulong BankMoney { get; set; }
         public ulong Experience { get; set; }
+        public ushort SkillPoints { get; set; }
+        public ushort AttrPoints { get; set; }
         public int HonorPoints { get; set; }
         public int PvpPoints { get; set; }
         public int InfamyPoints { get; set; }
@@ -35,10 +36,11 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Inventory Inventory { get; private set; }
         public Pran.Pran ActivePran { get; private set; }
         public Quests Quests { get; private set; }
+        public Skills Skills { get; set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
-        
+
         public void ActivatePran()
         {
             var item = Inventory.GetItem(SlotType.Equipments, (ushort) ItemType.PranStone);
@@ -54,11 +56,11 @@ namespace AikaEmu.GameServer.Models.Units.Character
         {
             using (var connection = DatabaseManager.Instance.GetConnection())
             {
+                BankMoney = InitBankMoney(connection);
                 Inventory = new Inventory(this);
                 Inventory.Init(connection, SlotType.Inventory);
                 Inventory.Init(connection, SlotType.Equipments);
                 Inventory.Init(connection, SlotType.Bank);
-                InitBankMoney(connection);
                 if (ActivePran != null)
                 {
                     Inventory.Init(connection, SlotType.PranInventory);
@@ -67,15 +69,17 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
                 Quests = new Quests(this);
                 Quests.Init(connection);
+                Skills = new Skills(this);
+                Skills.Init(connection);
             }
         }
 
         public void PartialInit()
         {
-            using (var sql = DatabaseManager.Instance.GetConnection())
+            using (var connection = DatabaseManager.Instance.GetConnection())
             {
                 Inventory = new Inventory(this);
-                Inventory.Init(sql, SlotType.Equipments);
+                Inventory.Init(connection, SlotType.Equipments);
             }
         }
 
@@ -98,9 +102,6 @@ namespace AikaEmu.GameServer.Models.Units.Character
             Position = pos;
             ActivePran?.SetPosition(pos);
 
-//            if (AbosoluteDistance(pos.CoordX, Position.CoordX) > 150 || AbosoluteDistance(pos.CoordY, Position.CoordY) > 150)
-//                Connection.SendPacket(new UpdatePosition(this, 1));
-
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 
@@ -117,125 +118,103 @@ namespace AikaEmu.GameServer.Models.Units.Character
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 
-        private void InitBankMoney(MySqlConnection connection)
+        private ulong InitBankMoney(MySqlConnection connection)
         {
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM bank_gold WHERE acc_id=@acc_id";
-                command.Parameters.AddWithValue("@acc_id", Id);
+                command.Parameters.AddWithValue("@acc_id", Account.Id);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
-                    if (!reader.Read())
-                    {
-                        BankMoney = 0;
-                        return;
-                    }
-
-                    BankMoney = reader.GetUInt64("gold");
+                    return !reader.Read() ? 0 : reader.GetUInt64("gold");
                 }
             }
         }
 
         private void SaveBankMoney(MySqlConnection connection, MySqlTransaction transaction)
         {
-            using (var command = connection.CreateCommand())
+            var parameters = new Dictionary<string, object>
             {
-                command.Connection = connection;
-                command.Transaction = transaction;
-
-                command.CommandText =
-                    "REPLACE INTO `bank_gold` (`acc_id`,`gold`,`updated_at`) VALUES (@acc_id, @gold, @updated_at)";
-                command.Parameters.AddWithValue("@acc_id", Account.Id);
-                command.Parameters.AddWithValue("@gold", BankMoney);
-                command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
-                command.ExecuteNonQuery();
-            }
+                {"acc_id", Account.Id},
+                {"gold", BankMoney},
+                {"updated_at", DateTime.UtcNow}
+            };
+            DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "bank_gold", parameters, connection, transaction);
         }
 
-        public bool Save(PartialSave partialSave = PartialSave.All)
+        public bool Save(SaveType saveType = SaveType.All)
         {
             using (var connection = DatabaseManager.Instance.GetConnection())
             using (var transaction = connection.BeginTransaction())
             {
-                using (var command = connection.CreateCommand())
-                {
-                    command.Connection = connection;
-                    command.Transaction = transaction;
-
-                    command.CommandText =
-                        "REPLACE INTO `characters`" +
-                        "(`id`,`acc_id`, `slot`, `name`, `level`, `class`, `width`, `chest`, `leg`, `body`, `exp`, `money`, `hp`, `mp`, `x`, `y`, `rotation`, `honor_point`, `pvp_point`, `infamy_point`, `str`, `agi`, `int`, `const`, `spi`, `token`, `updated_at`)" +
-                        "VALUES (@id, @acc_id, @slot, @name, @level, @class, @width, @chest, @leg, @body, @exp, @money, @hp, @mp, @x, @y, @rotation, @honor, @pvp, @infamy, @str, @agi, @int, @const, @spi, @token, @updated_at)";
-
-                    command.Parameters.AddWithValue("@id", Id);
-                    command.Parameters.AddWithValue("@acc_id", Account.Id);
-                    command.Parameters.AddWithValue("@slot", Slot);
-                    command.Parameters.AddWithValue("@name", Name);
-                    command.Parameters.AddWithValue("@level", Level);
-                    command.Parameters.AddWithValue("@class", (ushort) Profession);
-                    command.Parameters.AddWithValue("@width", BodyTemplate.Width);
-                    command.Parameters.AddWithValue("@chest", BodyTemplate.Chest);
-                    command.Parameters.AddWithValue("@leg", BodyTemplate.Leg);
-                    command.Parameters.AddWithValue("@body", BodyTemplate.Body);
-                    command.Parameters.AddWithValue("@exp", Experience);
-                    command.Parameters.AddWithValue("@money", Money);
-                    command.Parameters.AddWithValue("@hp", Hp);
-                    command.Parameters.AddWithValue("@mp", Mp);
-                    command.Parameters.AddWithValue("@x", Position.CoordX);
-                    command.Parameters.AddWithValue("@y", Position.CoordY);
-                    command.Parameters.AddWithValue("@rotation", Position.Rotation);
-                    command.Parameters.AddWithValue("@honor", HonorPoints);
-                    command.Parameters.AddWithValue("@pvp", PvpPoints);
-                    command.Parameters.AddWithValue("@infamy", InfamyPoints);
-                    command.Parameters.AddWithValue("@str", Attributes.Strenght);
-                    command.Parameters.AddWithValue("@agi", Attributes.Agility);
-                    command.Parameters.AddWithValue("@int", Attributes.Intelligence);
-                    command.Parameters.AddWithValue("@const", Attributes.Constitution);
-                    command.Parameters.AddWithValue("@spi", Attributes.Spirit);
-                    command.Parameters.AddWithValue("@token", Token);
-                    command.Parameters.AddWithValue("@updated_at", DateTime.UtcNow);
-                    command.ExecuteNonQuery();
-                }
-
-                switch (partialSave)
-                {
-                    case PartialSave.All:
-                        SaveBankMoney(connection, transaction);
-                        Inventory?.Save(connection, transaction);
-                        Quests?.Save(connection, transaction);
-                        break;
-                    case PartialSave.Inventory:
-                        SaveBankMoney(connection, transaction);
-                        Inventory?.Save(connection, transaction);
-                        break;
-                    case PartialSave.OnlyMoney:
-                        SaveBankMoney(connection, transaction);
-                        break;
-                    case PartialSave.Quests:
-                        Quests?.Save(connection, transaction);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(partialSave), partialSave, null);
-                }
-
                 try
                 {
+                    var parameters = new Dictionary<string, object>
+                    {
+                        {"id", Id},
+                        {"acc_id", Account.Id},
+                        {"slot", Slot},
+                        {"name", Name},
+                        {"level", Level},
+                        {"class", (ushort) Profession},
+                        {"width", BodyTemplate.Width},
+                        {"chest", BodyTemplate.Chest},
+                        {"leg", BodyTemplate.Leg},
+                        {"body", BodyTemplate.Body},
+                        {"exp", Experience},
+                        {"money", Money},
+                        {"skill_points", SkillPoints},
+                        {"attr_points", AttrPoints},
+                        {"hp", Hp},
+                        {"mp", Mp},
+                        {"x", Position.CoordX},
+                        {"y", Position.CoordY},
+                        {"rotation", Position.Rotation},
+                        {"honor_point", HonorPoints},
+                        {"pvp_point", PvpPoints},
+                        {"infamy_point", InfamyPoints},
+                        {"str", Attributes.Strenght},
+                        {"agi", Attributes.Agility},
+                        {"int", Attributes.Intelligence},
+                        {"const", Attributes.Constitution},
+                        {"spi", Attributes.Spirit},
+                        {"token", Token},
+                        {"updated_at", DateTime.UtcNow}
+                    };
+                    DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "characters", parameters, connection, transaction);
+
+                    SaveBankMoney(connection, transaction);
+                    switch (saveType)
+                    {
+                        case SaveType.All:
+                            Inventory?.Save(connection, transaction);
+                            Quests?.Save(connection, transaction);
+                            Skills?.Save(connection, transaction);
+                            break;
+                        case SaveType.Inventory:
+                            Inventory?.Save(connection, transaction);
+                            break;
+                        case SaveType.Quests:
+                            Quests?.Save(connection, transaction);
+                            break;
+                        case SaveType.OnlyCharacter:
+                            break;
+                        case SaveType.Skills:
+                            Skills?.Save(connection, transaction);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(saveType), saveType, null);
+                    }
+
                     transaction.Commit();
                     return true;
                 }
                 catch (Exception e)
                 {
                     _log.Error(e);
-                    try
-                    {
-                        transaction.Rollback();
-                    }
-                    catch (Exception exception)
-                    {
-                        _log.Error(exception);
-                    }
-
+                    transaction.Rollback();
+                    Connection?.Close();
                     return false;
                 }
             }

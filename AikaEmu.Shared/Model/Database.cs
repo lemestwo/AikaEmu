@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using AikaEmu.Shared.Model.Configuration;
@@ -36,7 +37,8 @@ namespace AikaEmu.Shared.Model
             return connection;
         }
 
-        protected uint InsertCommand(string tableName, Dictionary<string, object> args, MySqlConnection connection, MySqlTransaction transaction = null)
+        public uint MySqlCommand(SqlCommandType sqlCommandType, string tableName, Dictionary<string, object> args, MySqlConnection connection,
+            MySqlTransaction transaction = null)
         {
             var columns = new StringBuilder();
             var values = new StringBuilder();
@@ -46,7 +48,20 @@ namespace AikaEmu.Shared.Model
                 values.AppendFormat("@{0}, ", key);
             }
 
-            var commandText = $"INSERT INTO `{tableName}`({columns.ToString().Trim(' ', ',')}) VALUES ({values.ToString().Trim(' ', ',')});";
+            string sqlQuery;
+            switch (sqlCommandType)
+            {
+                case SqlCommandType.Insert:
+                    sqlQuery = "INSERT";
+                    break;
+                case SqlCommandType.Replace:
+                    sqlQuery = "REPLACE";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(sqlCommandType), sqlCommandType, null);
+            }
+
+            var commandText = $"{sqlQuery} INTO `{tableName}`({columns.ToString().Trim(' ', ',')}) VALUES ({values.ToString().Trim(' ', ',')});";
             var command = new MySqlCommand(commandText, connection, transaction);
             foreach (var (key, value) in args)
                 command.Parameters.AddWithValue("@" + key, value);

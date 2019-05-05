@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
-            var charSlot = stream.ReadUInt16();
+            var charSlot = (byte) stream.ReadUInt16();
             var tokenStage = stream.ReadUInt16();
             var token = stream.ReadString(4);
             var token2 = stream.ReadString(4); // right one
@@ -59,7 +59,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.SendPacket(new SendToWorld(character));
 
             Connection.SendPacket(new UpdateStatus());
-            Connection.SendPacket(new UpdateAttributes(character.Attributes));
+            Connection.SendPacket(new UpdateAttributes(character));
             Connection.SendPacket(new UpdateExperience(character));
 
             Connection.SendPacket(new Unk1C41(character.Account));
@@ -93,7 +93,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             Connection.SendPacket(new ApplyBuff(0));
             Connection.SendPacket(new UpdateHpMp(character));
-            Connection.SendPacket(new UpdateAttributes(character.Attributes));
+            Connection.SendPacket(new UpdateAttributes(character));
             Connection.SendPacket(new UpdateHpMp(character));
             Connection.SendPacket(new UpdateStatus());
             // UpdateStoreItems npc 2053 ????

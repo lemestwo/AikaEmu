@@ -59,7 +59,7 @@ namespace AikaEmu.GameServer.Network.GameServer
 			switch (unit)
 			{
 				case Character character:
-					SenderId = character.ConnectionId;
+					SenderId = character.Connection.Id;
 					break;
 				case Npc npc:
 					SenderId = (ushort) npc.Id;

@@ -10,7 +10,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 		public UnkTitleLink(Character character)
 		{
 			Opcode = (ushort) GameOpcode.UnkTitleLink;
-			SenderId = character.ConnectionId;
+			SenderId = character.Connection.Id;
 		}
 
 		public override PacketStream Write(PacketStream stream)

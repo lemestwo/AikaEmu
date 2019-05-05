@@ -94,7 +94,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 _character.BankMoney += (ulong) amount;
 
                 _character.SendPacket(new UpdateCharGold(_character));
-                _character.Save(PartialSave.OnlyMoney);
+                _character.Save(SaveType.OnlyCharacter);
             }
         }
 
@@ -104,8 +104,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
             {
                 var itemFrom = GetItem(SlotType.Inventory, slotFrom);
                 var itemTo = GetItem(SlotType.Inventory, slotTo);
-                if (itemFrom == null || itemTo == null || !itemFrom.ItemId.Equals(itemTo.ItemId) || !itemFrom.ItemData.IsLootBox ||
-                    !itemTo.ItemData.IsLootBox) return;
+                if (itemFrom == null || itemTo == null || !itemFrom.ItemId.Equals(itemTo.ItemId) || !itemFrom.ItemData.IsStackable ||
+                    !itemTo.ItemData.IsStackable) return;
 
                 if (itemFrom.Quantity + itemTo.Quantity > DataManager.Instance.CharInitial.Data.ItemStack)
                 {
@@ -118,7 +118,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 _items[itemTo.SlotType][itemTo.Slot] = itemTo;
                 _character.SendPacket(new UpdateItem(itemTo, false));
 
-                _character.Save(PartialSave.Inventory);
+                _character.Save(SaveType.Inventory);
             }
         }
 
@@ -130,7 +130,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             lock (_lockObject)
             {
                 var item = GetItem(slotType, slot);
-                if (!item.ItemData.IsLootBox || item.Quantity <= quantity) return;
+                if (!item.ItemData.IsStackable || item.Quantity <= quantity) return;
 
                 if (AddItem(slotType, quantity, item.ItemId, false))
                 {
@@ -139,7 +139,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     _character.SendPacket(new UpdateItem(item, false));
                 }
 
-                _character.Save(PartialSave.Inventory);
+                _character.Save(SaveType.Inventory);
             }
         }
 
@@ -163,7 +163,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 _character.SendPacket(new UpdateItem(new Item.Item(slotType, slot, 0, false), false));
 
                 if (save)
-                    _character.Save(PartialSave.Inventory);
+                    _character.Save(SaveType.Inventory);
             }
         }
 
@@ -204,7 +204,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 if (itemData == null) return false;
 
                 // If item is stackable
-                if (itemData.IsLootBox)
+                if (itemData.IsStackable)
                 {
                     var maxStack = DataManager.Instance.CharInitial.Data.ItemStack;
                     var stacks = Math.DivRem(quantity, maxStack, out var remainder);
@@ -225,7 +225,6 @@ namespace AikaEmu.GameServer.Models.Units.Character
                         quantity -= item.Quantity;
                         newItems.Add(item);
                         _items[slotType][freeSlot] = item;
-                        
                     }
                 }
                 else
@@ -360,7 +359,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     _character.SendPacket(new UpdateItem(new Item.Item(typeFrom, slotFrom, 0, false), false));
                 }
 
-                _character.Save(PartialSave.Inventory);
+                _character.Save(SaveType.Inventory);
             }
         }
 

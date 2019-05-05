@@ -21,7 +21,7 @@ namespace AikaEmu.GameServer.Managers
                 return false;
             }
 
-            _accounts.Add(account.ConnectionId, account);
+            _accounts.Add(account.Connection.Id, account);
             return true;
         }
 

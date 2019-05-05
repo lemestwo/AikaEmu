@@ -8,7 +8,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
         protected override void Read(PacketStream stream)
         {
             var accId = stream.ReadUInt32();
-            var slot = stream.ReadUInt32();
+            var slot = (byte) stream.ReadUInt32();
             var name = stream.ReadString(16);
             var face = stream.ReadUInt16();
             var hair = stream.ReadUInt16();

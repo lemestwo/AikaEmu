@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             _pran = pran;
             Opcode = (ushort) GameOpcode.SendPranToWorld;
-            SenderId = pran.Account.ConnectionId;
+            SenderId = pran.Account.Connection.Id;
         }
 
         public override PacketStream Write(PacketStream stream)

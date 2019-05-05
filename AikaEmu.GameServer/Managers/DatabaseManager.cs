@@ -1,13 +1,76 @@
 using System;
 using System.Collections.Generic;
+using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Item;
+using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Character.Const;
+using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.Shared.Model;
+using MySql.Data.MySqlClient;
 
 namespace AikaEmu.GameServer.Managers
 {
     public class DatabaseManager : Database<DatabaseManager>
     {
+        public Dictionary<byte, Character> GetCharactersFromAccount(Account account)
+        {
+            var dictionary = new Dictionary<byte, Character>();
+
+            using (var sql = GetConnection())
+            using (var command = sql.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM characters WHERE acc_id=@acc_id";
+                command.Parameters.AddWithValue("@acc_id", account.Id);
+                command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var template = new Character
+                        {
+                            Id = reader.GetUInt32("id"),
+                            Slot = reader.GetByte("slot"),
+                            Name = reader.GetString("name"),
+                            Profession = (Profession) reader.GetUInt16("class"),
+                            Level = reader.GetUInt16("level"),
+                            SkillPoints = reader.GetUInt16("skill_points"),
+                            AttrPoints = reader.GetUInt16("attr_points"),
+                            BodyTemplate = new BodyTemplate
+                            {
+                                Width = reader.GetByte("width"),
+                                Chest = reader.GetByte("chest"),
+                                Leg = reader.GetByte("leg"),
+                                Body = reader.GetByte("body"),
+                            },
+                            Position = new Position
+                            {
+                                NationId = 1,
+                                CoordX = reader.GetFloat("x"),
+                                CoordY = reader.GetFloat("y"),
+                                Rotation = reader.GetInt16("rotation"),
+                            },
+                            Attributes = new Attributes(reader.GetUInt16("str"), reader.GetUInt16("agi"), reader.GetUInt16("int"),
+                                reader.GetUInt16("const"), reader.GetUInt16("spi")),
+                            Experience = reader.GetUInt64("exp"),
+                            Money = reader.GetUInt64("money"),
+                            HonorPoints = reader.GetInt32("honor_point"),
+                            PvpPoints = reader.GetInt32("pvp_point"),
+                            InfamyPoints = reader.GetInt32("infamy_point"),
+                            Hp = reader.GetInt32("hp"),
+                            Mp = reader.GetInt32("mp"),
+                            Token = reader.GetString("token"),
+                            Account = account
+                        };
+                        template.PartialInit();
+                        dictionary.Add(template.Slot, template);
+                    }
+                }
+            }
+
+            return dictionary;
+        }
+
         public List<Item> AddItemInventory(List<Item> items, Character character)
         {
             using (var connection = GetConnection())
@@ -17,7 +80,7 @@ namespace AikaEmu.GameServer.Managers
                 {
                     foreach (var item in items)
                     {
-                        var parametters = new Dictionary<string, object>
+                        var parameters = new Dictionary<string, object>
                         {
                             {"item_id", item.ItemId},
                             {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? character.Id : 0},
@@ -39,7 +102,7 @@ namespace AikaEmu.GameServer.Managers
                             {"refinement", item.Quantity},
                             {"time", item.ItemTime}
                         };
-                        item.DbId = InsertCommand("items", parametters, connection, transaction);
+                        item.DbId = MySqlCommand(SqlCommandType.Insert, "items", parameters, connection, transaction);
                     }
 
                     transaction.Commit();
@@ -53,6 +116,60 @@ namespace AikaEmu.GameServer.Managers
             }
 
             return items;
+        }
+
+        public bool AddNewCharacter(Character character, Account account)
+        {
+            using (var connection = GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    var parameters = new Dictionary<string, object>
+                    {
+                        {"acc_id", account.Id},
+                        {"slot", character.Slot},
+                        {"name", character.Name},
+                        {"level", character.Level},
+                        {"class", (ushort) character.Profession},
+                        {"width", character.BodyTemplate.Width},
+                        {"chest", character.BodyTemplate.Chest},
+                        {"leg", character.BodyTemplate.Leg},
+                        {"body", character.BodyTemplate.Body},
+                        {"exp", character.Experience},
+                        {"money", character.Money},
+                        {"hp", character.Hp},
+                        {"mp", character.Mp},
+                        {"x", character.Position.CoordX},
+                        {"y", character.Position.CoordY},
+                        {"rotation", character.Position.Rotation},
+                        {"honor", character.HonorPoints},
+                        {"pvp", character.PvpPoints},
+                        {"infamy", character.InfamyPoints},
+                        {"str", character.Attributes.Strenght},
+                        {"agi", character.Attributes.Agility},
+                        {"int", character.Attributes.Intelligence},
+                        {"const", character.Attributes.Constitution},
+                        {"spi", character.Attributes.Spirit},
+                        {"token", character.Token}
+                    };
+                    if (MySqlCommand(SqlCommandType.Insert, "characters", parameters, connection, transaction) > 0)
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
+
+                    transaction.Rollback();
+                    return false;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    account.Connection.Close();
+                    Log.Error(e);
+                    return false;
+                }
+            }
         }
     }
 }

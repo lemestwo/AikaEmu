@@ -12,7 +12,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
         protected override void Read(PacketStream stream)
         {
             var type = (ShopType) stream.ReadUInt32();
-            NpcInteractionController.CloseShop(Connection.ActiveCharacter, type);
+            NpcDialogController.CloseShop(Connection.ActiveCharacter, type);
         }
     }
 }

@@ -8,14 +8,14 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 {
     public class SendCharacterList : GamePacket
     {
-        private readonly Dictionary<uint, Character> _characters;
+        private readonly Dictionary<byte, Character> _characters;
 
         public SendCharacterList(Account acc)
         {
             _characters = acc.AccCharLobby;
 
             Opcode = (ushort) GameOpcode.SendCharacterList;
-            SenderId = acc.ConnectionId;
+            SenderId = acc.Connection.Id;
         }
 
         public override PacketStream Write(PacketStream stream)
@@ -24,7 +24,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write(1); // Always 1?
             stream.WriteCc(4);
 
-            for (var i = 0u; i < 3; i++)
+            for (byte i = 0; i < 3; i++)
             {
                 if (_characters.ContainsKey(i))
                 {

@@ -100,7 +100,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
             stream.Write(Convert.ToUInt16(_character.Position.CoordX));
             stream.Write(Convert.ToUInt16(_character.Position.CoordY));
-            stream.Write((short) 0); // rotation
+            stream.Write((short) _character.Position.Rotation); // rotation
 
             stream.Write("", 130); // unk
             stream.Write(0); // TODO - character creation date (epoch time)
@@ -110,24 +110,19 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
             stream.Write(_character.Token, 4);
 
-            stream.Write("", 332); // learnedSkills?
-            
-            // skillBar (24/25? Slots)
-            // only 24 or 25 saved serverside?
-            for (var i = 0; i < 25; i++)
-            {
-                stream.Write((byte) 12);
-                stream.Write((byte) 32);
-                stream.Write((short) 1);
-            }
+            stream.Write("", 212); // unk
+
+            stream.Write(_character.Skills.WriteSkills());
+            stream.Write(_character.SkillBars.WriteSkillBars());
+
             // info from packet 0x1086 fits here
             for (var i = 0; i < 32; i++)
             {
                 if (i == 2) stream.Write(272);
                 else if (i == 3) stream.Write(16);
-                else stream.Write( 0);
+                else stream.Write(0);
             }
-            
+
             stream.Write("", 416);
 
             stream.Write(0); // TODO - next possible date at 03:00 AM (epochTime)
@@ -138,18 +133,18 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
             stream.Write(0); // next monday 9:00 AM date (epoch)
             stream.Write(0); // TODO - nextLoginCoin (+10min from loginTime)
-            
+
             stream.Write("", 20);
 
             stream.Write((short) 1); // some chars have this value
             stream.Write((short) 1); // some chars have this value
-            
+
             stream.Write("", 20);
-            
+
             stream.Write(2); // some chars have this value
-            
+
             stream.Write(0); // TODO - Login time (Epoch)
-            
+
             stream.Write("", 12);
 
             stream.Write("TestPran", 16); // pran name?

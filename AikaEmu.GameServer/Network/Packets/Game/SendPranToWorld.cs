@@ -1,4 +1,5 @@
 using AikaEmu.GameServer.Models;
+using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
@@ -22,9 +23,9 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             // 63 = fire / 73 = water / 83 = air
             stream.Write((byte) _pran.Class); // profession
             stream.Write(_pran.Food); // food (max is 120)
-            stream.Write((short) _pran.Personality); 
+            stream.Write((short) _pran.Personality);
             stream.Write(_pran.Devotion); // devotion % (max is 225?)
-            
+
             stream.Write(_pran.MaxHp);
             stream.Write(_pran.Hp);
             stream.Write(_pran.MaxMp);
@@ -43,22 +44,30 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write(0); // 1987
             stream.Write(0);
 
-            // 0 = model? element?
-            // 6 = hair icon
-            for (var i = 0; i < 16; i++)
+            var equip = _pran.Account.ActiveCharacter.Inventory.GetItemsBySlotType(SlotType.PranEquipments);
+            for (ushort i = 0; i < 16; i++)
             {
-                if (i == 0) stream.Write((ushort) _pran.Face);
-                else if (i == 6) stream.Write((ushort) _pran.Hair);
-                else stream.Write((ushort) 0);
-                stream.Write("", 18);
+                if (equip.ContainsKey(i))
+                {
+                    stream.Write(equip[i]);
+                }
+                else
+                {
+                    stream.Write("", 20);
+                }
             }
 
-            for (var i = 0; i < 42; i++)
+            var inv = _pran.Account.ActiveCharacter.Inventory.GetItemsBySlotType(SlotType.PranInventory);
+            for (ushort i = 0; i < 42; i++)
             {
-                if (i == 40) stream.Write((ushort) 5301);
-                else if (i == 41) stream.Write((ushort) 5301);
-                else stream.Write((ushort) 0);
-                stream.Write("", 18);
+                if (inv.ContainsKey(i))
+                {
+                    stream.Write(inv[i]);
+                }
+                else
+                {
+                    stream.Write("", 20);
+                }
             }
 
             stream.Write((byte) 30); // pran quick skill

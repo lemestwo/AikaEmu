@@ -7,5 +7,6 @@ namespace AikaEmu.GameServer.Models.Units.Character.Const
         Inventory,
         Quests,
         Skills,
+        SkillBars,
     }
 }

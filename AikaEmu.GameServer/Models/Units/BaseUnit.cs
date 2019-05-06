@@ -65,10 +65,5 @@ namespace AikaEmu.GameServer.Models.Units
         {
             return Math.Pow(Position.CoordX - pos.CoordX, 2) + Math.Pow(Position.CoordY - pos.CoordY, 2) <= Math.Pow(distance, 2);
         }
-
-        public float AbosoluteDistance(float a, float b)
-        {
-            return a > b ? (a - b) * 2 : b - a;
-        }
     }
 }

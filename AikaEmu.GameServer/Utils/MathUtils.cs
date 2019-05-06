@@ -18,5 +18,10 @@ namespace AikaEmu.GameServer.Utils
         {
             return (a.CoordX - b.CoordX) * (a.CoordX - b.CoordX) + (a.CoordY - b.CoordY) * (a.CoordY - b.CoordY) < dist * dist;
         }
+
+        public static float AbosoluteDistance(float a, float b)
+        {
+            return a > b ? (a - b) * 2 : b - a;
+        }
     }
 }

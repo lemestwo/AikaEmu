@@ -16,8 +16,6 @@ namespace AikaEmu.GameServer.Models.Units.Pran
         public int Devotion { get; set; }
         public Profession Class { get; set; }
         public uint Experience { get; set; }
-        public short Face { get; set; }
-        public short Hair { get; set; }
         public ushort DefPhy { get; set; }
         public ushort DefMag { get; set; }
         private uint ItemId { get; }
@@ -102,8 +100,6 @@ namespace AikaEmu.GameServer.Models.Units.Pran
                     Mp = reader.GetInt32("mp");
                     MaxMp = reader.GetInt32("max_mp");
                     Experience = reader.GetUInt32("xp");
-                    Face = reader.GetInt16("face");
-                    Hair = reader.GetInt16("hair");
                     DefPhy = reader.GetUInt16("def_p");
                     DefMag = reader.GetUInt16("def_m");
                     BodyTemplate = new BodyTemplate

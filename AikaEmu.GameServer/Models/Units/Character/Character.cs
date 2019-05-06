@@ -36,7 +36,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Inventory Inventory { get; private set; }
         public Pran.Pran ActivePran { get; private set; }
         public Quests Quests { get; private set; }
-        public Skills Skills { get; set; }
+        public Skills Skills { get; private set; }
+        public SkillBars SkillBars { get; private set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
@@ -71,6 +72,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 Quests.Init(connection);
                 Skills = new Skills(this);
                 Skills.Init(connection);
+                // Skillbars must be initialized after skills
+                SkillBars = new SkillBars(this);
+                SkillBars.Init(connection);
             }
         }
 
@@ -99,8 +103,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public override void SetPosition(Position pos)
         {
+            ActivePran?.SetPosition(Position);
             Position = pos;
-            ActivePran?.SetPosition(pos);
 
             WorldManager.Instance.ShowVisibleUnits(this);
         }
@@ -202,6 +206,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             break;
                         case SaveType.Skills:
                             Skills?.Save(connection, transaction);
+                            break;
+                        case SaveType.SkillBars:
+                            SkillBars?.Save(connection, transaction);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(saveType), saveType, null);

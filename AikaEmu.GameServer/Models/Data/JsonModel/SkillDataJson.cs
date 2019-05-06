@@ -5,6 +5,7 @@ namespace AikaEmu.GameServer.Models.Data.JsonModel
     public class SkillDataJson
     {
         public ushort Id { get; set; }
+        public ushort Idx { get; set; }
         public uint IconId { get; set; }
         public uint RequiredLevel { get; set; }
         public uint MaxLevel { get; set; }

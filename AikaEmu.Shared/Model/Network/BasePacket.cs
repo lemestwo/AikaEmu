@@ -8,7 +8,7 @@ namespace AikaEmu.Shared.Model.Network
     {
         protected readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public ushort Opcode { protected get; set; }
+        public ushort Opcode { get; set; }
 
         protected static uint Time
         {

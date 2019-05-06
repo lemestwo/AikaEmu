@@ -45,7 +45,8 @@ namespace AikaEmu.GameServer.Controller
                 msg = "Not enough resources to buy this skill.";
                 isError = true;
             }
-            else if (character.Level < skillData.RequiredLevel)
+            // LEVEL +1 because of how Aika handles levels
+            else if (character.Level + 1 < skillData.RequiredLevel)
             {
                 msg = "Not enough level to buy this skill.";
                 isError = true;
@@ -62,12 +63,16 @@ namespace AikaEmu.GameServer.Controller
                 return;
             }
 
-            if (!character.Skills.AddSkill(skillId)) return;
-            
+            var playerSkill = character.Skills.GetSkill((ushort) (skillData.Id - skillData.Level + 1));
+            if (playerSkill != null && playerSkill.Level + 1 != skillData.Level) return;
+
+            if (!character.Skills.AddSkill(skillId, playerSkill)) return;
+
             character.Money -= skillData.LearnPrice;
             character.SkillPoints -= skillData.LearnSkillPoint;
             character.SendPacket(new UpdateCharGold(character));
             character.SendPacket(new UpdateAttributes(character));
+            character.SendPacket(new UpdateSkills(character));
             character.Save(SaveType.Skills);
         }
 
@@ -339,7 +344,7 @@ namespace AikaEmu.GameServer.Controller
 
         public static void CloseShop(Character character, ShopType type)
         {
-            if (character.OpenedShopType != type)
+            if (type != ShopType.ChangePranHair && character.OpenedShopType != type)
             {
                 character.Connection.Close();
                 Log.Warn("Character: '{0}'. Opened store dont match with closed store!", character.Name);

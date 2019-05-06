@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write("", 120);
+            stream.Write(_character.Skills.WriteSkills());
             stream.Write(_character.SkillPoints);
             stream.WriteCc(2);
             return stream;

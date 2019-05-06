@@ -141,14 +141,13 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(pran.Name, 16);
 
                 var equips = pran.Account.ActiveCharacter.Inventory.GetItemsBySlotType(SlotType.PranEquipments);
-//				stream.Write(equips.ContainsKey(0) ? equips[0].ItemId : (ushort) 0);
-                stream.Write((ushort) pran.Face);
+                stream.Write(equips.ContainsKey(0) ? equips[0].ItemId : (ushort) 0);
                 stream.Write(equips.ContainsKey(1) ? equips[1].ItemId : (ushort) 0); // TODO - Remove placeholder items
                 stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0);
                 stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 0);
                 stream.Write(equips.ContainsKey(4) ? equips[4].ItemId : (ushort) 0);
                 stream.Write(equips.ContainsKey(5) ? equips[5].ItemId : (ushort) 0);
-                stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) pran.Hair);
+                stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) 0);
                 stream.Write(equips.ContainsKey(7) ? equips[7].ItemId : (ushort) 0);
                 stream.Write("", 12);
 

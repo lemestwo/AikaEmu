@@ -3,6 +3,7 @@ namespace AikaEmu.GameServer.Network
 	public enum GameOpcode : ushort
 	{
 		DespawnUnit = 0x1001,
+		UpdateWithSkillEffect = 0x1002,
 		UpdateHpMp = 0x1003,
 		NpcStoreOpen = 0x1006,
 		UpdateSkills = 0x1007,
@@ -42,6 +43,7 @@ namespace AikaEmu.GameServer.Network
 		OpenNpcShop = 0x3010,
 		UpdateCharGold = 0x3012,
 		UpdateSkillBar = 0x301E,
+		SendCastSkill = 0x3020,
 		SendEnchantResult = 0x302E,
 		RemoveQuestInfo = 0x302F,
 		SendQuestRewardChoice = 0x3030,
@@ -92,6 +94,7 @@ namespace AikaEmu.GameServer.Network
 		BuySkillFromNpc = 0x301C,
 		RequestUseItem = 0x301D,
 		RequestUpdateSkillBar = 0x301E,
+		RequestCastSkill = 0x3020,
 		RequestDeleteItem = 0x302C,
 		RequestEnchant = 0x302D,
 		QuestRewardChoice = 0x3030,
@@ -100,6 +103,7 @@ namespace AikaEmu.GameServer.Network
 		NpcShopClosed = 0x3048,
 		RequestTokenResult = 0x309D,
 		MoveUnit = 0x30BF,
+		RequestUseSkill = 0x30C0,
 		SetActiveTitle = 0x3061,
 		MoveItem = 0x340F,
 		RequestToken = 0x3C02,

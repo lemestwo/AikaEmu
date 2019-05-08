@@ -15,7 +15,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var slotType = (BarSlotType) stream.ReadUInt32();
             var id = (ushort) stream.ReadUInt32();
 
-            Connection.ActiveCharacter.SkillBars.UpdateSkillBar(slot, slotType, id);
+            Connection.ActiveCharacter.SkillsBar.UpdateSkillBar(slot, slotType, id);
         }
     }
 }

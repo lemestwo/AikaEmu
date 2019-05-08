@@ -7,6 +7,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
+            Connection.ActiveCharacter?.Save();
             Connection.Account.SendCharacterList();
         }
     }

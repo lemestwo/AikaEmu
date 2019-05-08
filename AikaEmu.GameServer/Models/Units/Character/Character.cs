@@ -37,7 +37,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Pran.Pran ActivePran { get; private set; }
         public Quests Quests { get; private set; }
         public Skills Skills { get; private set; }
-        public SkillBars SkillBars { get; private set; }
+        public SkillsBar SkillsBar { get; private set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
@@ -73,8 +73,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 Skills = new Skills(this);
                 Skills.Init(connection);
                 // Skillbars must be initialized after skills
-                SkillBars = new SkillBars(this);
-                SkillBars.Init(connection);
+                SkillsBar = new SkillsBar(this);
+                SkillsBar.Init(connection);
             }
         }
 
@@ -208,7 +208,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             Skills?.Save(connection, transaction);
                             break;
                         case SaveType.SkillBars:
-                            SkillBars?.Save(connection, transaction);
+                            SkillsBar?.Save(connection, transaction);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(saveType), saveType, null);

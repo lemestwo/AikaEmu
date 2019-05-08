@@ -11,13 +11,13 @@ using MySql.Data.MySqlClient;
 
 namespace AikaEmu.GameServer.Models.Units.Character
 {
-    public class SkillBars : ISaveData
+    public class SkillsBar : ISaveData
     {
         private readonly Character _character;
         private readonly Dictionary<byte, Skillbar> _skillBars;
-        private List<byte> _removedSlots;
+        private readonly List<byte> _removedSlots;
 
-        public SkillBars(Character character)
+        public SkillsBar(Character character)
         {
             _character = character;
             _skillBars = new Dictionary<byte, Skillbar>();
@@ -38,7 +38,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 {
                     case BarSlotType.Skill:
                     {
-                        var skillData = _character.Skills.GetSkill(id);
+                        var skillData = _character.Skills.GetSkillx(id);
                         if (skillData == null) return;
                         var template = new Skillbar
                         {
@@ -66,15 +66,15 @@ namespace AikaEmu.GameServer.Models.Units.Character
             _character.Save(SaveType.SkillBars);
         }
 
-        public PacketStream WriteSkillBars()
+        public PacketStream WriteSkillsBar()
         {
             var stream = new PacketStream();
             for (byte i = 0; i < 25; i++)
             {
                 if (_skillBars.ContainsKey(i))
                 {
-                    stream.Write(FormatLevel(_skillBars[i].SkillData.Level));
-                    stream.Write(_skillBars[i].SkillData.SkillData.Idx);
+                    stream.Write((byte) (((_skillBars[i].SkillData.Level << 4) ^ 0x02) & 0xFF));
+                    stream.Write((ushort) (_skillBars[i].SkillData.SkillData.Idx + (_skillBars[i].SkillData.Level == 16 ? 1 : 0)));
                     stream.Write((byte) 0);
                 }
                 else
@@ -84,13 +84,6 @@ namespace AikaEmu.GameServer.Models.Units.Character
             }
 
             return stream;
-        }
-
-        private static byte FormatLevel(byte level)
-        {
-            if (level == 1) return 0x12;
-            if (level == 16) return 0xFF;
-            return (byte) (0x10 * level);
         }
 
         public void Init(MySqlConnection connection)

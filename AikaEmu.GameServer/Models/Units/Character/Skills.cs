@@ -93,7 +93,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     if (_character.Skills._skillList[i][j] != null)
                     {
                         var skillByte = (ushort) _character.Skills._skillList[i][j].Levelx;
-                        if (j > 0 && _character.Skills._skillList[i][j - 1].Level == 16 && skillByte < ushort.MaxValue) skillByte++;
+                        if (i > 0 && j == 0 && _character.Skills._skillList[(byte) (i - 1)][5]?.Level == 16 && skillByte < ushort.MaxValue) skillByte++;
+                        else if (j > 0 && _character.Skills._skillList[i][j - 1]?.Level == 16 && skillByte < ushort.MaxValue) skillByte++;
                         stream.Write(skillByte);
                     }
                     else

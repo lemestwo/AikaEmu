@@ -113,7 +113,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write("", 212); // unk
 
             stream.Write(_character.Skills.WriteSkills());
-            stream.Write(_character.SkillBars.WriteSkillBars());
+            stream.Write(_character.SkillsBar.WriteSkillsBar());
 
             // info from packet 0x1086 fits here
             for (var i = 0; i < 32; i++)

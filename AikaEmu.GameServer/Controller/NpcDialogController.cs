@@ -235,6 +235,7 @@ namespace AikaEmu.GameServer.Controller
                         OpenShop(character, ShopType.PranStation, npc.Id);
                         break;
                     case DialogType.GuildCreate:
+                        character.SendPacket(new CreateGuildBox(character.Connection.Id, 0));
                         break;
                     case DialogType.GuildBank:
                         break;

@@ -62,6 +62,12 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                     case "effect":
                         Connection.SendPacket(new SetEffectOnHead(arg1, (EffectType) arg2));
                         break;
+                    case "friend":
+                        Connection.SendPacket(new SendRequestFriend());
+                        break;
+                    case "guild":
+                        Connection.SendPacket(new SendInviteToGuild(Connection.Id, "Test"));
+                        break;
                 }
             }
         }

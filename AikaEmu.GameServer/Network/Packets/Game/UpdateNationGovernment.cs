@@ -17,15 +17,16 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
 		public override PacketStream Write(PacketStream stream)
 		{
-			stream.Write("Guild 1", 20); // Marshal
-			stream.Write("Guild 2", 20); // Tactician
-			stream.Write("Guild 3", 20); // Judge
-			stream.Write("Guild 4", 20); // Treasurer
+			stream.Write("", 20); // Marshal
+			stream.Write("", 20); // Tactician
+			stream.Write("", 20); // Judge
+			stream.Write("", 20); // Treasurer
 
-			stream.Write((short) 296); // unk
+			// guild id?
+			stream.Write((short) 0); // unk
 			stream.Write((short) 0); // unk 
-			stream.Write((short) 377); // unk 
-			stream.Write((short) 310); // unk 
+			stream.Write((short) 0); // unk 
+			stream.Write((short) 0); // unk 
 
 			stream.Write((int) _nation.Id);
 			stream.Write(_nation.Settlement);

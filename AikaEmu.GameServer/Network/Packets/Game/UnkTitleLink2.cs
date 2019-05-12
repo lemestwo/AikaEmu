@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             {
                 if (i == 2) stream.Write(272);
                 else if (i == 3) stream.Write(16);
-                else stream.Write( 0);
+                else stream.Write(0);
             }
 
             return stream;

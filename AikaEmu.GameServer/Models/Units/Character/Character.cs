@@ -6,6 +6,7 @@ using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
+using AikaEmu.GameServer.Network.Packets.Client;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;
@@ -97,7 +98,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
             // TODO - inRange
             foreach (var character in WorldManager.Instance.GetOnlineCharacters())
             {
-                character.SendPacket(packet);
+                if(character.VisibleUnits.ContainsKey(Id))
+                    character.SendPacket(packet);
             }
         }
 
@@ -106,6 +108,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             ActivePran?.SetPosition(Position);
             Position = pos;
 
+            SendPacketAll(new UpdatePosition(this, 0));
             WorldManager.Instance.ShowVisibleUnits(this);
         }
 

@@ -52,6 +52,16 @@ namespace AikaEmu.GameServer.Managers
             return _characters.Values.ToList();
         }
 
+        public Character GetCharacterByConId(ushort id)
+        {
+            foreach (var (_, character) in _characters)
+            {
+                if (character.Connection.Id == id) return character;
+            }
+
+            return null;
+        }
+
         public void InitBasicSpawn()
         {
             foreach (var npc in DataManager.Instance.NpcData.GetAllNpc())

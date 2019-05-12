@@ -70,23 +70,15 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(character.BodyTemplate.Leg);
                 stream.Write((ushort) 0);
                 stream.Write((ushort) 0);
-                stream.Write((ushort) 0);
+                stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0); // helmet image?
 
-                // 96
-                /*
-                 96-216 buff? (120 bytes)
-                 216-456 ?    (240 bytes)
-                 */
-                stream.Write("", 80);
-                stream.Write((ushort) 0); // first? buff id
-                stream.Write("", 38);
-
-                stream.Write("", 240);
+                stream.Write("", 120); // buff id (ushort)
+                stream.Write("", 240); // buff duration (uint epoch time)
 
                 stream.Write("", 32); // title
                 stream.Write(0);
 
-                stream.Write((ushort) 8192); // unk (byte)
+                stream.Write((ushort) 8193); // 00 - citId x0 - nation id | ushort >> 12 = nationId
                 stream.Write((ushort) 57); // unk
                 stream.Write((ushort) 0); // unk (byte)
                 stream.Write((ushort) 0); // unk (byte) >0 <64 unique behavior

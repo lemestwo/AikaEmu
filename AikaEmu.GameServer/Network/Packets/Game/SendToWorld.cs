@@ -63,7 +63,10 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write((ushort) 0);
             stream.Write(_character.Experience);
             stream.Write(_character.Level);
-            stream.Write("", 154);
+            stream.Write((ushort) 5); // guildLogo?
+            stream.Write("", 32);
+            stream.Write("", 40); // buffId ushort
+            stream.Write("", 80); // buffTime uint
 
             var equips = _character.Inventory.GetItemsBySlotType(SlotType.Equipments);
             for (ushort i = 0; i < 16; i++)
@@ -95,14 +98,35 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
             stream.Write(_character.Money);
 
-            stream.Write("", 384); // unknown
+            stream.Write("", 186); // unknown
+            stream.Write((ushort) 2);
+            stream.Write("", 196); // unknown
             stream.Write("", 212); // quests
 
             stream.Write(Convert.ToUInt16(_character.Position.CoordX));
             stream.Write(Convert.ToUInt16(_character.Position.CoordY));
             stream.Write((short) _character.Position.Rotation); // rotation
 
-            stream.Write("", 130); // unk
+            stream.Write("", 92); // unk
+            stream.Write(equips.ContainsKey(1) ? equips[1].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(4) ? equips[4].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(5) ? equips[5].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(7) ? equips[7].ItemId : (ushort) 0);
+            stream.Write((ushort) 0);
+            stream.Write((ushort) 0); // unk 75 01
+            stream.Write(0);
+            stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(3) ? equips[3].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(4) ? equips[4].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(5) ? equips[5].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(6) ? equips[6].ItemId : (ushort) 0);
+            stream.Write(equips.ContainsKey(7) ? equips[7].ItemId : (ushort) 0);
+            stream.Write((ushort) 0);
+            stream.Write((ushort) 0); // unk 75 01
+
             stream.Write(0); // TODO - character creation date (epoch time)
             stream.Write("", 352); // unk
             stream.Write(0); // sometimes has date (epoch time)

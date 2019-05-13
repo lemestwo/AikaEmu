@@ -30,7 +30,6 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             byte a = 26;
             byte c = 1;
             int b = 36;
-            short d = 0;
             var e = 0;
             var f = 0;
             stream.Write((uint) _skillId);

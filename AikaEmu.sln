@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.AuthServer", "AikaEmu.AuthServer\AikaEmu.AuthServer.csproj", "{BD0D92C5-3B9B-467E-A5AF-5857A5155E85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.AuthServer", "src\AikaEmu.AuthServer\AikaEmu.AuthServer.csproj", "{BD0D92C5-3B9B-467E-A5AF-5857A5155E85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.Shared", "AikaEmu.Shared\AikaEmu.Shared.csproj", "{745A5F63-FEF9-471B-AB72-C59A92E1CAEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.Shared", "src\AikaEmu.Shared\AikaEmu.Shared.csproj", "{745A5F63-FEF9-471B-AB72-C59A92E1CAEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.GameServer", "AikaEmu.GameServer\AikaEmu.GameServer.csproj", "{80E146BF-2CC1-43BA-B662-67BDA583C0FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.GameServer", "src\AikaEmu.GameServer\AikaEmu.GameServer.csproj", "{80E146BF-2CC1-43BA-B662-67BDA583C0FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +24,7 @@ Global
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

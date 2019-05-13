@@ -13,6 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
         {
             _conIdInviter = conIdInviter;
             _nameInviter = nameInviter;
+            
             Opcode = (ushort) GameOpcode.SendPartyInvite;
             SenderId = conId;
         }

@@ -48,7 +48,7 @@ namespace AikaEmu.GameServer.Models.Units.Pran
 
         public void SendPacketAround(GamePacket packet)
         {
-            var online = WorldManager.Instance.GetOnlineCharacters();
+            var online = WorldManager.Instance.GetCharacters();
             foreach (var character in online)
             {
                 if (character.VisibleUnits.ContainsKey(Id))

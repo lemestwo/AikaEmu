@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Controller;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
@@ -12,7 +12,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
         protected override void Read(PacketStream stream)
         {
             var type = (ShopType) stream.ReadUInt32();
-            NpcDialogController.CloseShop(Connection.ActiveCharacter, type);
+            NpcDialogHelper.CloseShop(Connection.ActiveCharacter, type);
         }
     }
 }

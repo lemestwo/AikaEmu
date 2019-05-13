@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             Log.Debug("RequestTrade, target: {0}", targetConId);
 
-            var target = WorldManager.Instance.GetCharacterByConId(targetConId);
+            var target = WorldManager.Instance.GetCharacter(targetConId);
             target?.SendPacket(new SendTradeRequest(targetConId));
         }
     }

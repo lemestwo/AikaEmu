@@ -8,5 +8,6 @@ namespace AikaEmu.GameServer.Models.Units.Character.Const
         Quests,
         Skills,
         SkillBars,
+        Friends,
     }
 }

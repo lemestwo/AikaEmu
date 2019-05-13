@@ -21,6 +21,7 @@ namespace AikaEmu.GameServer.Models
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         public uint Id { get; }
         public AccountLevel Level { get; set; } = AccountLevel.Default;
+        public byte NationId { get; set; } = 2; // TODO - MAKE DB
         public GameConnection Connection { get; }
         public Dictionary<byte, Character> AccCharLobby { get; private set; }
         public Character ActiveCharacter { get; set; }
@@ -104,7 +105,7 @@ namespace AikaEmu.GameServer.Models
                 BodyTemplate = new BodyTemplate(charInitials.Body)
             };
 
-            if (DatabaseManager.Instance.AddNewCharacter(template, this))
+            if (DatabaseManager.Instance.InsertCharacter(template, this))
                 SendCharacterList();
             else
             {

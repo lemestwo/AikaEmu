@@ -39,6 +39,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Quests Quests { get; private set; }
         public Skills Skills { get; private set; }
         public SkillsBar SkillsBar { get; private set; }
+        public Friends Friends { get; private set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
@@ -76,6 +77,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 // Skillbars must be initialized after skills
                 SkillsBar = new SkillsBar(this);
                 SkillsBar.Init(connection);
+                Friends = new Friends(this);
+                Friends.Init(connection);
             }
         }
 
@@ -93,14 +96,23 @@ namespace AikaEmu.GameServer.Models.Units.Character
             Connection.SendPacket(packet);
         }
 
-        public void SendPacketAll(GamePacket packet, bool inRange = true)
+        public void SendPacketAll(GamePacket packet, bool inRange = true, bool includeMyself = false)
         {
-            // TODO - inRange
-            foreach (var character in WorldManager.Instance.GetOnlineCharacters())
+            foreach (var character in WorldManager.Instance.GetCharacters())
             {
-                if(character.VisibleUnits.ContainsKey(Id))
+                if (inRange)
+                {
+                    if (character.VisibleUnits.ContainsKey(Id))
+                        character.SendPacket(packet);
+                }
+                else
+                {
                     character.SendPacket(packet);
+                }
             }
+
+            if (includeMyself)
+                SendPacket(packet);
         }
 
         public override void SetPosition(Position pos)
@@ -198,6 +210,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             Inventory?.Save(connection, transaction);
                             Quests?.Save(connection, transaction);
                             Skills?.Save(connection, transaction);
+                            Friends?.Save(connection, transaction);
                             break;
                         case SaveType.Inventory:
                             Inventory?.Save(connection, transaction);
@@ -212,6 +225,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             break;
                         case SaveType.SkillBars:
                             SkillsBar?.Save(connection, transaction);
+                            break;
+                        case SaveType.Friends:
+                            Friends?.Save(connection, transaction);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(saveType), saveType, null);

@@ -247,7 +247,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     }
                 }
 
-                newItems = DatabaseManager.Instance.AddItemInventory(newItems, _character);
+                newItems = DatabaseManager.Instance.InsertItems(newItems, _character);
                 foreach (var newItem in newItems)
                 {
                     _items[newItem.SlotType][newItem.Slot] = newItem;

@@ -88,7 +88,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 //            Connection.SendPacket(new SendUnitSpawn(pran, true));
 //            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
 
-
+            character.Friends.SendFriends();
             Connection.SendPacket(new ApplyBuff(0));
             Connection.SendPacket(new UpdateHpMp(character));
             Connection.SendPacket(new UpdateAttributes(character));

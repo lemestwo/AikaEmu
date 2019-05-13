@@ -17,8 +17,8 @@ namespace AikaEmu.GameServer.Managers
         public bool StartTrade(ushort ownerConId, ushort targetConId)
         {
             if (IsTrading(ownerConId) || IsTrading(targetConId)) return false;
-            var owner = WorldManager.Instance.GetCharacterByConId(ownerConId);
-            var target = WorldManager.Instance.GetCharacterByConId(targetConId);
+            var owner = WorldManager.Instance.GetCharacter(ownerConId);
+            var target = WorldManager.Instance.GetCharacter(targetConId);
             if (owner == null || target == null) return false;
 
             var temp = new Trade

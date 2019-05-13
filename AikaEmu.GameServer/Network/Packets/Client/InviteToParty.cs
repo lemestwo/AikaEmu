@@ -13,7 +13,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             stream.ReadInt16();
             // stream.ReadBytes(16);
 
-            var target = WorldManager.Instance.GetCharacterByConId(conId);
+            var target = WorldManager.Instance.GetCharacter(conId);
             target?.SendPacket(new SendPartyInvite(target.Connection.Id, Connection.Id, Connection.ActiveCharacter.Name));
         }
     }

@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Controller;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -11,7 +11,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var skillId = (ushort) stream.ReadUInt32();
             var npcConId = stream.ReadUInt32();
 
-            NpcDialogController.BuySkillFromNpc(Connection.ActiveCharacter, npcConId, skillId);
+            NpcDialogHelper.BuySkillFromNpc(Connection.ActiveCharacter, npcConId, skillId);
         }
     }
 }

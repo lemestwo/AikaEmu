@@ -27,7 +27,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var msg = stream.ReadString(128);
 
             var msgPacket = new ChatMessage(Connection.Id, chatUnk, charName, msg, chatType, chatTitle, unk2);
-            Connection.ActiveCharacter.SendPacketAll(new Game.SendChatMessage(msgPacket));
+            Connection.ActiveCharacter.SendPacketAll(new Game.SendChatMessage(msgPacket), false, true);
 
             var command = msg.Split(" ");
             if (command.Length > 1)
@@ -61,9 +61,6 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                         break;
                     case "effect":
                         Connection.SendPacket(new SetEffectOnHead(arg1, (EffectType) arg2));
-                        break;
-                    case "friend":
-                        Connection.SendPacket(new SendRequestFriend());
                         break;
                     case "guild":
                         Connection.SendPacket(new SendInviteToGuild(Connection.Id, "Test"));

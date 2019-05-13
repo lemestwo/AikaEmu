@@ -47,16 +47,36 @@ namespace AikaEmu.GameServer.Managers
             return null;
         }
 
-        public IEnumerable<Character> GetOnlineCharacters()
+        public IEnumerable<Character> GetCharacters()
         {
             return _characters.Values.ToList();
         }
 
-        public Character GetCharacterByConId(ushort id)
+        public Character GetCharacter(ushort id)
         {
             foreach (var (_, character) in _characters)
             {
                 if (character.Connection.Id == id) return character;
+            }
+
+            return null;
+        }
+
+        public Character GetCharacter(string name)
+        {
+            foreach (var (_, character) in _characters)
+            {
+                if (character.Name.Equals(name)) return character;
+            }
+
+            return null;
+        }
+
+        public Character GetCharacter(uint id)
+        {
+            foreach (var (_, character) in _characters)
+            {
+                if (character.Id == id) return character;
             }
 
             return null;

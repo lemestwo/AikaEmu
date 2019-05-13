@@ -4,6 +4,7 @@ using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
+using AikaEmu.GameServer.Models.Units.Character.CharFriend;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.Shared.Model;
@@ -71,7 +72,63 @@ namespace AikaEmu.GameServer.Managers
             return dictionary;
         }
 
-        public List<Item> AddItemInventory(List<Item> items, Character character)
+        public uint InsertFriend(Character character, Friend friend)
+        {
+            var id = 0u;
+            using (var connection = GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    var parameters = new Dictionary<string, object>
+                    {
+                        {"char_id", character.Id},
+                        {"friend_id", friend.FriendId},
+                        {"name", friend.Name},
+                        {"is_blocked", friend.IsBlocked}
+                    };
+                    id = MySqlCommand(SqlCommandType.Insert, "character_friends", parameters, connection, transaction);
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    character.Connection.Close();
+                    Log.Error(e);
+                }
+            }
+
+            return id;
+        }
+
+        public void RemoveOfflineFriend(Friend friend)
+        {
+            using (var connection = GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = "DELETE FROM character_friends WHERE char_id=@char_id AND friend_id=@friend_id";
+                        command.Parameters.AddWithValue("@char_id", friend.FriendId);
+                        command.Parameters.AddWithValue("@friend_id", friend.CharacterId);
+                        command.Prepare();
+                        command.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    Log.Error(e);
+                }
+            }
+        }
+
+        public List<Item> InsertItems(List<Item> items, Character character)
         {
             using (var connection = GetConnection())
             using (var transaction = connection.BeginTransaction())
@@ -118,7 +175,7 @@ namespace AikaEmu.GameServer.Managers
             return items;
         }
 
-        public bool AddNewCharacter(Character character, Account account)
+        public bool InsertCharacter(Character character, Account account)
         {
             using (var connection = GetConnection())
             using (var transaction = connection.BeginTransaction())

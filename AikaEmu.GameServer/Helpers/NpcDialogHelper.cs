@@ -1,10 +1,7 @@
-using System;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Chat;
-using AikaEmu.GameServer.Models.Quest;
 using AikaEmu.GameServer.Models.Quest.Const;
 using AikaEmu.GameServer.Models.Sound;
-using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
@@ -12,12 +9,11 @@ using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.GameServer.Utils;
-using AikaEmu.Shared.Utils;
 using NLog;
 
-namespace AikaEmu.GameServer.Controller
+namespace AikaEmu.GameServer.Helpers
 {
-    public static class NpcDialogController
+    public static class NpcDialogHelper
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 

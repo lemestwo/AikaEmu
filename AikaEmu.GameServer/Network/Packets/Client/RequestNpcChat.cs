@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Controller;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             if (npcId == 0 && chatOption == DialogType.ChatClose)
                 Connection.ActiveCharacter.SendPacket(new CloseNpcChat());
-            NpcDialogController.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
+            NpcDialogHelper.StartDialog(Connection.ActiveCharacter, npcId, chatOption, subChatOption);
         }
     }
 }

@@ -7,6 +7,7 @@ using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Network.Packets.Game;
+using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;
 using NLog;
 
@@ -408,7 +409,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             Effect3Value = reader.GetByte("effect3value"),
                             Durability = reader.GetByte("dur"),
                             DurMax = reader.GetByte("dur_max"),
-                            Quantity = reader.GetByte("refinement"),
+                            Quantity = reader.GetByte("quantity"),
                             ItemTime = reader.GetUInt16("time")
                         };
 
@@ -455,36 +456,30 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     {
                         if (item == null || item.ItemId == 0) continue;
 
-                        command.CommandText =
-                            "REPLACE INTO `items`" +
-                            "(`id`, `item_id`, `char_id`, `acc_id`,`pran_id`,`slot_type`, `slot`, `effect1`, `effect2`, `effect3`, `effect1value`, `effect2value`, `effect3value`, `dur`, `dur_max`, `refinement`, `time`)" +
-                            "VALUES (@id, @item_id, @char_id, @acc_id, @pran_id, @slot_type, @slot, @effect1, @effect2, @effect3, @effect1value, @effect2value, @effect3value, @dur, @dur_max, @refinement, @time);";
-
-                        command.Parameters.AddWithValue("@id", item.DbId);
-                        command.Parameters.AddWithValue("@item_id", item.ItemId);
-                        command.Parameters.AddWithValue("@char_id",
-                            item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments
-                                ? _character.Id
-                                : 0);
-                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
-                        command.Parameters.AddWithValue("@pran_id",
-                            item.SlotType == SlotType.PranInventory || item.SlotType == SlotType.PranEquipments
-                                ? _character.ActivePran?.DbId ?? 0
-                                : 0);
-                        command.Parameters.AddWithValue("@slot_type", (byte) item.SlotType);
-                        command.Parameters.AddWithValue("@slot", item.Slot);
-                        command.Parameters.AddWithValue("@effect1", item.Effect1);
-                        command.Parameters.AddWithValue("@effect2", item.Effect2);
-                        command.Parameters.AddWithValue("@effect3", item.Effect3);
-                        command.Parameters.AddWithValue("@effect1value", item.Effect1Value);
-                        command.Parameters.AddWithValue("@effect2value", item.Effect2Value);
-                        command.Parameters.AddWithValue("@effect3value", item.Effect3Value);
-                        command.Parameters.AddWithValue("@dur", item.Durability);
-                        command.Parameters.AddWithValue("@dur_max", item.DurMax);
-                        command.Parameters.AddWithValue("@refinement", item.Quantity);
-                        command.Parameters.AddWithValue("@time", item.ItemTime);
-                        command.ExecuteNonQuery();
-                        command.Parameters.Clear();
+                        var parameters = new Dictionary<string, object>
+                        {
+                            {"id", item.DbId},
+                            {"item_id", item.ItemId},
+                            {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? _character.Id : 0},
+                            {"acc_id", _character.Account.Id},
+                            {
+                                "pran_id",
+                                item.SlotType == SlotType.PranInventory || item.SlotType == SlotType.PranEquipments ? _character.ActivePran?.DbId ?? 0 : 0
+                            },
+                            {"slot_type", (byte) item.SlotType},
+                            {"slot", item.Slot},
+                            {"effect1", item.Effect1},
+                            {"effect2", item.Effect2},
+                            {"effect3", item.Effect3},
+                            {"effect1value", item.Effect1Value},
+                            {"effect2value", item.Effect2Value},
+                            {"effect3value", item.Effect3Value},
+                            {"dur", item.Durability},
+                            {"dur_max", item.DurMax},
+                            {"quantity", item.Quantity},
+                            {"time", item.ItemTime}
+                        };
+                        DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "items", parameters, connection, transaction);
                     }
                 }
             }

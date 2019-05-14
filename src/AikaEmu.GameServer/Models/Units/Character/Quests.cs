@@ -202,8 +202,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     {"req_3", quest.Completed[2]},
                     {"req_4", quest.Completed[3]},
                     {"req_5", quest.Completed[4]},
-                    {"is_done", quest.IsDone},
-                    {"updated_at", DateTime.UtcNow}
+                    {"is_done", quest.IsDone}
                 };
                 DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "character_quests", parameters, connection, transaction);
             }

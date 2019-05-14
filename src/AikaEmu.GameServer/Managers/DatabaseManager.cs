@@ -156,7 +156,7 @@ namespace AikaEmu.GameServer.Managers
                             {"effect3value", item.Effect3Value},
                             {"dur", item.Durability},
                             {"dur_max", item.DurMax},
-                            {"refinement", item.Quantity},
+                            {"quantity", item.Quantity},
                             {"time", item.ItemTime}
                         };
                         item.DbId = MySqlCommand(SqlCommandType.Insert, "items", parameters, connection, transaction);

@@ -156,8 +156,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             var parameters = new Dictionary<string, object>
             {
                 {"acc_id", Account.Id},
-                {"gold", BankMoney},
-                {"updated_at", DateTime.UtcNow}
+                {"gold", BankMoney}
             };
             DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "bank_gold", parameters, connection, transaction);
         }
@@ -198,8 +197,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                         {"int", Attributes.Intelligence},
                         {"const", Attributes.Constitution},
                         {"spi", Attributes.Spirit},
-                        {"token", Token},
-                        {"updated_at", DateTime.UtcNow}
+                        {"token", Token}
                     };
                     DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "characters", parameters, connection, transaction);
 

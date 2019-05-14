@@ -43,6 +43,7 @@ namespace AikaEmu.GameServer
             IdUnitSpawnManager.Instance.Init(3000);
             IdMobSpawnManager.Instance.Init(5000);
             IdTradeManager.Instance.Init();
+            IdPartyManager.Instance.Init();
 
             // Spawn
             WorldManager.Instance.InitBasicSpawn();

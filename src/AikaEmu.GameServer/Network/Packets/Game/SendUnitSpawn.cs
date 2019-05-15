@@ -68,22 +68,26 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(character.BodyTemplate.Width);
                 stream.Write(character.BodyTemplate.Chest);
                 stream.Write(character.BodyTemplate.Leg);
-                stream.Write((ushort) 0);
-                stream.Write((ushort) 0);
+                stream.Write((ushort) 0); // headEffect
+                stream.Write((ushort) 0); // isStore
                 stream.Write(equips.ContainsKey(2) ? equips[2].ItemId : (ushort) 0); // helmet image?
 
                 stream.Write("", 120); // buff id (ushort)
                 stream.Write("", 240); // buff duration (uint epoch time)
 
-                stream.Write("", 32); // title
-                stream.Write(0);
+                stream.Write("Title", 32); // title/guild
 
-                stream.Write((ushort) 8193); // 00 - citId x0 - nation id | ushort >> 12 = nationId
-                stream.Write((ushort) 57); // unk
-                stream.Write((ushort) 0); // unk (byte)
+                stream.Write((byte) 0); // citId?
+                stream.Write((byte) (character.Account.NationId << 4)); // nation?
+                stream.Write((byte) 0);
+                stream.Write((byte) 0);
+
+                stream.Write((ushort) 70);
+                stream.Write((ushort) 0); // unk
+                stream.Write((ushort) 0); // emoticon?
                 stream.Write((ushort) 0); // unk (byte) >0 <64 unique behavior
                 stream.Write(0);
-                stream.Write(25); // test maybe title class
+                stream.Write(108); // titleId
             }
             else if (_unit is Npc npc)
             {

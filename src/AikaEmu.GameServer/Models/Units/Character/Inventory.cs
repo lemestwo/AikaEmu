@@ -70,27 +70,34 @@ namespace AikaEmu.GameServer.Models.Units.Character
             // TODO - Guild bank use same function?
             if (slotType != SlotType.Bank) return;
             var maxMoney = DataManager.Instance.CharInitial.Data.MaxGold;
-            if (amount > maxMoney || amount < maxMoney * -1 || amount == 0)
+
+            var isDeposit = amount > 0;
+            if (isDeposit && _character.BankMoney + (ulong) amount > maxMoney)
             {
                 _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
                 return;
             }
 
-            var isDeposit = amount > 0;
+            if (!isDeposit && _character.Money + (ulong) (amount * -1) > maxMoney)
+            {
+                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
+                return;
+            }
+
+            if (isDeposit && _character.Money < (ulong) amount)
+            {
+                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
+                return;
+            }
+
+            if (!isDeposit && _character.BankMoney < (ulong) (amount * -1))
+            {
+                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
+                return;
+            }
+
             lock (_lockObject)
             {
-                if (isDeposit && _character.Money < (ulong) amount)
-                {
-                    _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
-                    return;
-                }
-
-                if (!isDeposit && _character.BankMoney < (ulong) (amount * -1))
-                {
-                    _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
-                    return;
-                }
-
                 _character.Money -= (ulong) amount;
                 _character.BankMoney += (ulong) amount;
 
@@ -115,7 +122,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 }
 
                 itemTo.Quantity += itemFrom.Quantity;
-                DeleteItem(SlotType.Inventory, slotFrom, false);
+                DeleteItem(SlotType.Inventory, slotFrom, 0, false);
                 _items[itemTo.SlotType][itemTo.Slot] = itemTo;
                 _character.SendPacket(new UpdateItem(itemTo, false));
 
@@ -150,21 +157,32 @@ namespace AikaEmu.GameServer.Models.Units.Character
             _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
         }
 
-        public void DeleteItem(SlotType slotType, ushort slot, bool save = true)
+        public bool DeleteItem(SlotType slotType, ushort slot, byte qty = 0, bool save = true)
         {
             lock (_lockObject)
             {
-                if (slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
+                if (slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return false;
 
                 var item = GetItem(slotType, slot);
-                if (item == null) return;
+                if (item == null) return false;
 
-                _removedItems.Add(item.DbId);
-                _items[slotType][slot] = null;
-                _character.SendPacket(new UpdateItem(new Item.Item(slotType, slot, 0, false), false));
+                if (qty == 0 || qty >= item.Quantity)
+                {
+                    _removedItems.Add(item.DbId);
+                    _items[slotType][slot] = null;
+                    _character.SendPacket(new UpdateItem(new Item.Item(slotType, slot, 0, false), false));
+                }
+                else
+                {
+                    item.Quantity -= qty;
+                    _items[slotType][slot] = item;
+                    _character.SendPacket(new UpdateItem(item, false));
+                }
 
                 if (save)
                     _character.Save(SaveType.Inventory);
+
+                return true;
             }
         }
 
@@ -316,7 +334,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 var itemType = item.ItemData.ItemType;
                 if (itemType <= 0) return;
 
-                var type = Type.GetType("AikaEmu.GameServer.Models.ItemM.UseItem." + itemType);
+                var type = Type.GetType("AikaEmu.GameServer.Models.Item.UseItem." + itemType);
                 if (type == null)
                 {
                     _log.Error("UseItem {0} not implemented.", itemType);

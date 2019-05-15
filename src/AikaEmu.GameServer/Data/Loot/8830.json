@@ -1,0 +1,26 @@
+{
+  "ItemId" : 8830,
+  "Loots": [
+    {
+      "LootType": 1,
+      "Id": 8858,
+      "MinQty": 1,
+      "MaxQty": 1,
+      "Weight": 2
+    },
+    {
+      "LootType": 1,
+      "Id": 5653,
+      "MinQty": 1,
+      "MaxQty": 1,
+      "Weight": 5
+    },
+    {
+      "LootType": 1,
+      "Id": 5654,
+      "MinQty": 1,
+      "MaxQty": 1,
+      "Weight": 3
+    }
+  ]
+}

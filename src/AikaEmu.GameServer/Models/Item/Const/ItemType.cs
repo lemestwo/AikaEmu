@@ -161,7 +161,7 @@ namespace AikaEmu.GameServer.Models.Item.Const
         Unk139 = 714,
         Unk140 = 715,
         Unk141 = 716,
-        Unk142 = 717,
+        GoldCoin = 717,
         Unk143 = 718,
         Unk144 = 719,
         Unk145 = 724,

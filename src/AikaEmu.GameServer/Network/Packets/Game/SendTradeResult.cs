@@ -4,21 +4,23 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Game
 {
-    public class SendTradeRequest : GamePacket
+    public class SendTradeResult : GamePacket
     {
-        private readonly ushort _ownerConId;
+        private readonly ushort _conId;
 
-        public SendTradeRequest(ushort conId, ushort ownerConId)
+        public SendTradeResult(ushort conId)
         {
-            _ownerConId = ownerConId;
+            _conId = conId;
 
-            Opcode = (ushort) GameOpcode.SendTradeRequest;
+            Opcode = (ushort) GameOpcode.SendTradeResult;
             SenderId = conId;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write((uint) _ownerConId);
+            stream.Write(_conId);
+            stream.Write((short) 0);
+            stream.Write(1);
             return stream;
         }
     }

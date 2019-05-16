@@ -1,6 +1,5 @@
-using AikaEmu.GameServer.Managers;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client
@@ -11,10 +10,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
         {
             var targetConId = stream.ReadUInt16();
 
-            Log.Debug("RequestTrade, target: {0}", targetConId);
-
-            var target = WorldManager.Instance.GetCharacter(targetConId);
-            target?.SendPacket(new SendTradeRequest(targetConId));
+            TradeHelper.TradeRequest(Connection, targetConId);
         }
     }
 }

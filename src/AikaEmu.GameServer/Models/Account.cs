@@ -5,6 +5,7 @@ using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models.Chat;
+using AikaEmu.GameServer.Models.Chat.Const;
 using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.GameServer.Models.Units;
@@ -53,8 +54,7 @@ namespace AikaEmu.GameServer.Models
             var charClass = GetClassByFace(face);
             if (AccCharLobby.Count > 3 || slot >= 3 || charClass == Profession.Undefined || DataManager.Instance.ItemsData.GetItemSlot(hair) != ItemType.Hair)
             {
-                var msg = new Message(MessageSender.System, MessageType.Error, "Not a valid preset.");
-                Connection.SendPacket(new SendMessage(msg, 0));
+                Connection.SendPacket(new SendMessage(new Message("Not a valid preset.", MessageType.Error), 0));
                 return;
             }
 
@@ -62,8 +62,7 @@ namespace AikaEmu.GameServer.Models
             {
                 if (character.Value.Slot != slot) continue;
 
-                var msg = new Message(MessageSender.System, MessageType.Error, "Slot not available.");
-                Connection.SendPacket(new SendMessage(msg, 0));
+                Connection.SendPacket(new SendMessage(new Message("Slot not available.", MessageType.Error), 0));
                 return;
             }
 
@@ -71,8 +70,7 @@ namespace AikaEmu.GameServer.Models
             var nameRegex = new Regex(DataManager.Instance.CharInitial.Data.NameRegex, RegexOptions.Compiled);
             if (!nameRegex.IsMatch(name))
             {
-                var msg = new Message(MessageSender.System, MessageType.Error, "This name is already taken.");
-                Connection.SendPacket(new SendMessage(msg, 0));
+                Connection.SendPacket(new SendMessage(new Message("This name is already taken.", MessageType.Error), 0));
                 return;
             }
 
@@ -109,8 +107,7 @@ namespace AikaEmu.GameServer.Models
                 SendCharacterList();
             else
             {
-                var msg = new Message(MessageSender.System, MessageType.Error, "Something went wrong, please contact administration.");
-                Connection.SendPacket(new SendMessage(msg, 0));
+                Connection.SendPacket(new SendMessage(new Message("Something went wrong, please contact administration.", MessageType.Error), 0));
             }
         }
 

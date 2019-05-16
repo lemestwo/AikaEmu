@@ -1,5 +1,6 @@
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Chat;
+using AikaEmu.GameServer.Models.Chat.Const;
 using AikaEmu.GameServer.Models.Quest.Const;
 using AikaEmu.GameServer.Models.Sound;
 using AikaEmu.GameServer.Models.Units.Character;
@@ -55,7 +56,7 @@ namespace AikaEmu.GameServer.Helpers
 
             if (isError)
             {
-                character.Connection.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Error, msg)));
+                character.Connection.SendPacket(new SendMessage(new Message(msg, MessageType.Error)));
                 return;
             }
 
@@ -255,8 +256,7 @@ namespace AikaEmu.GameServer.Helpers
                         var quest = character.Quests.AddQuest(questData);
                         if (quest != null)
                         {
-                            character.SendPacket(new SendMessage(
-                                new Message(MessageSender.System, MessageType.Normal, $"You have accepted the mission '{questData.Name}'")));
+                            character.SendPacket(new SendMessage(new Message($"You have accepted the mission '{questData.Name}'")));
                             character.SendPacket(new SendQuestInfo(quest));
                             character.SendPacket(new SetEffectOnHead(npc.Id, EffectType.QuestOngoing));
                             character.SendPacket(new PlaySound(446, SoundType.NpcVoice));

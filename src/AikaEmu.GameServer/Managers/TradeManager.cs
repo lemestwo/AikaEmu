@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using AikaEmu.GameServer.Managers.Id;
 using AikaEmu.GameServer.Models;
@@ -8,41 +9,63 @@ namespace AikaEmu.GameServer.Managers
     public class TradeManager : Singleton<TradeManager>
     {
         private readonly Dictionary<uint, Trade> _activeTrades; // tradeId, Trade
+        private readonly Dictionary<ushort, (ushort ownerConId, DateTime Time)> _tradeRequests; // targetConId, ()
 
         public TradeManager()
         {
             _activeTrades = new Dictionary<uint, Trade>();
+            _tradeRequests = new Dictionary<ushort, (ushort ownerConId, DateTime Time)>();
         }
 
-        public bool StartTrade(ushort ownerConId, ushort targetConId)
+        public bool AddTradeRequest(ushort ownerConId, ushort targetConId)
         {
-            if (IsTrading(ownerConId) || IsTrading(targetConId)) return false;
-            var owner = WorldManager.Instance.GetCharacter(ownerConId);
-            var target = WorldManager.Instance.GetCharacter(targetConId);
-            if (owner == null || target == null) return false;
+            if (_tradeRequests.ContainsKey(targetConId)) return false;
+            _tradeRequests.Add(targetConId, (ownerConId, DateTime.UtcNow.AddMinutes(2)));
+            return true;
+        }
 
-            var temp = new Trade
+        public void RemoveTradeRequest(ushort targetConId)
+        {
+            if (_tradeRequests.ContainsKey(targetConId)) _tradeRequests.Remove(targetConId);
+        }
+
+        public bool AddTrade(Trade trade)
+        {
+            if (_activeTrades.ContainsKey(trade.Id)) return false;
+
+            _activeTrades.Add(trade.Id, trade);
+            return true;
+        }
+
+        public ushort GetOwnerRequest(ushort targetConId)
+        {
+            foreach (var (key, (ownerConId, time)) in _tradeRequests)
             {
-                Id = IdTradeManager.Instance.GetNextId(),
-                Owner = owner,
-                Target = target
-            };
-            return _activeTrades.TryAdd(temp.Id, temp);
-        }
+                if (time < DateTime.UtcNow)
+                {
+                    RemoveTradeRequest(key);
+                    continue;
+                }
 
-        public void EndTrade(uint id)
-        {
-            if (_activeTrades.ContainsKey(id)) _activeTrades.Remove(id);
-        }
-
-        public bool IsTrading(ushort conId)
-        {
-            foreach (var (_, trade) in _activeTrades)
-            {
-                if (trade.Owner.Connection?.Id == conId || trade.Target.Connection?.Id == conId) return true;
+                if (key == targetConId) return ownerConId;
             }
 
-            return false;
+            return ushort.MaxValue;
+        }
+
+        public Trade GetTrade(ushort conId)
+        {
+            foreach (var trade in _activeTrades.Values)
+            {
+                if (trade.OwnerConId == conId || trade.TargetConId == conId) return trade;
+            }
+
+            return null;
+        }
+
+        public void RemoveTrade(uint id)
+        {
+            if (_activeTrades.ContainsKey(id)) _activeTrades.Remove(id);
         }
     }
 }

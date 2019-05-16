@@ -4,14 +4,15 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client
 {
-    public class InviteToParty : GamePacket
+    public class RequestTradeResult : GamePacket
     {
         protected override void Read(PacketStream stream)
         {
             var conId = stream.ReadUInt16();
-            // stream.ReadInt16();
-            // stream.ReadBytes(16);
-            GroupHelper.PartyRequest(Connection, conId);
+            stream.ReadUInt16();
+            var result = stream.ReadBoolean(true);
+
+            TradeHelper.TradeRequestResult(Connection, conId, result);
         }
     }
 }

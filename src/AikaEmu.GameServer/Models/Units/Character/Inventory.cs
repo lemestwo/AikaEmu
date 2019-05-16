@@ -22,8 +22,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
         PranEquipments = 5,
         PranInventory = 6,
 
-//        Unk7 = 7,
-//        Unk10 = 10, // 0xA
+        //        Unk7 = 7,
+        //        Unk10 = 10, // 0xA
     }
 
     public class Inventory
@@ -74,25 +74,25 @@ namespace AikaEmu.GameServer.Models.Units.Character
             var isDeposit = amount > 0;
             if (isDeposit && _character.BankMoney + (ulong) amount > maxMoney)
             {
-                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
+                _character.SendPacket(new SendMessage(new Message($"Can't have more than {maxMoney:#.0} gold.")));
                 return;
             }
 
             if (!isDeposit && _character.Money + (ulong) (amount * -1) > maxMoney)
             {
-                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
+                _character.SendPacket(new SendMessage(new Message($"Can't have more than {maxMoney:#.0} gold.")));
                 return;
             }
 
             if (isDeposit && _character.Money < (ulong) amount)
             {
-                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
+                _character.SendPacket(new SendMessage(new Message($"You don't have that much money.")));
                 return;
             }
 
             if (!isDeposit && _character.BankMoney < (ulong) (amount * -1))
             {
-                _character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"You don't have that much money.")));
+                _character.SendPacket(new SendMessage(new Message($"You don't have that much money.")));
                 return;
             }
 

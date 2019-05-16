@@ -249,9 +249,9 @@ namespace AikaEmu.Shared.Network
 
         #region Read Types
 
-        public bool ReadBoolean()
+        public bool ReadBoolean(bool isInt = false)
         {
-            return ReadByte() == 1;
+            return isInt ? ReadUInt32() == 1 : ReadByte() == 1;
         }
 
         public byte ReadByte()

@@ -7,7 +7,6 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
-            
         }
     }
 }

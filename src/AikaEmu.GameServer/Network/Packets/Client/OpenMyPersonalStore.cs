@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             if (personalStore.Items.Count <= 0)
             {
-                Connection.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, "Invalid personal store.")));
+                Connection.SendPacket(new SendMessage(new Message("Invalid personal store.")));
                 return;
             }
 

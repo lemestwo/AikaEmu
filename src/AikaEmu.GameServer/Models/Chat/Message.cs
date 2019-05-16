@@ -1,33 +1,20 @@
+using AikaEmu.GameServer.Models.Chat.Const;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Models.Chat
 {
-    public enum MessageSender : byte
-    {
-        System = 16,
-        Unk1 = 32,
-
-        Unk2 = 4,
-    }
-
-    public enum MessageType : byte
-    {
-        Normal = 0,
-        Error = 1,
-    }
-
     public class Message : BasePacket
     {
-        private readonly MessageSender _sender;
-        private readonly MessageType _type;
         private readonly string _message;
+        private readonly MessageType _type;
+        private readonly MessageSender _sender;
 
-        public Message(MessageSender sender, MessageType type, string message)
+        public Message(string message, MessageType type = MessageType.Normal, MessageSender sender = MessageSender.System)
         {
-            _sender = sender;
-            _type = type;
             _message = message;
+            _type = type;
+            _sender = sender;
         }
 
         public override PacketStream Write(PacketStream stream)

@@ -19,7 +19,7 @@ namespace AikaEmu.GameServer.Models.Item.UseItem
             var amount = item.ItemData.GearCoreLevel;
             if (character.Money + amount > maxMoney)
             {
-                character.SendPacket(new SendMessage(new Message(MessageSender.System, MessageType.Normal, $"Can't have more than {maxMoney} gold.")));
+                character.SendPacket(new SendMessage(new Message($"Can't have more than {maxMoney:#.0} gold.")));
                 return;
             }
 

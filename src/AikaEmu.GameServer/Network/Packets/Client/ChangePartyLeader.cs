@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Managers;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 
@@ -8,14 +8,9 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
-            var id = stream.ReadUInt16();
+            var conId = stream.ReadUInt16();
 
-            var partyData = PartyManager.Instance.GetParty(Connection.Id);
-            if (partyData.IsMember(id))
-            {
-                partyData.LeaderConId = id;
-                partyData.UpdateParty();
-            }
+            GroupHelper.PartyChangeLeader(Connection, conId);
         }
     }
 }

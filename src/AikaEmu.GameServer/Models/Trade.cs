@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using AikaEmu.GameServer.Models.Units.Character;
 
 namespace AikaEmu.GameServer.Models
 {

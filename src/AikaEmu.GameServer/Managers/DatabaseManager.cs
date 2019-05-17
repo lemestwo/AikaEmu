@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AikaEmu.GameServer.Models;
+using AikaEmu.GameServer.Models.Account;
 using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;

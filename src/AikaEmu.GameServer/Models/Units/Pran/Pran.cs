@@ -10,7 +10,7 @@ namespace AikaEmu.GameServer.Models.Units.Pran
 {
     public class Pran : BaseUnit
     {
-        public Account Account { get; }
+        public Account.Account Account { get; }
         public uint DbId { get; set; }
         public byte Food { get; set; }
         public int Devotion { get; set; }
@@ -58,7 +58,7 @@ namespace AikaEmu.GameServer.Models.Units.Pran
             }
         }
 
-        public Pran(Account acc, uint itemId)
+        public Pran(Account.Account acc, uint itemId)
         {
             Account = acc;
             ItemId = itemId;

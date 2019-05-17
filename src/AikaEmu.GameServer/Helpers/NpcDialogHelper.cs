@@ -1,8 +1,8 @@
 using AikaEmu.GameServer.Managers;
+using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.Chat.Const;
 using AikaEmu.GameServer.Models.Quest.Const;
-using AikaEmu.GameServer.Models.Sound;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;

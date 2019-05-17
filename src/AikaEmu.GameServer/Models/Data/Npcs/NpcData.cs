@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
         {
             try
             {
-                foreach (var dir in Directory.GetDirectories(path))
+                foreach (var dir in Directory.GetDirectories(path/*, "*", SearchOption.AllDirectories*/))
                 {
                     var collection = new NpcColection();
                     foreach (var file in Directory.GetFiles(dir, "*.json"))

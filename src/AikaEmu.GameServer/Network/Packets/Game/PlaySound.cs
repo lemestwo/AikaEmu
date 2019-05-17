@@ -1,4 +1,4 @@
-using AikaEmu.GameServer.Models.Sound;
+using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

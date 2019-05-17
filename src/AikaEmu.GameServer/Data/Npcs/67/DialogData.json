@@ -1,0 +1,25 @@
+{
+  "NpcId": 67,
+  "SoundId": 977,
+  "SoundType": 0,
+  "DialogData": [
+    {
+      "OptionId": 1,
+      "SubOptionId": 0,
+      "Text": "Conversa",
+      "Unk": 0
+    },
+    {
+      "OptionId": 25,
+      "SubOptionId": 0,
+      "Text": "Salvar a localização",
+      "Unk": 0
+    },
+    {
+      "OptionId": 8,
+      "SubOptionId": 0,
+      "Text": "Fechar",
+      "Unk": 0
+    }
+  ]
+}

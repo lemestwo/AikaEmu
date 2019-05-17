@@ -17,8 +17,6 @@ namespace AikaEmu.GameServer.Managers
 {
     public class WorldManager : Singleton<WorldManager>
     {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
-
         private readonly ConcurrentDictionary<uint, Character> _characters;
         private readonly ConcurrentDictionary<uint, Npc> _npcs;
         private readonly ConcurrentDictionary<uint, Mob> _mobs;

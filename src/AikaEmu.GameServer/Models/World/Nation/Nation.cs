@@ -1,4 +1,4 @@
-namespace AikaEmu.GameServer.Models
+namespace AikaEmu.GameServer.Models.World.Nation
 {
 	public class Nation
 	{

@@ -7,7 +7,7 @@ namespace AikaEmu.GameServer.Models
 {
     public class PersonalStore : BasePacket
     {
-        public Character Owner { get; set; }
+        private Character Owner { get; set; }
         public string Title { get; set; }
         public Dictionary<byte, (ulong price, Item.Item item)> Items { get; set; }
 

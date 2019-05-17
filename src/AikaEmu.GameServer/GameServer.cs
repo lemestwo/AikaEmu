@@ -37,6 +37,7 @@ namespace AikaEmu.GameServer
             AppConfigManager.Instance.Init();
             DatabaseManager.Instance.Init(AppConfigManager.Instance.GameServerConfig.Database);
             DataManager.Instance.Init();
+            NationManager.Instance.Init();
 
             // IdFactory
             IdConnectionManager.Instance.Init();

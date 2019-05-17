@@ -78,7 +78,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write("Title", 32); // title/guild
 
                 stream.Write((byte) 0); // citId?
-                stream.Write((byte) (character.Account.NationId << 4)); // nation?
+                stream.Write((byte) ((byte) character.Account.NationId << 4)); // nation?
                 stream.Write((byte) 0);
                 stream.Write((byte) 0);
 

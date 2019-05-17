@@ -1,4 +1,5 @@
 using AikaEmu.GameServer.Models.Puzzle;
+using AikaEmu.GameServer.Models.Puzzle.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;

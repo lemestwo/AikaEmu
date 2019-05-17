@@ -1,39 +1,53 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Managers.Configuration;
 using AikaEmu.GameServer.Managers.Id;
+using AikaEmu.GameServer.Models.Account.Const;
 using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.Chat.Const;
-using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Const;
+using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using NLog;
 
-namespace AikaEmu.GameServer.Models
+namespace AikaEmu.GameServer.Models.Account
 {
     public class Account
     {
-        private readonly Logger _log = LogManager.GetCurrentClassLogger();
         public uint Id { get; }
         public AccountLevel Level { get; set; } = AccountLevel.Default;
-        public byte NationId { get; set; } = 2; // TODO - MAKE DB
+        public NationId NationId { get; set; }
         public GameConnection Connection { get; }
         public Dictionary<byte, Character> AccCharLobby { get; private set; }
         public Character ActiveCharacter { get; set; }
 
-        public Account(uint accId, GameConnection conn)
+        public Account(uint accId, GameConnection connection)
         {
             Id = accId;
-            Connection = conn;
+            Connection = connection;
             Connection.Id = (ushort) IdConnectionManager.Instance.GetNextId();
+            NationId = GetNationId();
 
             AccCharLobby = new Dictionary<byte, Character>();
+        }
+
+        private NationId GetNationId()
+        {
+            using (var connection = DatabaseManager.Instance.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM account_nation WHERE acc_id=@acc_id";
+                command.Parameters.AddWithValue("@acc_id", Id);
+                command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    return !reader.Read() ? NationId.None : (NationId) reader.GetByte("nation_id");
+                }
+            }
         }
 
         public Character GetSlotCharacter(byte slot)

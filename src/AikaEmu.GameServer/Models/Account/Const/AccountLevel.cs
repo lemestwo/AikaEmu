@@ -1,4 +1,4 @@
-namespace AikaEmu.GameServer.Models
+namespace AikaEmu.GameServer.Models.Account.Const
 {
     public enum AccountLevel
     {

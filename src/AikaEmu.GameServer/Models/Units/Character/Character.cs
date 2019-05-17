@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
     {
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
 
-        public Account Account { get; set; }
+        public Account.Account Account { get; set; }
         public GameConnection Connection => Account.Connection;
 
         public byte Slot { get; set; }

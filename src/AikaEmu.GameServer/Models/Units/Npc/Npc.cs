@@ -4,7 +4,6 @@ using AikaEmu.GameServer.Models.Data.JsonModel;
 using AikaEmu.GameServer.Models.Data.Npcs;
 using AikaEmu.GameServer.Models.Quest;
 using AikaEmu.GameServer.Models.Quest.Const;
-using AikaEmu.GameServer.Models.Sound;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 

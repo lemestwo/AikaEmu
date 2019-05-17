@@ -1,4 +1,4 @@
-namespace AikaEmu.GameServer.Models.Sound
+namespace AikaEmu.GameServer.Models
 {
     public enum SoundType
     {

@@ -1,6 +1,7 @@
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Units.Const;
+using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;
@@ -79,14 +80,15 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             // if have nation send all 4, otherwise only CurNationInfo
             Connection.SendPacket(new UpdateNationGovernment(Connection.Id, nation));
             Connection.SendPacket(new UpdateSiegeInfo());
-            Connection.SendPacket(new UpdateReliques());
+            if (character.Account.NationId > 0)
+                Connection.SendPacket(new UpdateReliques(character.Account.NationId));
             Connection.SendPacket(new CurNationInfo(nation));
             Connection.SendPacket(new Unk303D(character, 1));
             Connection.SendPacket(new SendUnitSpawn(character, 1));
             WorldManager.Instance.ShowVisibleUnits(character);
 
-//            Connection.SendPacket(new SendUnitSpawn(pran, true));
-//            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
+            //            Connection.SendPacket(new SendUnitSpawn(pran, true));
+            //            Connection.SendPacket(new SetEffectOnHead(pran.Id, 1));
 
             character.Friends.SendFriends();
             Connection.SendPacket(new ApplyBuff(0));

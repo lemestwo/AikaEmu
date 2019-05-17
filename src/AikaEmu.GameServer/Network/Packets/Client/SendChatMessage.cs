@@ -1,13 +1,8 @@
 using System;
-using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Managers.Configuration;
-using AikaEmu.GameServer.Managers.Id;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Chat;
-using AikaEmu.GameServer.Models.Units;
+using AikaEmu.GameServer.Models.Chat.Const;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Const;
-using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;

@@ -36,7 +36,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write((byte) friend.Profession);
                 stream.Write((byte) 59); // TODO - Map
                 stream.Write((byte) friend.Level);
-                stream.Write(friend.Account.NationId);
+                stream.Write((byte) friend.Account.NationId);
             }
 
             return stream;

@@ -1,4 +1,4 @@
-namespace AikaEmu.GameServer.Models.Puzzle
+namespace AikaEmu.GameServer.Models.Puzzle.Const
 {
 	public enum PuzzleRequestAction
 	{

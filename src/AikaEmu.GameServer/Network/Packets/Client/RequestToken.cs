@@ -23,7 +23,6 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             Connection.Account.ActiveCharacter = character;
             character.Init();
             character.ActivatePran();
-            WorldManager.Instance.Spawn(character);
 
             for (var i = 0; i < 4; i++)
             {
@@ -84,6 +83,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                 Connection.SendPacket(new UpdateReliques(character.Account.NationId));
             Connection.SendPacket(new CurNationInfo(nation));
             Connection.SendPacket(new Unk303D(character, 1));
+            
+            WorldManager.Instance.Spawn(character);
             Connection.SendPacket(new SendUnitSpawn(character, 1));
             WorldManager.Instance.ShowVisibleUnits(character);
 

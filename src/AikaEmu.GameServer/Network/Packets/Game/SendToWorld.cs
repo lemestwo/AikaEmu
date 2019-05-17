@@ -22,7 +22,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             stream.Write(_character.Account.Id);
             stream.Write((uint) _character.Connection.Id);
             stream.Write(0);
-            stream.Write(_character.Id);
+            stream.Write(_character.DbId);
             stream.Write(_character.Name, 16);
             stream.Write((byte) 2); // nation?
             stream.Write((ushort) _character.Profession);

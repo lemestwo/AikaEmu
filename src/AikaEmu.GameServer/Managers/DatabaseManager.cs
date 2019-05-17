@@ -31,7 +31,7 @@ namespace AikaEmu.GameServer.Managers
                     {
                         var template = new Character
                         {
-                            Id = reader.GetUInt32("id"),
+                            DbId = reader.GetUInt32("id"),
                             Slot = reader.GetByte("slot"),
                             Name = reader.GetString("name"),
                             Profession = (Profession) reader.GetUInt16("class"),
@@ -83,7 +83,7 @@ namespace AikaEmu.GameServer.Managers
                 {
                     var parameters = new Dictionary<string, object>
                     {
-                        {"char_id", character.Id},
+                        {"char_id", character.DbId},
                         {"friend_id", friend.FriendId},
                         {"name", friend.Name},
                         {"is_blocked", friend.IsBlocked}
@@ -141,7 +141,7 @@ namespace AikaEmu.GameServer.Managers
                         var parameters = new Dictionary<string, object>
                         {
                             {"item_id", item.ItemId},
-                            {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? character.Id : 0},
+                            {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? character.DbId : 0},
                             {"acc_id", character.Account.Id},
                             {
                                 "pran_id",

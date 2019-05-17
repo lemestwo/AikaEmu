@@ -41,6 +41,19 @@ namespace AikaEmu.GameServer.Models.Units.Character
             foreach (var friend in _friendsList.Values)
             {
                 _character.SendPacket(new SendFriendInfo(_character.Connection.Id, friend));
+
+                // Send online notification
+                var friendData = WorldManager.Instance.GetCharacter(friend.FriendId);
+                friendData?.SendPacket(new SendFriendOn(friendData.Connection.Id, _character));
+            }
+        }
+
+        public void GetOffline()
+        {
+            foreach (var friend in _friendsList.Values)
+            {
+                var friendData = WorldManager.Instance.GetCharacter(friend.FriendId);
+                friendData?.SendPacket(new SendFriendOff(friendData.Connection.Id, _character.DbId));
             }
         }
 
@@ -69,7 +82,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM character_friends WHERE char_id=@char_id";
-                command.Parameters.AddWithValue("@char_id", _character.Id);
+                command.Parameters.AddWithValue("@char_id", _character.DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
@@ -107,7 +120,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 var parameters = new Dictionary<string, object>
                 {
                     {"id", friend.Id},
-                    {"char_id", _character.Id},
+                    {"char_id", _character.DbId},
                     {"friend_id", friend.FriendId},
                     {"name", friend.Name},
                     {"is_blocked", friend.IsBlocked}

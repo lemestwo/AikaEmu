@@ -23,7 +23,7 @@ namespace AikaEmu.GameServer.Models.Units.Character.CharFriend
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
     }
 }

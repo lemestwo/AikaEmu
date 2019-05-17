@@ -11,7 +11,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
-            var npcId = stream.ReadUInt32();
+            var npcId = stream.ReadUInt16();
+            stream.ReadUInt16();
             var chatOption = (DialogType) stream.ReadUInt32();
             var subChatOption = stream.ReadUInt32();
 

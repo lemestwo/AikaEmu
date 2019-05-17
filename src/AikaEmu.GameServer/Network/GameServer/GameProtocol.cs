@@ -16,7 +16,7 @@ namespace AikaEmu.GameServer.Network.GameServer
         {
             try
             {
-                ConnectionsManager.Instance.Add(new GameConnection(session));
+                ConnectionManager.Instance.Add(new GameConnection(session));
                 _log.Info("Client {0} connected with SessionId: {1}.", session.Ip.ToString(), session.Id.ToString());
             }
             catch (Exception e)
@@ -30,11 +30,11 @@ namespace AikaEmu.GameServer.Network.GameServer
         {
             try
             {
-                var connection = ConnectionsManager.Instance.GetConnection(session.Id);
+                var connection = ConnectionManager.Instance.GetConnection(session.Id);
                 if (connection == null) return;
 
                 connection.OnDisconnect();
-                ConnectionsManager.Instance.Remove(session.Id);
+                ConnectionManager.Instance.Remove(session.Id);
             }
             catch (Exception e)
             {
@@ -48,7 +48,7 @@ namespace AikaEmu.GameServer.Network.GameServer
         // TODO - Need complete overhaul
         public override void OnReceive(Session session, byte[] buff, int bytes)
         {
-            var connection = ConnectionsManager.Instance.GetConnection(session.Id);
+            var connection = ConnectionManager.Instance.GetConnection(session.Id);
             if (connection == null) return;
 
             try

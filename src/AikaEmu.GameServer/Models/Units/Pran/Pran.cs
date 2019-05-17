@@ -82,7 +82,7 @@ namespace AikaEmu.GameServer.Models.Units.Pran
                         return false;
                     }
 
-                    Id = (uint) (Account.ActiveCharacter.Connection.Id + 10240); // TODO - Find a way to use IdPranManager
+                    Id = (ushort) (Account.ActiveCharacter.Connection.Id + 10240); // TODO - Find a way to use IdPranManager
                     DbId = reader.GetUInt32("id");
                     Name = reader.GetString("name");
                     Food = reader.GetByte("food");

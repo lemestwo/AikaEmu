@@ -17,7 +17,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
         {
             try
             {
-                foreach (var dir in Directory.GetDirectories(path/*, "*", SearchOption.AllDirectories*/))
+                foreach (var dir in Directory.GetDirectories(path /*, "*", SearchOption.AllDirectories*/))
                 {
                     var collection = new NpcColection();
                     foreach (var file in Directory.GetFiles(dir, "*.json"))
@@ -60,7 +60,7 @@ namespace AikaEmu.GameServer.Models.Data.Npcs
             {
                 var temp = new Npc
                 {
-                    Id = IdUnitSpawnManager.Instance.GetNextId(),
+                    Id = (ushort) IdUnitSpawnManager.Instance.GetNextId(),
                     NpcId = npc.NpcSpawnJson.NpcId,
                     NpcIdX = npc.NpcSpawnJson.NpcIdX,
                     Hp = npc.NpcSpawnJson.Hp,

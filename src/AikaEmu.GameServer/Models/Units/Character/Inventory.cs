@@ -392,7 +392,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     case SlotType.Equipments:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=@char_id";
                         command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
-                        command.Parameters.AddWithValue("@char_id", _character.Id);
+                        command.Parameters.AddWithValue("@char_id", _character.DbId);
                         break;
                     case SlotType.Bank:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=0";
@@ -478,7 +478,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                         {
                             {"id", item.DbId},
                             {"item_id", item.ItemId},
-                            {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? _character.Id : 0},
+                            {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? _character.DbId : 0},
                             {"acc_id", _character.Account.Id},
                             {
                                 "pran_id",

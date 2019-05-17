@@ -17,32 +17,22 @@ namespace AikaEmu.GameServer.Managers
 {
     public class WorldManager : Singleton<WorldManager>
     {
-        private readonly ConcurrentDictionary<uint, Character> _characters;
-        private readonly ConcurrentDictionary<uint, Npc> _npcs;
-        private readonly ConcurrentDictionary<uint, Mob> _mobs;
-        private readonly ConcurrentDictionary<uint, Pran> _prans;
+        private readonly ConcurrentDictionary<ushort, Character> _characters;
+        private readonly ConcurrentDictionary<ushort, Npc> _npcs;
+        private readonly ConcurrentDictionary<ushort, Mob> _mobs;
+        private readonly ConcurrentDictionary<ushort, Pran> _prans;
 
         protected WorldManager()
         {
-            _characters = new ConcurrentDictionary<uint, Character>();
-            _npcs = new ConcurrentDictionary<uint, Npc>();
-            _mobs = new ConcurrentDictionary<uint, Mob>();
-            _prans = new ConcurrentDictionary<uint, Pran>();
+            _characters = new ConcurrentDictionary<ushort, Character>();
+            _npcs = new ConcurrentDictionary<ushort, Npc>();
+            _mobs = new ConcurrentDictionary<ushort, Mob>();
+            _prans = new ConcurrentDictionary<ushort, Pran>();
         }
 
-        public Npc GetNpc(uint conId)
+        public Npc GetNpc(ushort conId)
         {
             return _npcs.ContainsKey(conId) ? _npcs[conId] : null;
-        }
-
-        public Npc GetNpc(ushort npcId)
-        {
-            foreach (var (_, value) in _npcs)
-            {
-                if (value.NpcId == npcId) return value;
-            }
-
-            return null;
         }
 
         public IEnumerable<Character> GetCharacters()
@@ -52,35 +42,20 @@ namespace AikaEmu.GameServer.Managers
 
         public Character GetCharacter(ushort id)
         {
-            foreach (var (_, character) in _characters)
-            {
-                if (character.Connection.Id == id) return character;
-            }
-
-            return null;
+            return _characters.ContainsKey(id) ? _characters[id] : null;
         }
 
         public Character GetCharacter(string name)
         {
-            foreach (var (_, character) in _characters)
-            {
-                if (character.Name.Equals(name)) return character;
-            }
-
-            return null;
+            return _characters.Values.FirstOrDefault(character => character.Name.Equals(name));
         }
 
         public Character GetCharacter(uint id)
         {
-            foreach (var (_, character) in _characters)
-            {
-                if (character.Id == id) return character;
-            }
-
-            return null;
+            return _characters.Values.FirstOrDefault(character => character.DbId == id);
         }
 
-        public void InitBasicSpawn()
+        public static void SpawnUnits()
         {
             foreach (var npc in DataManager.Instance.NpcData.GetAllNpc())
                 npc.Spawn();
@@ -109,7 +84,9 @@ namespace AikaEmu.GameServer.Managers
                     break;
             }
 
-            // TODO - SHOW
+            foreach (var onlineChar in GetCharacters())
+                if (onlineChar.IsAround(unit.Position, 70))
+                    ShowVisibleUnits(onlineChar);
         }
 
         public void Despawn(BaseUnit unit)
@@ -120,6 +97,8 @@ namespace AikaEmu.GameServer.Managers
             {
                 case Character character:
                     _characters.TryRemove(character.Id, out _);
+                    if (character.ActivePran != null)
+                        Despawn(character.ActivePran);
                     break;
                 case Npc npc:
                     _npcs.TryRemove(npc.Id, out _);
@@ -132,7 +111,9 @@ namespace AikaEmu.GameServer.Managers
                     break;
             }
 
-            // TODO - HIDE
+            foreach (var character in GetCharacters())
+                if (character.IsAround(unit.Position, 70) && character.Id != unit.Id)
+                    ShowVisibleUnits(character);
         }
 
         public void ShowVisibleUnits(BaseUnit unit)
@@ -141,7 +122,7 @@ namespace AikaEmu.GameServer.Managers
 
             if (character.VisibleUnits.Count <= 0)
             {
-                character.VisibleUnits = GetUnitsAround(character.Position, unit.Id);
+                character.VisibleUnits = GetUnitsAround(character.Position, character.Id);
 
                 foreach (var (_, tempUnit) in character.VisibleUnits)
                 {
@@ -161,7 +142,7 @@ namespace AikaEmu.GameServer.Managers
             }
             else
             {
-                var newUnits = GetUnitsAround(character.Position, unit.Id);
+                var newUnits = GetUnitsAround(character.Position, character.Id);
 
                 var oldIds = new List<uint>(character.VisibleUnits.Keys);
                 var newIds = new List<uint>(newUnits.Keys);
@@ -193,29 +174,28 @@ namespace AikaEmu.GameServer.Managers
             }
         }
 
-        public Dictionary<uint, BaseUnit> GetUnitsAround(Position pos, uint myId)
+        private Dictionary<uint, BaseUnit> GetUnitsAround(Position pos, uint myId)
         {
             var list = new Dictionary<uint, BaseUnit>();
 
-            // TODO - Make distance 100 configurable
             foreach (var character in _characters.Values)
             {
-                if (character.IsAround(pos, 70) && character.Id != myId) list.Add(character.Id, character);
-            }
-
-            foreach (var npc in _npcs.Values)
-            {
-                if (npc.IsAround(pos, 50) && npc.Id != myId) list.Add(npc.Id, npc);
-            }
-
-            foreach (var mob in _mobs.Values)
-            {
-                if (mob.IsAround(pos, 25) && mob.Id != myId) list.Add(mob.Id, mob);
+                if (character.IsAround(pos, 70) && character.Id != myId) list.Add(character.Connection.Id, character);
             }
 
             foreach (var pran in _prans.Values)
             {
-                if (pran.IsAround(pos, 25) && pran.Id != myId) list.Add(pran.Id, pran);
+                if (pran.IsAround(pos, 70) && pran.Id != myId) list.Add(pran.Id, pran);
+            }
+
+            foreach (var npc in _npcs.Values)
+            {
+                if (npc.IsAround(pos, 30) && npc.Id != myId) list.Add(npc.Id, npc);
+            }
+
+            foreach (var mob in _mobs.Values)
+            {
+                if (mob.IsAround(pos, 30) && mob.Id != myId) list.Add(mob.Id, mob);
             }
 
             return list;

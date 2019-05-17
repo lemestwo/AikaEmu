@@ -21,6 +21,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Account.Account Account { get; set; }
         public GameConnection Connection => Account.Connection;
 
+        public new ushort Id => Connection.Id;
+        public uint DbId { get; set; }
         public byte Slot { get; set; }
         public ulong Money { get; set; }
         public ulong BankMoney { get; set; }
@@ -98,21 +100,21 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public void SendPacketAll(GamePacket packet, bool inRange = true, bool includeMyself = false)
         {
-            foreach (var character in WorldManager.Instance.GetCharacters())
+            if (inRange)
             {
-                if (inRange)
+                foreach (var visibleUnits in VisibleUnits.Values)
                 {
-                    if (character.VisibleUnits.ContainsKey(Id))
+                    if (visibleUnits is Character character)
                         character.SendPacket(packet);
                 }
-                else
-                {
-                    character.SendPacket(packet);
-                }
+
+                if (includeMyself)
+                    SendPacket(packet);
+                return;
             }
 
-            if (includeMyself)
-                SendPacket(packet);
+            foreach (var character in WorldManager.Instance.GetCharacters())
+                character.SendPacket(packet);
         }
 
         public override void SetPosition(Position pos)
@@ -170,7 +172,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 {
                     var parameters = new Dictionary<string, object>
                     {
-                        {"id", Id},
+                        {"id", DbId},
                         {"acc_id", Account.Id},
                         {"slot", Slot},
                         {"name", Name},

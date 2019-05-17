@@ -4,11 +4,11 @@ using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Managers
 {
-	public class ConnectionsManager : Singleton<ConnectionsManager>
+	public class ConnectionManager : Singleton<ConnectionManager>
 	{
 		private readonly ConcurrentDictionary<uint, GameConnection> _connections;
 
-		public ConnectionsManager()
+		public ConnectionManager()
 		{
 			_connections = new ConcurrentDictionary<uint, GameConnection>();
 		}

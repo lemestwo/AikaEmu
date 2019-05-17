@@ -164,7 +164,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write(pran.BodyTemplate.Width);
                 stream.Write(pran.BodyTemplate.Chest);
                 stream.Write(pran.BodyTemplate.Leg);
-                stream.Write((ushort) pran.Id);
+                stream.Write(pran.Id);
 
                 stream.Write("", 204);
                 stream.Write(24); // unk

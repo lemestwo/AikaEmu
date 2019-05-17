@@ -6,7 +6,7 @@ namespace AikaEmu.GameServer.Models.Units
 {
     public abstract class BaseUnit
     {
-        public uint Id { get; set; }
+        public ushort Id { get; set; }
         public ushort Level { get; set; }
         public string Name { get; set; }
         public Position Position { get; set; }
@@ -15,7 +15,6 @@ namespace AikaEmu.GameServer.Models.Units
         public int Hp { get; set; }
         public int MaxMp { get; set; }
         public int Mp { get; set; }
-        public bool IsActive { get; set; } = false;
         public Dictionary<uint, BaseUnit> VisibleUnits { get; set; } = new Dictionary<uint, BaseUnit>();
 
         public virtual void SetPosition(float x, float y)
@@ -57,7 +56,6 @@ namespace AikaEmu.GameServer.Models.Units
 
         public virtual void Spawn()
         {
-            IsActive = true;
             WorldManager.Instance.Spawn(this);
         }
 

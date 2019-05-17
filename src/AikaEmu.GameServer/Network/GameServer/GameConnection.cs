@@ -21,11 +21,12 @@ namespace AikaEmu.GameServer.Network.GameServer
 
         public void OnDisconnect()
         {
-            AccountsManager.Instance.RemoveAccount(Id);
+            AccountManager.Instance.RemoveAccount(Id);
 
             if (ActiveCharacter == null) return;
 
             ActiveCharacter.Save();
+            ActiveCharacter.Friends.GetOffline();
             WorldManager.Instance.Despawn(ActiveCharacter);
         }
 

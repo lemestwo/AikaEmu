@@ -73,7 +73,7 @@ namespace AikaEmu.GameServer.Helpers
             character.Save(SaveType.Skills);
         }
 
-        public static void BuyFromShop(Character character, uint npcConId, int index, uint quantity)
+        public static void BuyFromShop(Character character, ushort npcConId, int index, uint quantity)
         {
             if (character.OpenedShopNpcConId != npcConId || character.OpenedShopType != ShopType.Store)
             {
@@ -103,7 +103,7 @@ namespace AikaEmu.GameServer.Helpers
             character.Save(SaveType.Inventory);
         }
 
-        public static void StartDialog(Character character, uint npcId, DialogType optionId, uint subOptionId)
+        public static void StartDialog(Character character, ushort npcId, DialogType optionId, uint subOptionId)
         {
             if (character.OpenedShopType != ShopType.None) return;
 

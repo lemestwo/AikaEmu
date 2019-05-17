@@ -47,7 +47,7 @@ namespace AikaEmu.GameServer
             IdPartyManager.Instance.Init();
 
             // Spawn
-            WorldManager.Instance.InitBasicSpawn();
+            WorldManager.SpawnUnits();
 
             // GameServer Setup
             var cNetwork = AppConfigManager.Instance.GameServerConfig.Network;

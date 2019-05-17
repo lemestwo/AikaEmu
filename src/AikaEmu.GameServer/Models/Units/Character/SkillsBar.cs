@@ -91,7 +91,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM character_skillbars WHERE char_id=@char_id";
-                command.Parameters.AddWithValue("@char_id", _character.Id);
+                command.Parameters.AddWithValue("@char_id", _character.DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
@@ -127,7 +127,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 {
                     command.CommandText = "DELETE FROM character_skillbars WHERE char_id=@char_id AND slot IN(" + string.Join(",", _removedSlots) + ")";
                     command.Prepare();
-                    command.Parameters.AddWithValue("@char_id", _character.Id);
+                    command.Parameters.AddWithValue("@char_id", _character.DbId);
                     command.ExecuteNonQuery();
                 }
 
@@ -139,7 +139,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 if (skill == null) continue;
                 var parameters = new Dictionary<string, object>
                 {
-                    {"char_id", _character.Id},
+                    {"char_id", _character.DbId},
                     {"slot", skill.Slot},
                     {"slot_id", skill.SlotId},
                     {"slot_type", (byte) skill.SlotType}

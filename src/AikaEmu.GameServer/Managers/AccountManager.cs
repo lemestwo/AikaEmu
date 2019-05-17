@@ -5,11 +5,11 @@ using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Managers
 {
-    public class AccountsManager : Singleton<AccountsManager>
+    public class AccountManager : Singleton<AccountManager>
     {
         private readonly Dictionary<ushort, Account> _accounts;
 
-        public AccountsManager()
+        public AccountManager()
         {
             _accounts = new Dictionary<ushort, Account>();
         }

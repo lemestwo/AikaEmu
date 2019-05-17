@@ -111,7 +111,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM character_skills WHERE char_id=@char_id";
-                command.Parameters.AddWithValue("@char_id", _character.Id);
+                command.Parameters.AddWithValue("@char_id", _character.DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
@@ -142,7 +142,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
                     var parameters = new Dictionary<string, object>
                     {
-                        {"char_id", _character.Id},
+                        {"char_id", _character.DbId},
                         {"skill_id", sk.SkillId},
                         {"level", sk.Level}
                     };

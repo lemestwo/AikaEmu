@@ -9,7 +9,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
     {
         protected override void Read(PacketStream stream)
         {
-            var npcConId = stream.ReadUInt32();
+            var npcConId = stream.ReadUInt16();
+            stream.ReadUInt16();
             var itemIndex = stream.ReadInt32();
             var quantity = stream.ReadUInt32();
 

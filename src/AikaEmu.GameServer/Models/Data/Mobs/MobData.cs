@@ -73,7 +73,7 @@ namespace AikaEmu.GameServer.Models.Data.Mobs
                     // TODO - Mob data unknown
                     var temp = new Mob
                     {
-                        Id = IdMobSpawnManager.Instance.GetNextId(),
+                        Id = (ushort) IdMobSpawnManager.Instance.GetNextId(),
                         MobId = mob.MobData.MobId,
                         Model = mob.MobData.MobModel,
                         Hp1 = mob.MobData.Hp1,

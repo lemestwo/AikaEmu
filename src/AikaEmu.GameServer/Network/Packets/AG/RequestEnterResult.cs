@@ -16,11 +16,11 @@ namespace AikaEmu.GameServer.Network.Packets.AG
 
             if (result == 1)
             {
-                var accConnection = ConnectionsManager.Instance.GetConnection(conId);
+                var accConnection = ConnectionManager.Instance.GetConnection(conId);
                 if (accConnection == null) return;
 
                 var newAccount = new Account(accId, accConnection);
-                if (!AccountsManager.Instance.AddAccount(newAccount)) return;
+                if (!AccountManager.Instance.AddAccount(newAccount)) return;
 
                 accConnection.Account = newAccount;
                 newAccount.SendCharacterList();

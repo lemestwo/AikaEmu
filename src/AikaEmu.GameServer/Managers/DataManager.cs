@@ -12,15 +12,20 @@ namespace AikaEmu.GameServer.Managers
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly string _curDir;
         public CharInitialData CharInitial { get; private set; }
-        public ExperienceData ExperienceData { get; set; }
-        public ExperienceData PranExperienceData { get; set; }
+        public ExpData ExpData { get; private set; }
+        public ExpData PranExpData { get; private set; }
+        public GearCoresData GearCoresData { get; set; }
         public ItemsData ItemsData { get; private set; }
+        public MakeItemsData MakeItemsData { get; private set; }
+        public MapsData MapsData { get; private set; }
         public MnData MnData { get; private set; }
         public NpcData NpcData { get; private set; }
         public MobData MobData { get; private set; }
         public QuestData QuestData { get; private set; }
-        public SkillDataData SkillData { get; set; }
-        public SPositionData SPositionData { get; private set; }
+        public RecipesData RecipesData { get; private set; }
+        public SetsData SetsData { get; private set; }
+        public SkillDataData SkillData { get; private set; }
+        public TitlesData TitlesData { get; private set; }
 
         protected DataManager()
         {
@@ -50,14 +55,32 @@ namespace AikaEmu.GameServer.Managers
             SkillData = new SkillDataData(GetPath("Game\\SkillData.bin"));
             _log.Info("Loaded {0} skills.", SkillData.Count);
 
-            SPositionData = new SPositionData(GetPath("Game\\SPosition.bin"));
-            _log.Info("Loaded {0} teleport positions.", SPositionData.Count);
+            using (var connection = DatabaseManager.Instance.GetConnection())
+            {
+                GearCoresData = new GearCoresData(connection);
+                _log.Info("Loaded {0} core upgrades.", GearCoresData.Count);
+                
+                ExpData = new ExpData(connection);
+                _log.Info("Loaded {0} levels.", ExpData.Count);
 
-            ExperienceData = new ExperienceData(GetPath("Game\\ExpList.bin"));
-            _log.Info("Loaded {0} levels experience.", ExperienceData.Count);
+                PranExpData = new ExpData(connection, true);
+                _log.Info("Loaded {0} pran levels.", PranExpData.Count);
 
-            PranExperienceData = new ExperienceData(GetPath("Game\\PranExpList.bin"));
-            _log.Info("Loaded {0} pran levels experience.", PranExperienceData.Count);
+                MakeItemsData = new MakeItemsData(connection);
+                _log.Info("Loaded {0} make items.", MakeItemsData.Count);
+
+                MapsData = new MapsData(connection);
+                _log.Info("Loaded {0} maps.", MapsData.Count);
+
+                RecipesData = new RecipesData(connection);
+                _log.Info("Loaded {0} recipes.", RecipesData.Count);
+
+                SetsData = new SetsData(connection);
+                _log.Info("Loaded {0} sets.", SetsData.Count);
+
+                TitlesData = new TitlesData(connection);
+                _log.Info("Loaded {0} titles.", TitlesData.Count);
+            }
         }
 
         private string GetPath(string dir, bool json = true)

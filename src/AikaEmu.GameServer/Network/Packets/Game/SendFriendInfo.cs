@@ -22,14 +22,14 @@ namespace AikaEmu.GameServer.Network.Packets.Game
             if (friend == null)
             {
                 stream.Write(_friend.Name, 16);
-                stream.Write(_friend.Id);
+                stream.Write(_friend.FriendId);
                 stream.Write((byte) (_friend.IsBlocked ? FriendStatus.OfflineBlocked : FriendStatus.Offline));
                 stream.Write("", 7);
             }
             else
             {
                 stream.Write(friend.Name, 16);
-                stream.Write(_friend.Id);
+                stream.Write(_friend.FriendId);
                 stream.Write((byte) (_friend.IsBlocked ? FriendStatus.OnlineBlocked : FriendStatus.Online));
                 stream.Write((byte) 0); // TODO - Server channel
                 stream.Write(friend.Connection.Id); // unk - conId?

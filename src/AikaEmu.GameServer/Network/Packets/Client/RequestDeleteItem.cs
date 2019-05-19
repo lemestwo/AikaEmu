@@ -11,7 +11,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var slot = stream.ReadInt32();
             var slotType = (SlotType) stream.ReadInt32();
             
-            Connection.ActiveCharacter.Inventory.DeleteItem(slotType, (ushort) slot);
+            Connection.ActiveCharacter.Inventory.RemoveItem(slotType, (ushort) slot);
         }
     }
 }

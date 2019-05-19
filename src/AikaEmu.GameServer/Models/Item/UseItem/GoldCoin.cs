@@ -23,7 +23,7 @@ namespace AikaEmu.GameServer.Models.Item.UseItem
                 return;
             }
 
-            if (!character.Inventory.DeleteItem(item.SlotType, item.Slot, 1, false)) return;
+            if (!character.Inventory.RemoveItem(item.SlotType, item.Slot, 1, false)) return;
 
             character.Money += amount;
             character.SendPacket(new UpdateCharGold(character));

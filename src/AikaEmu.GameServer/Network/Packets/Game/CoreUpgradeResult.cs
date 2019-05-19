@@ -4,15 +4,15 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Game
 {
-    public class CoreConversionResult : GamePacket
+    public class CoreUpgradeResult : GamePacket
     {
         private readonly bool _result;
 
-        public CoreConversionResult(ushort conId, bool result)
+        public CoreUpgradeResult(ushort conId, bool result)
         {
             _result = result;
 
-            Opcode = (ushort) GameOpcode.CoreConversionResult;
+            Opcode = (ushort) GameOpcode.CoreUpgradeResult;
             SenderId = conId;
         }
 

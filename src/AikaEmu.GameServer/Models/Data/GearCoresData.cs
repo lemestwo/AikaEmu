@@ -31,5 +31,15 @@ namespace AikaEmu.GameServer.Models.Data
                 }
             }
         }
+
+        public GearCoreDataModel GetData(ushort itemId, ushort idx)
+        {
+            foreach (var core in Objects.Values)
+            {
+                if (core.Idx == idx && core.ItemId == itemId) return core;
+            }
+
+            return null;
+        }
     }
 }

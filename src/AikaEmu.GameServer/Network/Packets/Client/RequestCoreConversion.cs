@@ -4,10 +4,11 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client
 {
-    public class RequestCoreConversion : GamePacket
+    public class RequestCoreUpgrade : GamePacket
     {
         protected override void Read(PacketStream stream)
         {
+            // Reduce 3 enchant (+15 to +12)
             ushort coreSlot = stream.ReadByte();
             ushort itemSlot = stream.ReadByte();
             ushort extractSlot1 = stream.ReadByte();
@@ -16,7 +17,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             ushort extractSlot4 = stream.ReadByte();
             Log.Debug("RequestCoreConversion, coreSlot: {0}, itemSlot: {1}", coreSlot, itemSlot);
 
-            Connection.SendPacket(new CoreConversionResult(Connection.Id, true));
+            Connection.SendPacket(new CoreUpgradeResult(Connection.Id, true));
         }
     }
 }

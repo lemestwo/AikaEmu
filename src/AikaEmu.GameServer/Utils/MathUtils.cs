@@ -23,5 +23,7 @@ namespace AikaEmu.GameServer.Utils
         {
             return a > b ? (a - b) * 2 : b - a;
         }
+        
+        
     }
 }

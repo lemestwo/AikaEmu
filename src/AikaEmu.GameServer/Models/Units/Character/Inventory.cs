@@ -106,6 +106,22 @@ namespace AikaEmu.GameServer.Models.Units.Character
             }
         }
 
+        public bool UpdateItem(SlotType slotType, ushort slot, ushort newItemId, bool save = true)
+        {
+            var item = GetItem(slotType, slot);
+            if (item == null) return false;
+            lock (_lockObject)
+            {
+                item.ItemId = newItemId;
+                _items[slotType][slot] = item;
+                if (save)
+                    _character.Save(SaveType.Inventory);
+            }
+
+            _character.SendPacket(new UpdateItem(item, false));
+            return true;
+        }
+
         public void MergeItems(ushort slotFrom, ushort slotTo)
         {
             lock (_lockObject)
@@ -122,7 +138,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 }
 
                 itemTo.Quantity += itemFrom.Quantity;
-                DeleteItem(SlotType.Inventory, slotFrom, 0, false);
+                RemoveItem(SlotType.Inventory, slotFrom, 0, false);
                 _items[itemTo.SlotType][itemTo.Slot] = itemTo;
                 _character.SendPacket(new UpdateItem(itemTo, false));
 
@@ -157,7 +173,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
         }
 
-        public bool DeleteItem(SlotType slotType, ushort slot, byte qty = 0, bool save = true)
+        public bool RemoveItem(SlotType slotType, ushort slot, byte qty = 0, bool save = true)
         {
             lock (_lockObject)
             {

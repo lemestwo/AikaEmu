@@ -6,15 +6,15 @@ It's code is based on several ideas from others emulators, mostly AAEmu and Aura
 
 It's being developed only for educational purposes. 
 
-AikaEmu is free and licensed under [GNU GPL v3.0](README.md).
+AikaEmu is free and licensed under [GNU GPL v3.0](LICENSE.md).
 
-We suggest to join our community at [Discord]() if you have any questions.
+Join our community at [Discord]() if you have any questions.
 
 ## Getting Started
 
 * Compile the server.
 * Follow instructions in [Web folder](web/README.md) to setup web.
-* Create MySql database aikaemu_auth and aikaemu_game.
+* Create MySql database "aikaemu_auth" and "aikaemu_game".
 * Run MySql script [Auth](sql/aikaemu_auth.sql) and [Game](sql/aikaemu_game.sql).
 * Insert new GameServer into DB.
 ```

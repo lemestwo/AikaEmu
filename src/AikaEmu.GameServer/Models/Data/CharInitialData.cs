@@ -5,11 +5,11 @@ namespace AikaEmu.GameServer.Models.Data
 {
 	public class CharInitialData
 	{
-		public CharInitialJson Data { get; }
+		public CharacterConfigJson Data { get; }
 
 		public CharInitialData(string path)
 		{
-			JsonUtil.DeserializeFile(path, out CharInitialJson data);
+			JsonUtil.DeserializeFile(path, out CharacterConfigJson data);
 			Data = data;
 		}
 

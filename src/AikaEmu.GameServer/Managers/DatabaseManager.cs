@@ -131,8 +131,8 @@ namespace AikaEmu.GameServer.Managers
 
         public List<Item> InsertItems(List<Item> items, Character character)
         {
-            using (var connection = GetConnection())
-            using (var transaction = connection.BeginTransaction())
+            using (var sqlConnection = GetConnection())
+            using (var sqlTransaction = sqlConnection.BeginTransaction())
             {
                 try
                 {
@@ -160,14 +160,14 @@ namespace AikaEmu.GameServer.Managers
                             {"quantity", item.Quantity},
                             {"time", item.ItemTime}
                         };
-                        item.DbId = MySqlCommand(SqlCommandType.Insert, "items", parameters, connection, transaction);
+                        item.DbId = MySqlCommand(SqlCommandType.Insert, "items", parameters, sqlConnection, sqlTransaction);
                     }
 
-                    transaction.Commit();
+                    sqlTransaction.Commit();
                 }
                 catch (Exception e)
                 {
-                    transaction.Rollback();
+                    sqlTransaction.Rollback();
                     character.Connection.Close();
                     Log.Error(e);
                 }
@@ -176,14 +176,14 @@ namespace AikaEmu.GameServer.Managers
             return items;
         }
 
-        public bool InsertCharacter(Character character, Account account)
+        public bool InsertCharacter(Character character, List<Item> items, Account account)
         {
             using (var connection = GetConnection())
             using (var transaction = connection.BeginTransaction())
             {
                 try
                 {
-                    var parameters = new Dictionary<string, object>
+                    var characterParameter = new Dictionary<string, object>
                     {
                         {"acc_id", account.Id},
                         {"slot", character.Slot},
@@ -201,9 +201,9 @@ namespace AikaEmu.GameServer.Managers
                         {"x", character.Position.CoordX},
                         {"y", character.Position.CoordY},
                         {"rotation", character.Position.Rotation},
-                        {"honor", character.HonorPoints},
-                        {"pvp", character.PvpPoints},
-                        {"infamy", character.InfamyPoints},
+                        {"honor_point", character.HonorPoints},
+                        {"pvp_point", character.PvpPoints},
+                        {"infamy_point", character.InfamyPoints},
                         {"str", character.Attributes.Strenght},
                         {"agi", character.Attributes.Agility},
                         {"int", character.Attributes.Intelligence},
@@ -211,10 +211,20 @@ namespace AikaEmu.GameServer.Managers
                         {"spi", character.Attributes.Spirit},
                         {"token", character.Token}
                     };
-                    if (MySqlCommand(SqlCommandType.Insert, "characters", parameters, connection, transaction) > 0)
+                    character.DbId = MySqlCommand(SqlCommandType.Insert, "characters", characterParameter, connection, transaction);
+                    if (character.DbId > 0)
                     {
-                        transaction.Commit();
-                        return true;
+                        var resultItems = InsertItems(items, character);
+                        var isOk = true;
+                        foreach (var item in resultItems)
+                            if (item.DbId <= 0)
+                                isOk = false;
+
+                        if (isOk)
+                        {
+                            transaction.Commit();
+                            return true;
+                        }
                     }
 
                     transaction.Rollback();

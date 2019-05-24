@@ -35,7 +35,7 @@ namespace AikaEmu.GameServer.Models.Units.Npc.Const
         QuestReward2 = 40,
         NationStatus = 41,
         GuildSkills = 46,
-        UpgradeCostume = 62,
+        PranCostumeEnchant = 62,
         TeleportDisckeroa = 63,
         BlessPaid = 65,
         Evolution = 71,

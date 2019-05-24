@@ -1,23 +1,25 @@
+using System.Collections.Generic;
+using AikaEmu.GameServer.Helpers;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client
 {
-    public class RequestCoreUpgrade : GamePacket
+    public class RequestCoreConvert : GamePacket
     {
         protected override void Read(PacketStream stream)
         {
-            // Reduce 3 enchant (+15 to +12)
-            ushort coreSlot = stream.ReadByte();
-            ushort itemSlot = stream.ReadByte();
-            ushort extractSlot1 = stream.ReadByte();
-            ushort extractSlot2 = stream.ReadByte();
-            ushort extractSlot3 = stream.ReadByte();
-            ushort extractSlot4 = stream.ReadByte();
-            Log.Debug("RequestCoreConversion, coreSlot: {0}, itemSlot: {1}", coreSlot, itemSlot);
+            // Reduce 3 enchant (ex: +12 to +9)
+            var coreSlot = stream.ReadByte();
+            var itemSlot = stream.ReadByte();
+            var extractSlots = new List<ushort>();
+            for (var i = 0; i < 4; i++)
+            {
+                var slot = stream.ReadByte();
+                if (slot < byte.MaxValue) extractSlots.Add(slot);
+            }
 
-            Connection.SendPacket(new CoreUpgradeResult(Connection.Id, true));
+            GearCoreHelper.CoreConvert(Connection, coreSlot, itemSlot, extractSlots);
         }
     }
 }

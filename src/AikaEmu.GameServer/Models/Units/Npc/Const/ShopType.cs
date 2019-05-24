@@ -33,7 +33,7 @@ namespace AikaEmu.GameServer.Models.Units.Npc.Const
         SkillShop = 29,
         PranJokempo = 33,
         PranInteract = 34,
-        PranEnchant = 35,
+        PranCostumeEnchant = 35,
         Evolution = 38,
         RumbleWar = 39,
         StoneRefinement = 40,

@@ -5,7 +5,7 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client
 {
-    public class RequestCoreConvert : GamePacket
+    public class RequestGearCore : GamePacket
     {
         protected override void Read(PacketStream stream)
         {
@@ -19,7 +19,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                 if (slot != ushort.MaxValue) extractSlots.Add(slot);
             }
 
-            GearCoreHelper.GearConvert(Connection, coreSlot, itemSlot, extractSlots);
+            GearCoreHelper.CoreUpgrade(Connection, coreSlot, itemSlot, extractSlots);
         }
     }
 }

@@ -7,6 +7,7 @@ using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Item.Const;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Network.Packets.Game;
+using AikaEmu.GameServer.Utils;
 using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;
 using NLog;
@@ -262,10 +263,23 @@ namespace AikaEmu.GameServer.Models.Units.Character
                         _items[slotType][freeSlot] = item;
                     }
                 }
+                else if (GlobalUtils.IsEquipment(itemData.ItemType))
+                {
+                    var freeSlot = GetFirstFreeSlot(slotType);
+                    var item = new Item.Item(slotType, freeSlot, itemId)
+                    {
+                        // TODO - FIX THIS WHEN NOT DEVELOP
+                        // POSSIBLE EXPLOIT
+                        Quantity = (byte) quantity,
+                        Durability = (byte) itemData.Durability,
+                        DurMax = (byte) itemData.Durability,
+                    };
+                    newItems.Add(item);
+                    _items[slotType][freeSlot] = item;
+                }
                 else
                 {
                     // If item don't stack
-                    // TODO - MSG ERROR NOT ENOUGH SPACE
                     if (freeSlots < quantity) return false;
 
                     for (var i = 0; i < quantity; i++)
@@ -273,7 +287,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                         var freeSlot = GetFirstFreeSlot(slotType);
                         var item = new Item.Item(slotType, freeSlot, itemId)
                         {
-                            Quantity = 0,
+                            Quantity = 1,
                             Durability = (byte) itemData.Durability,
                             DurMax = (byte) itemData.Durability,
                         };

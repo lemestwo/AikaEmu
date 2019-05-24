@@ -168,7 +168,7 @@ namespace AikaEmu.GameServer.Models.Item.Const
         Unk146 = 726,
         Unk147 = 727,
         Unk148 = 728,
-        Unk149 = 729,
+        GearCoreConvert = 729,
         Unk150 = 730,
         Unk151 = 731,
         Unk152 = 732,

@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 18/05/2019 23:56:16
+ Date: 24/05/2019 20:23:11
 */
 
 SET NAMES utf8mb4;
@@ -55,7 +55,7 @@ CREATE TABLE `character_friends`  (
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `char_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_quests
@@ -134,7 +134,7 @@ CREATE TABLE `characters`  (
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for data_exp
@@ -300,6 +300,60 @@ INSERT INTO `data_exp` VALUES (148, 3469656409949120057);
 INSERT INTO `data_exp` VALUES (149, 3539396499779745398);
 INSERT INTO `data_exp` VALUES (150, 5530307029318898676);
 INSERT INTO `data_exp` VALUES (151, 13825767570184044333);
+
+-- ----------------------------
+-- Table structure for data_gearconverts
+-- ----------------------------
+DROP TABLE IF EXISTS `data_gearconverts`;
+CREATE TABLE `data_gearconverts`  (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `result_item_id` smallint(5) UNSIGNED NOT NULL,
+  `item1_id` smallint(5) UNSIGNED NOT NULL,
+  `item2_id` smallint(5) UNSIGNED NOT NULL,
+  `item3_id` smallint(5) UNSIGNED NOT NULL,
+  `item4_id` smallint(5) UNSIGNED NOT NULL,
+  `item5_id` smallint(5) UNSIGNED NOT NULL,
+  `gear_level` tinyint(3) UNSIGNED NOT NULL,
+  `chance` tinyint(3) UNSIGNED NOT NULL,
+  `ext_chance` tinyint(3) UNSIGNED NOT NULL,
+  `conc_ext_chance` tinyint(3) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_gearconverts
+-- ----------------------------
+INSERT INTO `data_gearconverts` VALUES (1, 12066, 12058, 12059, 12060, 12061, 12062, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (2, 12101, 12093, 12094, 12095, 12096, 12097, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (3, 12206, 12198, 12199, 12200, 12201, 12202, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (4, 12241, 12233, 12234, 12235, 12236, 12237, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (5, 12276, 12268, 12269, 12270, 12271, 12272, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (6, 12311, 12303, 12304, 12305, 12306, 12307, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (7, 12342, 12336, 12337, 12338, 12339, 12341, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (8, 12372, 12366, 12367, 12368, 12369, 12371, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (9, 12402, 12396, 12397, 12398, 12399, 12401, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (10, 12432, 12426, 12427, 12428, 12429, 12431, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (11, 12462, 12456, 12457, 12458, 12459, 12461, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (12, 12492, 12486, 12487, 12488, 12489, 12491, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (13, 12522, 12516, 12517, 12518, 12519, 12521, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (14, 12552, 12546, 12547, 12548, 12549, 12551, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (15, 12582, 12576, 12577, 12578, 12579, 12581, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (16, 12612, 12606, 12607, 12608, 12609, 12611, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (17, 12642, 12636, 12637, 12638, 12639, 12641, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (18, 12672, 12666, 12667, 12668, 12669, 12671, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (19, 12702, 12696, 12697, 12698, 12699, 12701, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (20, 12732, 12726, 12727, 12728, 12729, 12731, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (21, 12762, 12756, 12757, 12758, 12759, 12761, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (22, 12792, 12786, 12787, 12788, 12789, 12791, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (23, 12822, 12816, 12817, 12818, 12819, 12821, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (24, 12852, 12846, 12847, 12848, 12849, 12851, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (25, 12882, 12876, 12877, 12878, 12879, 12881, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (26, 12912, 12906, 12907, 12908, 12909, 12911, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (27, 12942, 12936, 12937, 12938, 12939, 12941, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (28, 12972, 12966, 12967, 12968, 12969, 12971, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (29, 13002, 12996, 12997, 12998, 12999, 13001, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (30, 13032, 13026, 13027, 13028, 13029, 13031, 1, 20, 8, 20);
+INSERT INTO `data_gearconverts` VALUES (31, 13062, 13056, 13057, 13058, 13059, 13061, 1, 20, 8, 20);
 
 -- ----------------------------
 -- Table structure for data_gearcores
@@ -14669,9 +14723,9 @@ CREATE TABLE `devir_slots`  (
 -- ----------------------------
 -- Records of devir_slots
 -- ----------------------------
-INSERT INTO `devir_slots` VALUES (1, 0, 0, 1, 0, '', 0);
-INSERT INTO `devir_slots` VALUES (2, 0, 0, 1, 0, '', 0);
-INSERT INTO `devir_slots` VALUES (5, 0, 0, 1, 0, '', 0);
+INSERT INTO `devir_slots` VALUES (1, 0, 0, 1, 6370, 'Cleric', 1558062000);
+INSERT INTO `devir_slots` VALUES (2, 0, 0, 1, 12000, 'Gunner', 1558062000);
+INSERT INTO `devir_slots` VALUES (5, 0, 0, 1, 12018, 'Templar', 1558062000);
 INSERT INTO `devir_slots` VALUES (1, 0, 1, 1, 0, '', 0);
 INSERT INTO `devir_slots` VALUES (2, 0, 1, 1, 0, '', 0);
 INSERT INTO `devir_slots` VALUES (5, 0, 1, 1, 0, '', 0);
@@ -14771,7 +14825,7 @@ CREATE TABLE `items`  (
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for nations
@@ -14782,13 +14836,6 @@ CREATE TABLE `nations`  (
   `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of nations
--- ----------------------------
-INSERT INTO `nations` VALUES (1, 'Test1');
-INSERT INTO `nations` VALUES (2, 'Test2');
-INSERT INTO `nations` VALUES (5, 'Test3');
 
 -- ----------------------------
 -- Table structure for prans
@@ -14823,6 +14870,6 @@ CREATE TABLE `prans`  (
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

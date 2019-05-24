@@ -3,15 +3,15 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Game
 {
-    public class CoreConvertResult : GamePacket
+    public class StoneCombinationResult : GamePacket
     {
         private readonly bool _result;
 
-        public CoreConvertResult(ushort conId, bool result)
+        public StoneCombinationResult(ushort conId, bool result)
         {
             _result = result;
 
-            Opcode = (ushort) GameOpcode.CoreConvertResult;
+            Opcode = (ushort) GameOpcode.StoneCombinationResult;
             SenderId = conId;
         }
 

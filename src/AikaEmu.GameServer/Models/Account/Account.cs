@@ -90,7 +90,7 @@ namespace AikaEmu.GameServer.Models.Account
 
             var configs = DataManager.Instance.CharInitial;
             var charInitials = configs.GetInitial((ushort) charClass);
-            var template = new Character
+            var charTemplate = new Character
             {
                 Account = this,
                 Profession = charClass,
@@ -98,17 +98,17 @@ namespace AikaEmu.GameServer.Models.Account
                 Position = new Position
                 {
                     NationId = 1,
-                    CoordX = isRanch ? configs.Data.StartPosition[1].CoordX : configs.Data.StartPosition[0].CoordX,
-                    CoordY = isRanch ? configs.Data.StartPosition[1].CoordY : configs.Data.StartPosition[0].CoordY,
+                    CoordX = isRanch ? configs.Data.StartPosition[1].X : configs.Data.StartPosition[0].X,
+                    CoordY = isRanch ? configs.Data.StartPosition[1].Y : configs.Data.StartPosition[0].Y,
                 },
                 Hp = charInitials.HpMp[0],
                 MaxHp = charInitials.HpMp[0],
                 Mp = charInitials.HpMp[1],
                 MaxMp = charInitials.HpMp[1],
                 Slot = slot,
-                Level = 1,
+                Level = 0,
                 Money = 0,
-                Token = string.Empty,
+                Token = "1111", // TODO - empty.string
                 Attributes = new Attributes(charInitials.Attributes),
                 Experience = 0,
                 PvpPoints = 0,
@@ -116,13 +116,38 @@ namespace AikaEmu.GameServer.Models.Account
                 InfamyPoints = 0,
                 BodyTemplate = new BodyTemplate(charInitials.Body)
             };
+            var listItems = new List<Item.Item>
+            {
+                new Item.Item(SlotType.Equipments, 0, face),
+                new Item.Item(SlotType.Equipments, 1, hair)
+            };
+            foreach (var item in configs.Data.StartItems)
+            {
+                var itemTemplate = new Item.Item(item.SlotType, item.Slot, item.ItemId, false)
+                {
+                    Quantity = item.Quantity,
+                    Durability = item.Durability,
+                    DurMax = item.Durability,
+                };
+                listItems.Add(itemTemplate);
+            }
 
-            if (DatabaseManager.Instance.InsertCharacter(template, this))
+            foreach (var item in charInitials.Items)
+            {
+                var itemTemplate = new Item.Item(item.SlotType, item.Slot, item.ItemId, false)
+                {
+                    Quantity = item.Quantity,
+                    Durability = item.Durability,
+                    DurMax = item.Durability,
+                };
+                listItems.Add(itemTemplate);
+            }
+
+            // TODO - SKILLS
+            if (DatabaseManager.Instance.InsertCharacter(charTemplate, listItems, this))
                 SendCharacterList();
             else
-            {
                 Connection.SendPacket(new SendMessage(new Message("Something went wrong, please contact administration.", MessageType.Error), 0));
-            }
         }
 
         private static Profession GetClassByFace(ushort face)

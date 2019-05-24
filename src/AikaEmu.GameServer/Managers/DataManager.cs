@@ -12,6 +12,7 @@ namespace AikaEmu.GameServer.Managers
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly string _curDir;
         public CharInitialData CharInitial { get; private set; }
+        public ConvertCoreData ConvertCoreData { get; private set; }
         public ExpData ExpData { get; private set; }
         public ExpData PranExpData { get; private set; }
         public GearCoresData GearCoresData { get; set; }
@@ -57,9 +58,12 @@ namespace AikaEmu.GameServer.Managers
 
             using (var connection = DatabaseManager.Instance.GetConnection())
             {
+                ConvertCoreData = new ConvertCoreData(connection);
+                _log.Info("Loaded {0} core converts.", ConvertCoreData.Count);
+
                 GearCoresData = new GearCoresData(connection);
                 _log.Info("Loaded {0} core upgrades.", GearCoresData.Count);
-                
+
                 ExpData = new ExpData(connection);
                 _log.Info("Loaded {0} levels.", ExpData.Count);
 

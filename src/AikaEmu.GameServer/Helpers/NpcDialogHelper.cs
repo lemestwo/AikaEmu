@@ -91,7 +91,7 @@ namespace AikaEmu.GameServer.Helpers
             var item = DataManager.Instance.ItemsData.GetItemData(npc.StoreItems[index]);
             if (item == null) return;
 
-            if (character.Money < item.BuyPrice * quantity) return;
+            if (GlobalUtils.IsEquipment(item.ItemType) && quantity > 1 || character.Money < item.BuyPrice * quantity) return;
 
             if (!character.Inventory.AddItem(SlotType.Inventory, quantity, npc.StoreItems[index])) return;
 
@@ -201,7 +201,7 @@ namespace AikaEmu.GameServer.Helpers
                     {
                         if (npc.StoreItems != null && npc.StoreType == StoreType.Normal)
                         {
-                            character.SendPacket(new NpcStoreOpen((ushort) npc.Id, npc.StoreType, npc.StoreItems));
+                            character.SendPacket(new NpcStoreOpen(npc.Id, npc.StoreType, npc.StoreItems));
                             character.OpenedShopType = ShopType.Store;
                             character.OpenedShopNpcConId = npc.Id;
                         }
@@ -215,7 +215,7 @@ namespace AikaEmu.GameServer.Helpers
                         // This is just placeholder
                         if (npc.StoreItems != null && npc.StoreType != StoreType.Normal)
                         {
-                            character.SendPacket(new NpcStoreOpen((ushort) npc.Id, npc.StoreType, npc.StoreItems));
+                            character.SendPacket(new NpcStoreOpen(npc.Id, npc.StoreType, npc.StoreItems));
                             character.OpenedShopType = ShopType.SkillShop;
                             character.OpenedShopNpcConId = npc.Id;
                         }
@@ -291,7 +291,8 @@ namespace AikaEmu.GameServer.Helpers
                         break;
                     case DialogType.GuildSkills:
                         break;
-                    case DialogType.UpgradeCostume:
+                    case DialogType.PranCostumeEnchant:
+                        OpenShop(character, ShopType.PranCostumeEnchant, npc.Id);
                         break;
                     case DialogType.BlessPaid:
                         break;

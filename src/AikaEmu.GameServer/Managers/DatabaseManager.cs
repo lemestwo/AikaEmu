@@ -20,7 +20,7 @@ namespace AikaEmu.GameServer.Managers
             using (var command = sql.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM characters WHERE acc_id=@acc_id";
-                command.Parameters.AddWithValue("@acc_id", account.Id);
+                command.Parameters.AddWithValue("@acc_id", account.DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
@@ -139,7 +139,7 @@ namespace AikaEmu.GameServer.Managers
                         {
                             {"item_id", item.ItemId},
                             {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? character.DbId : 0},
-                            {"acc_id", character.Account.Id},
+                            {"acc_id", character.Account.DbId},
                             {
                                 "pran_id",
                                 item.SlotType == SlotType.PranInventory || item.SlotType == SlotType.PranEquipments ? character.ActivePran?.DbId ?? 0 : 0
@@ -182,7 +182,7 @@ namespace AikaEmu.GameServer.Managers
                 {
                     var characterParameter = new Dictionary<string, object>
                     {
-                        {"acc_id", account.Id},
+                        {"acc_id", account.DbId},
                         {"slot", character.Slot},
                         {"name", character.Name},
                         {"level", character.Level},

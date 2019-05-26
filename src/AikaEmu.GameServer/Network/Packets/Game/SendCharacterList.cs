@@ -20,7 +20,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(Connection.Account.Id);
+            stream.Write(Connection.Account.DbId);
             stream.Write(1); // Always 1?
             stream.WriteCc(4);
 

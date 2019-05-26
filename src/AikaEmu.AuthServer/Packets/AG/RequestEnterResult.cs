@@ -15,7 +15,7 @@ namespace AikaEmu.AuthServer.Packets.AG
             _accId = accId;
             _conId = conId;
             _result = result;
-            Opcode = (ushort) AuthGameOpcode.RequestEnterResult;
+            Opcode = (ushort) InternalOpcode.RequestEnterResult;
         }
 
         public override PacketStream Write(PacketStream stream)

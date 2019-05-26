@@ -2,9 +2,7 @@
 
 AikaEmu is a completely open source **C# .Net Core 2.2** emulator for the MMORPG **Aika Online**. 
 
-It's code is based on several ideas from others emulators, mostly AAEmu and Aura.
-
-It's being developed only for educational purposes. 
+It's code is based on several ideas from others emulators and is being developed only for educational purposes. 
 
 AikaEmu is free and licensed under [GNU GPL v3.0](LICENSE.md).
 
@@ -12,7 +10,8 @@ Join our community at [Discord]() if you have any questions.
 
 ## Getting Started
 
-* Compile the server.
+### Setup Server
+
 * Follow instructions in [Web folder](src/AikaEmu.WebServer/README.md) to setup web.
 * Create MySql database "aikaemu_auth" and "aikaemu_game".
 * Run MySql script [Auth](sql/aikaemu_auth.sql) and [Game](sql/aikaemu_game.sql).
@@ -24,11 +23,18 @@ INSERT INTO `aikaemu_auth`.`game_servers`(`id`, `name`, `ip`, `port`) VALUES (1,
 ```
 INSERT INTO `aikaemu_auth`.`accounts`(`user`, `pass`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3');
 ```
-* Start AuthServer and GameServer.
+* Change each **"Config.json"** file inside each server to your settings.
+* Run **WebServer**, **AuthServer** and **GameServer**.
 
+### Setup client
+
+* Paste "SL.bin" (client folder) inside your client folder to connect to 127.0.0.1.
 > Right now we are using latest AikaBR client to connect, should change in the future to NA.
 
-> Paste "SL.bin" (client folder) inside your client folder to connect to 127.0.0.1.
+### Compile Server with "dotnet publish"
+
+* Open **"Publish.sh"** and change RUNTIME variable to your environment, save and run it.
+* Run **"Start Servers.bat"**
 
 ## Issues
 

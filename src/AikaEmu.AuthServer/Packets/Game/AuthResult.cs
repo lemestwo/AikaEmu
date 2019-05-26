@@ -7,9 +7,9 @@ namespace AikaEmu.AuthServer.Packets.Game
     public class AuthResult : AuthPacket
     {
         private readonly uint _accId;
-        private readonly int _key;
+        private readonly uint _key;
 
-        public AuthResult(uint accId, int key)
+        public AuthResult(uint accId, uint key)
         {
             _accId = accId;
             _key = key;
@@ -20,7 +20,7 @@ namespace AikaEmu.AuthServer.Packets.Game
         {
             stream.Write(_accId);
             stream.Write(_key);
-            stream.Write(2L); // nationId?
+            stream.Write(2L); // TODO - nationId?
             return stream;
         }
     }

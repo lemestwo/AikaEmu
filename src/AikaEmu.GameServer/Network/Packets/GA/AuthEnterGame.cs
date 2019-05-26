@@ -21,7 +21,7 @@ namespace AikaEmu.GameServer.Network.Packets.GA
             _pass = pass;
             _gsId = gsId;
             _conId = conId;
-            Opcode = (ushort) GameAuthOpcode.AuthEnterGame;
+            Opcode = (ushort) InternalOpcode.AuthEnterGame;
         }
 
         public override PacketStream Write(PacketStream stream)

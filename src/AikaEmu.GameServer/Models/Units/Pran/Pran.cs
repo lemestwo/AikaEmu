@@ -71,7 +71,7 @@ namespace AikaEmu.GameServer.Models.Units.Pran
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM prans WHERE acc_id=@acc_id and item_id=@item_id";
-                command.Parameters.AddWithValue("@acc_id", Account.Id);
+                command.Parameters.AddWithValue("@acc_id", Account.DbId);
                 command.Parameters.AddWithValue("@item_id", ItemId);
                 command.Prepare();
 

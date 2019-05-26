@@ -1,6 +1,7 @@
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Account;
 using AikaEmu.GameServer.Network.AuthServer;
+using AikaEmu.GameServer.Network.Packets.GA;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.AG
@@ -22,6 +23,7 @@ namespace AikaEmu.GameServer.Network.Packets.AG
                 if (!AccountManager.Instance.AddAccount(newAccount)) return;
 
                 accConnection.Account = newAccount;
+                AikaEmu.GameServer.GameServer.AuthGameConnection.SendPacket(new ResetAuthHash(newAccount.DbId));
                 newAccount.SendCharacterList();
                 Log.Debug("RequestEnterResult: success.");
             }

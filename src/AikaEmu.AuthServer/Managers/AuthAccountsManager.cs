@@ -13,7 +13,7 @@ namespace AikaEmu.AuthServer.Managers
             _accounts = new Dictionary<uint, LobbyAccount>();
         }
 
-        public void Add(Account account, int key)
+        public void Add(Account account, uint key)
         {
             if (_accounts.ContainsKey(account.Id)) Remove(account.Id);
 
@@ -34,9 +34,9 @@ namespace AikaEmu.AuthServer.Managers
     public class LobbyAccount
     {
         public Account Account { get; }
-        public int Key { get; }
+        public uint Key { get; }
 
-        public LobbyAccount(Account account, int key)
+        public LobbyAccount(Account account, uint key)
         {
             Key = key;
             Account = account;

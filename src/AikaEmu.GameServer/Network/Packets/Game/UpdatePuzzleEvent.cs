@@ -21,7 +21,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 			var type = (PuzzleUpdateAction) 2;
 			stream.Write((int) type); // typeId
 			stream.Write(0); // unk
-			stream.Write(_character.Account.Id);
+			stream.Write(_character.Account.DbId);
 			stream.Write(1); // unk
 			switch (type)
 			{

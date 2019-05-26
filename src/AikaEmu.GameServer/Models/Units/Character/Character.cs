@@ -143,7 +143,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM bank_gold WHERE acc_id=@acc_id";
-                command.Parameters.AddWithValue("@acc_id", Account.Id);
+                command.Parameters.AddWithValue("@acc_id", Account.DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {
@@ -156,7 +156,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
         {
             var parameters = new Dictionary<string, object>
             {
-                {"acc_id", Account.Id},
+                {"acc_id", Account.DbId},
                 {"gold", BankMoney}
             };
             DatabaseManager.Instance.MySqlCommand(SqlCommandType.Replace, "bank_gold", parameters, connection, transaction);
@@ -172,7 +172,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     var parameters = new Dictionary<string, object>
                     {
                         {"id", DbId},
-                        {"acc_id", Account.Id},
+                        {"acc_id", Account.DbId},
                         {"slot", Slot},
                         {"name", Name},
                         {"level", Level},

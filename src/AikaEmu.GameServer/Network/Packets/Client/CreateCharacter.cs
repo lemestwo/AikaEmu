@@ -16,7 +16,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             var isRanch = stream.ReadInt32() == 1;
 
             var acc = Connection.Account;
-            if (acc.Id != accId)
+            if (acc.DbId != accId)
             {
                 Connection.Close();
                 // TODO - BAN

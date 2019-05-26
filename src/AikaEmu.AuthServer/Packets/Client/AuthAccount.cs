@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using AikaEmu.AuthServer.Managers;
+using AikaEmu.AuthServer.Managers.Id;
 using AikaEmu.AuthServer.Network.AuthServer;
 using AikaEmu.AuthServer.Packets.Game;
 using AikaEmu.Shared.Network;
@@ -32,14 +33,16 @@ namespace AikaEmu.AuthServer.Packets.Client
             }
 
             // TODO - GENERATE KEY TO AUTH-GAME
-            var generatedKey = 56475;
+            var generatedKey = IdSerialManager.Instance.GetNextId();
 
             Connection.Account = resultAuth;
             Connection.Account.LastIp = Connection.Ip;
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("last_ip", Connection.Ip.ToString());
-            parameters.Add("session_hash", "");
-            parameters.Add("session_time", DateTime.UtcNow);
+            var parameters = new Dictionary<string, object>
+            {
+                {"last_ip", Connection.Ip.ToString()},
+                /*{"session_hash", ""},
+                {"session_time", DateTime.UtcNow}*/
+            };
             DatabaseManager.Instance.UpdateAccount(Connection.Account.Id, parameters);
             AuthAccountsManager.Instance.Add(Connection.Account, generatedKey);
             Connection.SendPacket(new AuthResult(Connection.Account.Id, generatedKey));

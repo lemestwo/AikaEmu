@@ -11,7 +11,7 @@ namespace AikaEmu.AuthServer.Packets.AG
         public RegisterGs(bool result)
         {
             _result = result;
-            Opcode = (ushort) AuthGameOpcode.RegisterGs;
+            Opcode = (ushort) InternalOpcode.RegisterGs;
         }
 
         public override PacketStream Write(PacketStream stream)

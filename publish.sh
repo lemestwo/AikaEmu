@@ -1,28 +1,16 @@
-VERSION_PREFIX=0.0.0.1
-VERSION_SUFFIX=alpha
-
 FRAMEWORK=netcoreapp2.2
-
 CONFIGURATION=Debug
-#CONFIGURATION=Release
+RUNTIME=win10-x64
 
-mkdir -p publish;
-mkdir -p publish/$CONFIGURATION;
+rm -R bin;
+mkdir -p bin;
+mkdir -p bin/$CONFIGURATION;
 
-for runtime in "win10-x64"; do
-	dotnet publish -c $CONFIGURATION -r $runtime --self-contained true;
+dotnet publish -c $CONFIGURATION -r $RUNTIME --self-contained true;
+mkdir -p bin/$CONFIGURATION;
 	
-	mkdir -p publish/$CONFIGURATION/$runtime;
-	
-	for project in "src/AikaEmu.AuthServer" "src/AikaEmu.GameServer" "src/AikaEmu.WebServer"; do
-		mkdir -p publish/$CONFIGURATION/$runtime/$project;
-		mv $project/bin/$CONFIGURATION/$FRAMEWORK/$runtime/publish/* publish/$CONFIGURATION/$runtime/$project;
-		rm -R $project/bin/$CONFIGURATION/$FRAMEWORK/$runtime;
-	done;
-	
-	cd publish/$CONFIGURATION/$runtime;
-	7z a -tzip ../../../publish/$CONFIGURATION/AikaEmu.$VERSION_PREFIX-$VERSION_SUFFIX+$runtime.zip *;
-	cd ../../../;
-	
-	rm -R publish/$CONFIGURATION/$runtime;
+for project in "AikaEmu.AuthServer" "AikaEmu.GameServer" "AikaEmu.WebServer"; do
+	mkdir -p bin/$CONFIGURATION/$project;
+	mv src/$project/bin/$CONFIGURATION/$FRAMEWORK/$RUNTIME/publish/* bin/$CONFIGURATION/$project;
+	rm -R src/$project/bin/$CONFIGURATION/$FRAMEWORK/$RUNTIME;
 done;

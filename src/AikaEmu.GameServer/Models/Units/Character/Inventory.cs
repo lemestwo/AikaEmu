@@ -421,17 +421,17 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     case SlotType.Inventory:
                     case SlotType.Equipments:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=@char_id";
-                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.DbId);
                         command.Parameters.AddWithValue("@char_id", _character.DbId);
                         break;
                     case SlotType.Bank:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND char_id=0";
-                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.DbId);
                         break;
                     case SlotType.PranInventory:
                     case SlotType.PranEquipments:
                         command.CommandText = "SELECT * FROM items WHERE acc_id=@acc_id AND pran_id=@pran_id";
-                        command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                        command.Parameters.AddWithValue("@acc_id", _character.Account.DbId);
                         command.Parameters.AddWithValue("@pran_id", _character.ActivePran.DbId);
                         break;
                 }
@@ -486,7 +486,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 {
                     command.CommandText = "DELETE FROM items WHERE acc_id=@acc_id AND id IN(" + string.Join(",", _removedItems) + ")";
                     command.Prepare();
-                    command.Parameters.AddWithValue("@acc_id", _character.Account.Id);
+                    command.Parameters.AddWithValue("@acc_id", _character.Account.DbId);
                     command.ExecuteNonQuery();
                 }
 
@@ -509,7 +509,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             {"id", item.DbId},
                             {"item_id", item.ItemId},
                             {"char_id", item.SlotType == SlotType.Inventory || item.SlotType == SlotType.Equipments ? _character.DbId : 0},
-                            {"acc_id", _character.Account.Id},
+                            {"acc_id", _character.Account.DbId},
                             {
                                 "pran_id",
                                 item.SlotType == SlotType.PranInventory || item.SlotType == SlotType.PranEquipments ? _character.ActivePran?.DbId ?? 0 : 0

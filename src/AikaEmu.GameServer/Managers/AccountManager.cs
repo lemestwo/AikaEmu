@@ -15,7 +15,7 @@ namespace AikaEmu.GameServer.Managers
 
         public bool AddAccount(Account account)
         {
-            if (GetAccount(account.Id) != null)
+            if (GetAccount(account.DbId) != null)
             {
                 // TODO
                 return false;
@@ -36,7 +36,7 @@ namespace AikaEmu.GameServer.Managers
         {
             foreach (var (key, account) in _accounts)
             {
-                if (account.Id == accId) RemoveAccount(key);
+                if (account.DbId == accId) RemoveAccount(key);
             }
         }
 
@@ -49,7 +49,7 @@ namespace AikaEmu.GameServer.Managers
         {
             foreach (var (_, account) in _accounts)
             {
-                if (account.Id == accId) return account;
+                if (account.DbId == accId) return account;
             }
 
             return null;

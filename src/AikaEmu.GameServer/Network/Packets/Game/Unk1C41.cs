@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 		public override PacketStream Write(PacketStream stream)
 		{
 			// Every map change triggers this packet
-			stream.Write(_acc.Id);
+			stream.Write(_acc.DbId);
 			stream.Write("", 16);
 
 			for (ushort i = 0; i < 12; i++)

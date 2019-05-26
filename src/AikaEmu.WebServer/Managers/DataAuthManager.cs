@@ -9,6 +9,10 @@ namespace AikaEmu.WebServer.Managers
     {
         public string AuthAndUpdateAccount(string user, string pass)
         {
+            // case -33:
+            // case -8:
+            // case -11:
+            // case -1:
             using (var connection = GetConnection())
             {
                 uint accountId;
@@ -44,7 +48,7 @@ namespace AikaEmu.WebServer.Managers
                     var newHash = WebUtils.GenerateRandomHash();
                     var parameters = new Dictionary<string, object>
                     {
-                        {"session_hash", newHash}, {"session_time", DateTime.UtcNow.AddMinutes(1)},
+                        {"session_hash", newHash}, {"session_time", DateTime.UtcNow.AddMinutes(2)},
                     };
                     var wheres = new Dictionary<string, object>
                     {
@@ -55,6 +59,25 @@ namespace AikaEmu.WebServer.Managers
             }
 
             return "-1";
+        }
+
+        public uint GetAccountId(string user, string hash)
+        {
+            using (var connection = GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM `accounts` WHERE `user` = @user AND `session_hash` = @hash; ";
+                command.Parameters.AddWithValue("@user", user);
+                command.Parameters.AddWithValue("@hash", hash);
+                command.Prepare();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        return reader.GetUInt32("id");
+                }
+            }
+
+            return 0;
         }
     }
 }

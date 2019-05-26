@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using AikaEmu.AuthServer.Managers;
+using AikaEmu.AuthServer.Managers.Id;
 using AikaEmu.AuthServer.Network.AuthServer;
 using AikaEmu.AuthServer.Network.GameServer;
 using AikaEmu.GameServer.Managers.Configuration;
@@ -32,6 +33,9 @@ namespace AikaEmu.AuthServer
             AppConfigManager.Instance.Init();
             DatabaseManager.Instance.Init(AppConfigManager.Instance.AuthServerConfig.Database);
             AuthGameManager.Instance.Init();
+
+            // IdFactory
+            IdSerialManager.Instance.Init(56500u);
 
             // AuthServer Setup
             var cNetwork = AppConfigManager.Instance.AuthServerConfig.Network;

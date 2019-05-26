@@ -4,19 +4,20 @@ using AikaEmu.Shared.Packets;
 
 namespace AikaEmu.GameServer.Network.Packets.GA
 {
-    public class RegisterGs : AuthGamePacket
+    public class ResetAuthHash : AuthGamePacket
     {
-        private readonly byte _gsId;
+        private readonly uint _accId;
 
-        public RegisterGs(byte gsId)
+        public ResetAuthHash(uint accId)
         {
-            Opcode = (ushort) InternalOpcode.RegisterGs;
-            _gsId = gsId;
+            _accId = accId;
+
+            Opcode = (ushort) InternalOpcode.ResetAuthHash;
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(_gsId);
+            stream.Write(_accId);
             return stream;
         }
     }

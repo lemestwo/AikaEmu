@@ -18,7 +18,7 @@ namespace AikaEmu.GameServer.Network.Packets.Game
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write(_character.Account.Id);
+            stream.Write(_character.Account.DbId);
             stream.Write((uint) _character.Connection.Id);
             stream.Write(0);
             stream.Write(_character.DbId);

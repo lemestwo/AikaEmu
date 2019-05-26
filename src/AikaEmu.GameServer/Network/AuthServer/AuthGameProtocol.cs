@@ -44,9 +44,9 @@ namespace AikaEmu.GameServer.Network.AuthServer
 					stream.ReadUInt16();
 					var opcode = stream.ReadUInt16();
 
-					if (Enum.IsDefined(typeof(AuthGameOpcode), opcode))
+					if (Enum.IsDefined(typeof(InternalOpcode), opcode))
 					{
-						var pName = Enum.GetName(typeof(AuthGameOpcode), opcode);
+						var pName = Enum.GetName(typeof(InternalOpcode), opcode);
 						var pType = Type.GetType($"AikaEmu.GameServer.Network.Packets.AG.{pName}");
 						var packet = (AuthGamePacket) Activator.CreateInstance(pType);
 						packet.Opcode = opcode;

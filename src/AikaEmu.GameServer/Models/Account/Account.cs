@@ -17,16 +17,16 @@ namespace AikaEmu.GameServer.Models.Account
 {
     public class Account
     {
-        public uint Id { get; }
+        public uint DbId { get; }
         public AccountLevel Level { get; set; } = AccountLevel.Default;
         public NationId NationId { get; set; }
         public GameConnection Connection { get; }
         public Dictionary<byte, Character> AccCharLobby { get; private set; }
         public Character ActiveCharacter { get; set; }
 
-        public Account(uint accId, GameConnection connection)
+        public Account(uint accDbId, GameConnection connection)
         {
-            Id = accId;
+            DbId = accDbId;
             Connection = connection;
             Connection.Id = (ushort) IdConnectionManager.Instance.GetNextId();
             NationId = GetNationId();
@@ -40,7 +40,7 @@ namespace AikaEmu.GameServer.Models.Account
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = "SELECT * FROM account_nation WHERE acc_id=@acc_id";
-                command.Parameters.AddWithValue("@acc_id", Id);
+                command.Parameters.AddWithValue("@acc_id", DbId);
                 command.Prepare();
                 using (var reader = command.ExecuteReader())
                 {

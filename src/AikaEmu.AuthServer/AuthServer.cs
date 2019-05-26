@@ -71,6 +71,7 @@ namespace AikaEmu.AuthServer
             // TODO - PROPER SHUTDOWN
         }
 
+
         private static void SetupLogManager()
         {
             var filePath = Directory.GetCurrentDirectory() + "\\NLog.config";

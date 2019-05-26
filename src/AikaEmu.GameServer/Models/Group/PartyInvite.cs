@@ -1,5 +1,4 @@
 using System;
-using AikaEmu.GameServer.Models.Units.Character;
 
 namespace AikaEmu.GameServer.Models.Group
 {

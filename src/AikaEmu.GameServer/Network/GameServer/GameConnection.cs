@@ -1,5 +1,4 @@
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Account;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.Shared.Model.Network;

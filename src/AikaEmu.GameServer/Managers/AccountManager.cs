@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Account;
 using AikaEmu.Shared.Utils;
 

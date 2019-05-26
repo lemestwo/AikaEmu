@@ -8,8 +8,8 @@ namespace AikaEmu.AuthServer.Models
         public uint Id { get; set; }
         public string User { get; set; }
         public byte Level { get; set; }
-        public DateTime LastLogin { get; set; }
         public IPAddress LastIp { get; set; }
+        public byte IsBlock { get; set; }
         public string SessionHash { get; set; }
         public DateTime SessionTime { get; set; }
     }

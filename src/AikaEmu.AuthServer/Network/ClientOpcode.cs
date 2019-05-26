@@ -9,6 +9,6 @@ namespace AikaEmu.AuthServer.Network
 
     public enum AuthOpcode : ushort
     {
-        AuthSuccess = 0x0082,
+        AuthResult = 0x0082,
     }
 }

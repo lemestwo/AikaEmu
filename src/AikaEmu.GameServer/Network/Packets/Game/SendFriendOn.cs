@@ -1,4 +1,3 @@
-using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Character.CharFriend;
 using AikaEmu.GameServer.Network.GameServer;

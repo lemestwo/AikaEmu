@@ -1,9 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using AikaEmu.GameServer.Managers.Configuration;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Mob;
@@ -11,7 +8,6 @@ using AikaEmu.GameServer.Models.Units.Npc;
 using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Utils;
-using NLog;
 
 namespace AikaEmu.GameServer.Managers
 {

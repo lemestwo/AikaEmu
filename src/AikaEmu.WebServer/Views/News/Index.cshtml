@@ -1,0 +1,107 @@
+@page
+@model AikaEmu.WebServer.Views.News.Index
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>News</title>
+</head>
+<style type="text/css">
+    * {
+        font-family: Verdana;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        list-style: none;
+        color: #d9d9d9;
+    }
+
+    body { background: url("/images/bg.png") no-repeat scroll 0 0; }
+
+    a { text-decoration: none; }
+
+    a:hover { text-decoration: underline; }
+
+    #see_more {
+        width: 32px;
+        height: 15px;
+        top: 23px;
+        left: 300px;
+        position: absolute;
+    }
+
+    #box_news {
+        float: left;
+        height: 132px;
+        margin: 50px 20px 0;
+        width: 365px;
+    }
+
+    #box_news li {
+        float: left;
+        height: 22px;
+        width: 359px;
+    }
+
+    #box_news li span {
+        width: 63px;
+        height: 18px;
+        padding-top: 4px;
+        padding-left: 4px;
+        float: left;
+    }
+
+    #box_news li a {
+        height: 18px;
+        float: left;
+        font-size: 11px;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    #box_news li .title_news {
+        overflow: hidden;
+        padding-top: 4px;
+    }
+
+    #box_news li .data_news {
+        width: 84px;
+        height: 18px;
+        padding-top: 3px;
+        margin-left: 5px;
+    }
+</style>
+
+<body scroll="no">
+<div id="see_more">
+    <a href="#" target="_blank">
+        <img width="30" height="15" src="images/bt_transparent.gif">
+    </a>
+</div>
+<ul id="box_news">
+    <li>
+        <a class="title_news" href="#" target="_blank">
+            [Patch] AikaEmu Alpha Version 0.0.0.1!
+        </a>
+    </li>
+
+    <li>
+        <a class="title_news" href="#" target="_blank">
+            [Event] New AikaEmu Event!
+        </a>
+    </li>
+
+    <li>
+        <a class="title_news" href="#" target="_blank">
+            [Update] New AikaEmu Update!
+        </a>
+    </li>
+</ul>
+</body>
+</html>

@@ -1,7 +1,6 @@
 using AikaEmu.AuthServer.Managers;
 using AikaEmu.AuthServer.Network.GameServer;
 using AikaEmu.AuthServer.Packets.AG;
-using AikaEmu.AuthServer.Packets.Client;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.AuthServer.Packets.GA

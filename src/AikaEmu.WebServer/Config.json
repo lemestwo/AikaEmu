@@ -1,0 +1,16 @@
+{
+  "DatabaseAuth": {
+    "Host": "localhost",
+    "Port": 3306,
+    "User": "root",
+    "Pass": "root",
+    "Database": "aikaemu_auth"
+  },
+  "DatabaseGame": {
+    "Host": "localhost",
+    "Port": 3306,
+    "User": "root",
+    "Pass": "root",
+    "Database": "aikaemu_game"
+  }
+}

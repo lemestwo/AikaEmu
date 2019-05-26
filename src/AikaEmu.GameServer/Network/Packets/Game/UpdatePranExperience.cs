@@ -1,4 +1,3 @@
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Units.Pran;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;

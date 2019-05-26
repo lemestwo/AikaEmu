@@ -1,5 +1,4 @@
 using System;
-using AikaEmu.AuthServer.Managers;
 using AikaEmu.AuthServer.Managers.Connections;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;

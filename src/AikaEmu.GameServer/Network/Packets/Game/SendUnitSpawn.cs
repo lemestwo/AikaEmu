@@ -1,7 +1,4 @@
 using System;
-using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Managers.Configuration;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Const;

@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AikaEmu.GameServer.Models.Quest;
 using AikaEmu.GameServer.Models.Quest.Const;
 
 namespace AikaEmu.GameServer.Models.Data.JsonModel

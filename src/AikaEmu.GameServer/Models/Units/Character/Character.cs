@@ -6,7 +6,6 @@ using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Models.Units.Npc.Const;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Network.Packets.Client;
 using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Model;
 using MySql.Data.MySqlClient;

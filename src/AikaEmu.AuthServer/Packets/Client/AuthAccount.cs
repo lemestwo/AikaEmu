@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using AikaEmu.AuthServer.Managers;
 using AikaEmu.AuthServer.Network.AuthServer;
+using AikaEmu.AuthServer.Packets.Game;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.AuthServer.Packets.Client
@@ -10,8 +13,8 @@ namespace AikaEmu.AuthServer.Packets.Client
         {
             var user = stream.ReadString(32).Trim();
             var hash = stream.ReadString(32);
-            stream.ReadBytes(994);
-            var gsId = stream.ReadByte();
+            // stream.ReadBytes(994);
+            // stream.ReadByte(); // 1 ?
             // then 45 more empty bytes
 
             if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(hash))
@@ -20,8 +23,26 @@ namespace AikaEmu.AuthServer.Packets.Client
                 return;
             }
 
-            AuthGameManager.Instance.Authenticate(Connection, user, hash);
-            Log.Info("Attempt to auth: ({2}) {0}:{1}", user, hash, gsId);
+            var resultAuth = DatabaseManager.Instance.AuthAccount(user, hash);
+            if (resultAuth == null)
+            {
+                Connection.SendPacket(new AuthResult(uint.MaxValue, 0));
+                Connection.Close();
+                return;
+            }
+
+            // TODO - GENERATE KEY TO AUTH-GAME
+            var generatedKey = 56475;
+
+            Connection.Account = resultAuth;
+            Connection.Account.LastIp = Connection.Ip;
+            var parameters = new Dictionary<string, object>();
+            parameters.Add("last_ip", Connection.Ip.ToString());
+            parameters.Add("session_hash", "");
+            parameters.Add("session_time", DateTime.UtcNow);
+            DatabaseManager.Instance.UpdateAccount(Connection.Account.Id, parameters);
+            AuthAccountsManager.Instance.Add(Connection.Account, generatedKey);
+            Connection.SendPacket(new AuthResult(Connection.Account.Id, generatedKey));
         }
     }
 }

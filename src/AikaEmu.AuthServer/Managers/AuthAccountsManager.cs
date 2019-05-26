@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AikaEmu.AuthServer.Models;
 using AikaEmu.Shared.Utils;

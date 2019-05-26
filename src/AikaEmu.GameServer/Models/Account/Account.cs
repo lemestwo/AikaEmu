@@ -12,7 +12,6 @@ using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
-using NLog;
 
 namespace AikaEmu.GameServer.Models.Account
 {

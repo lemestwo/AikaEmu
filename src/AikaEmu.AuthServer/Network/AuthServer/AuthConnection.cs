@@ -1,4 +1,3 @@
-using System.Net;
 using AikaEmu.AuthServer.Models;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Network;

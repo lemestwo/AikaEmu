@@ -1,13 +1,6 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using AikaEmu.GameServer.Helpers;
-using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models;
-using AikaEmu.GameServer.Models.Item;
-using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Network.GameServer;
-using AikaEmu.GameServer.Network.Packets.Game;
 using AikaEmu.Shared.Network;
 
 namespace AikaEmu.GameServer.Network.Packets.Client

@@ -4,16 +4,16 @@ using AikaEmu.Shared.Network;
 
 namespace AikaEmu.AuthServer.Packets.Game
 {
-    public class AuthSuccess : AuthPacket
+    public class AuthResult : AuthPacket
     {
         private readonly uint _accId;
         private readonly int _key;
 
-        public AuthSuccess(uint accId, int key)
+        public AuthResult(uint accId, int key)
         {
             _accId = accId;
             _key = key;
-            Opcode = (ushort) AuthOpcode.AuthSuccess;
+            Opcode = (ushort) AuthOpcode.AuthResult;
         }
 
         public override PacketStream Write(PacketStream stream)

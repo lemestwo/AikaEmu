@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;

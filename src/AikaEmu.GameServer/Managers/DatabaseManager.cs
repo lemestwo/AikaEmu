@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Account;
 using AikaEmu.GameServer.Models.Item;
 using AikaEmu.GameServer.Models.Units;
 using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Character.CharFriend;
-using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.Shared.Model;
-using MySql.Data.MySqlClient;
 
 namespace AikaEmu.GameServer.Managers
 {

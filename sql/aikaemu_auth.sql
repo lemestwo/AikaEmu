@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 13/05/2019 16:44:32
+ Date: 26/05/2019 00:49:19
 */
 
 SET NAMES utf8mb4;
@@ -23,15 +23,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts`  (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `server` tinyint(2) UNSIGNED NOT NULL,
   `user` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `pass` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `level` tinyint(2) NOT NULL DEFAULT 1,
-  `last_ip` bigint(20) NOT NULL,
-  `session_hash` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `session_time` datetime(0) NOT NULL,
-  `created_at` datetime(0) NOT NULL,
-  `update_at` datetime(0) NOT NULL,
+  `pass` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `level` tinyint(2) NOT NULL DEFAULT 0,
+  `last_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `is_block` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `session_hash` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `session_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  `update_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 

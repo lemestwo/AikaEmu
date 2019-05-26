@@ -1,5 +1,4 @@
 using AikaEmu.GameServer.Helpers;
-using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;
 

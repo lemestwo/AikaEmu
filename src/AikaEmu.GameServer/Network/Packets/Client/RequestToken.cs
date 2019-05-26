@@ -1,5 +1,4 @@
 using AikaEmu.GameServer.Managers;
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.Units.Const;
 using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;

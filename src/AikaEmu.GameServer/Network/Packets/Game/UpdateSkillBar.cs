@@ -1,5 +1,3 @@
-using AikaEmu.GameServer.Models.Units.Character;
-using AikaEmu.GameServer.Models.Units.Character.CharSkill;
 using AikaEmu.GameServer.Models.Units.Character.CharSkill.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;

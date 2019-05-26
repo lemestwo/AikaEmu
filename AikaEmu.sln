@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.Shared", "src\AikaE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.GameServer", "src\AikaEmu.GameServer\AikaEmu.GameServer.csproj", "{80E146BF-2CC1-43BA-B662-67BDA583C0FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AikaEmu.WebServer", "src\AikaEmu.WebServer\AikaEmu.WebServer.csproj", "{09278C4E-5EB9-4A05-8E14-76097BF88801}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80E146BF-2CC1-43BA-B662-67BDA583C0FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09278C4E-5EB9-4A05-8E14-76097BF88801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09278C4E-5EB9-4A05-8E14-76097BF88801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09278C4E-5EB9-4A05-8E14-76097BF88801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09278C4E-5EB9-4A05-8E14-76097BF88801}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

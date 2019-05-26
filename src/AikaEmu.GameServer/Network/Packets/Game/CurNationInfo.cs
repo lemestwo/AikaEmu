@@ -1,4 +1,3 @@
-using AikaEmu.GameServer.Models;
 using AikaEmu.GameServer.Models.World.Nation;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.Shared.Network;

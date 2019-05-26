@@ -13,16 +13,16 @@ Join our community at [Discord]() if you have any questions.
 ## Getting Started
 
 * Compile the server.
-* Follow instructions in [Web folder](web/README.md) to setup web.
+* Follow instructions in [Web folder](src/AikaEmu.WebServer/README.md) to setup web.
 * Create MySql database "aikaemu_auth" and "aikaemu_game".
 * Run MySql script [Auth](sql/aikaemu_auth.sql) and [Game](sql/aikaemu_game.sql).
 * Insert new GameServer into DB.
 ```
 INSERT INTO `aikaemu_auth`.`game_servers`(`id`, `name`, `ip`, `port`) VALUES (1, 'AikaEmu', '127.0.0.1', 8822);
 ```
-* Insert new Account into DB.
+* Insert new Account into DB (user: admin / pass: admin).
 ```
-INSERT INTO `aikaemu_auth`.`accounts`(`server`, `user`, `pass`, `level`, `last_ip`, `session_hash`, `session_time`) VALUES (1, 'admin', 'admin', 0, 0, '760c18a928f10a6acc6dd7b0a71fb294', '2019-04-17 17:42:02');
+INSERT INTO `aikaemu_auth`.`accounts`(`user`, `pass`) VALUES ('admin', '21232f297a57a5a743894a0e4a801fc3');
 ```
 * Start AuthServer and GameServer.
 

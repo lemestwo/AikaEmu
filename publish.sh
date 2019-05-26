@@ -14,7 +14,7 @@ for runtime in "win10-x64"; do
 	
 	mkdir -p publish/$CONFIGURATION/$runtime;
 	
-	for project in "AikaEmu.AuthServer" "AikaEmu.GameServer"; do
+	for project in "src/AikaEmu.AuthServer" "src/AikaEmu.GameServer" "src/AikaEmu.WebServer"; do
 		mkdir -p publish/$CONFIGURATION/$runtime/$project;
 		mv $project/bin/$CONFIGURATION/$FRAMEWORK/$runtime/publish/* publish/$CONFIGURATION/$runtime/$project;
 		rm -R $project/bin/$CONFIGURATION/$FRAMEWORK/$runtime;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using AikaEmu.Shared.Model.Network;
 using AikaEmu.Shared.Utils.Conversions;

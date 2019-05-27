@@ -26,7 +26,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
             for (var i = 0; i < 4; i++)
             {
                 Connection.SendPacket(new UnkTitleLink(character));
-                Connection.SendPacket(new UnkTitleLink2());
+                character.Titles.SendTitles();
             }
 
             Connection.SendPacket(new Unk1031());
@@ -82,7 +82,7 @@ namespace AikaEmu.GameServer.Network.Packets.Client
                 Connection.SendPacket(new UpdateReliques(character.Account.NationId));
             Connection.SendPacket(new CurNationInfo(nation));
             Connection.SendPacket(new Unk303D(character, 1));
-            
+
             WorldManager.Instance.Spawn(character);
             Connection.SendPacket(new SendUnitSpawn(character, 1));
             WorldManager.Instance.ShowVisibleUnits(character);
@@ -102,9 +102,9 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 
             Connection.SendPacket(new Unk3057());
             Connection.SendPacket(new UnkTitleLink(character));
-            Connection.SendPacket(new UnkTitleLink2());
+            character.Titles.SendTitles();
             Connection.SendPacket(new UnkTitleLink(character));
-            Connection.SendPacket(new UnkTitleLink2());
+            character.Titles.SendTitles();
 
             Connection.SendPacket(new UpdateAccountLevel(Connection.Account));
             Connection.SendPacket(new UpdateCash(10000));

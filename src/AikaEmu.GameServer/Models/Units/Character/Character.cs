@@ -41,6 +41,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public Skills Skills { get; private set; }
         public SkillsBar SkillsBar { get; private set; }
         public Friends Friends { get; private set; }
+        public Titles Titles { get; private set; }
 
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
@@ -80,6 +81,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 SkillsBar.Init(connection);
                 Friends = new Friends(this);
                 Friends.Init(connection);
+                Titles = new Titles(this);
+                Titles.Init(connection);
             }
         }
 
@@ -210,6 +213,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             Quests?.Save(connection, transaction);
                             Skills?.Save(connection, transaction);
                             Friends?.Save(connection, transaction);
+                            Titles?.Save(connection, transaction);
                             break;
                         case SaveType.Inventory:
                             Inventory?.Save(connection, transaction);
@@ -227,6 +231,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             break;
                         case SaveType.Friends:
                             Friends?.Save(connection, transaction);
+                            break;
+                        case SaveType.Titles:
+                            Titles?.Save(connection, transaction);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(saveType), saveType, null);

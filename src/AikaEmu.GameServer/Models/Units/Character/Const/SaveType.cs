@@ -9,5 +9,6 @@ namespace AikaEmu.GameServer.Models.Units.Character.Const
         Skills,
         SkillBars,
         Friends,
+        Titles,
     }
 }

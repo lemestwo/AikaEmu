@@ -84,7 +84,15 @@ namespace AikaEmu.GameServer.Network.Packets.Game
                 stream.Write((ushort) 0); // emoticon?
                 stream.Write((ushort) 0); // unk (byte) >0 <64 unique behavior
                 stream.Write(0);
-                stream.Write(108); // titleId
+                if (character.Titles.ActiveTitle != null)
+                {
+                    stream.Write(character.Titles.ActiveTitle.Id);
+                    stream.Write((ushort) character.Titles.ActiveTitle.Level);
+                }
+                else
+                {
+                    stream.Write(0);
+                }
             }
             else if (_unit is Npc npc)
             {

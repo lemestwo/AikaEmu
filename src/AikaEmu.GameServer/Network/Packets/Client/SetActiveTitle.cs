@@ -7,8 +7,8 @@ namespace AikaEmu.GameServer.Network.Packets.Client
 	{
 		protected override void Read(PacketStream stream)
 		{
-			var titleId = stream.ReadUInt32();
-			Log.Debug("SetActiveTitle, Id: {0}", titleId);
+			var titleId = stream.ReadUInt16();
+			Connection.ActiveCharacter.Titles.SetActiveTitle(titleId);
 		}
 	}
 }

@@ -10,19 +10,19 @@ namespace AikaEmu.GameServer.Models.Units.Character
     public class Friends : ISaveData
     {
         private readonly Character _character;
-        private readonly Dictionary<uint, Friend> _friendsList;
+        private readonly Dictionary<uint, Friend> _friends;
         private readonly List<uint> _removedFriends;
 
         public Friends(Character character)
         {
             _character = character;
-            _friendsList = new Dictionary<uint, Friend>();
+            _friends = new Dictionary<uint, Friend>();
             _removedFriends = new List<uint>();
         }
 
         public Friend GetFriendByDbId(uint dbId)
         {
-            foreach (var friend in _friendsList.Values)
+            foreach (var friend in _friends.Values)
             {
                 if (friend.FriendId == dbId) return friend;
             }
@@ -32,13 +32,13 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public Friend GetFriend(uint id)
         {
-            return _friendsList.ContainsKey(id) ? _friendsList[id] : null;
+            return _friends.ContainsKey(id) ? _friends[id] : null;
         }
 
 
         public void SendFriends()
         {
-            foreach (var friend in _friendsList.Values)
+            foreach (var friend in _friends.Values)
             {
                 _character.SendPacket(new SendFriendInfo(_character.Connection.Id, friend));
 
@@ -50,7 +50,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public void GetOffline()
         {
-            foreach (var friend in _friendsList.Values)
+            foreach (var friend in _friends.Values)
             {
                 var friendData = WorldManager.Instance.GetCharacter(friend.FriendId);
                 friendData?.SendPacket(new SendFriendOff(friendData.Connection.Id, _character.DbId));
@@ -63,7 +63,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
             friend.Id = DatabaseManager.Instance.InsertFriend(_character, friend);
 
-            if (friend.Id > 0 && _friendsList.TryAdd(friend.Id, friend))
+            if (friend.Id > 0 && _friends.TryAdd(friend.Id, friend))
             {
                 _character.SendPacket(new SendFriendInfo(_character.Connection.Id, friend));
             }
@@ -71,9 +71,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public void RemoveFriend(uint id)
         {
-            if (!_friendsList.ContainsKey(id)) return;
+            if (!_friends.ContainsKey(id)) return;
 
-            _friendsList.Remove(id);
+            _friends.Remove(id);
             _removedFriends.Add(id);
         }
 
@@ -95,7 +95,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             Name = reader.GetString("name"),
                             IsBlocked = reader.GetBoolean("is_blocked")
                         };
-                        _friendsList.Add(template.Id, template);
+                        _friends.Add(template.Id, template);
                     }
                 }
             }
@@ -115,7 +115,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 _removedFriends.Clear();
             }
 
-            foreach (var friend in _friendsList.Values)
+            foreach (var friend in _friends.Values)
             {
                 var parameters = new Dictionary<string, object>
                 {

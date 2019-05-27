@@ -21,24 +21,31 @@ namespace AikaEmu.GameServer.Models.Data
                         {
                             Id = reader.GetUInt16("id"),
                             Idx = reader.GetUInt16("idx"),
-                            UnkId = reader.GetUInt16("unk_id"),
+                            Level = reader.GetByte("level"),
+                            UnkId1 = reader.GetUInt16("unk_id1"),
+                            UnkId2 = reader.GetUInt16("unk_id2"),
                             Requires = reader.GetUInt32("requires"),
-                            Effects = new List<(ushort EffId, ushort EffValue)>(),
+                            Effect1 = new Effect(reader.GetUInt16("eff1"), reader.GetUInt16("eff1_value")),
+                            Effect2 = new Effect(reader.GetUInt16("eff2"), reader.GetUInt16("eff2_value")),
+                            Effect3 = new Effect(reader.GetUInt16("eff3"), reader.GetUInt16("eff3_value")),
                             Desc = reader.GetString("desc"),
                             Unk = reader.GetUInt16("unk"),
                             Color = GlobalUtils.GetColorFromString(reader.GetString("color"))
                         };
-                        for (var i = 1; i <= 3; i++)
-                        {
-                            var eff = (reader.GetUInt16("eff" + i), reader.GetUInt16("eff" + i + "_value"));
-                            if (eff.Item1 > 0)
-                                title.Effects.Add(eff);
-                        }
 
                         Objects.Add(title.Id, title);
                     }
                 }
             }
+        }
+
+        public TitleDataModel GetTitleData(ushort id, byte level)
+        {
+            foreach (var title in Objects.Values)
+                if (title.Idx == id && title.Level == level)
+                    return title;
+
+            return null;
         }
     }
 }

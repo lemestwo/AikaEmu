@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 26/05/2019 00:49:30
+ Date: 27/05/2019 13:54:11
 */
 
 SET NAMES utf8mb4;
@@ -54,8 +54,8 @@ CREATE TABLE `character_friends`  (
   `is_blocked` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
-  PRIMARY KEY (`id`, `char_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`, `char_id`, `friend_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_quests
@@ -99,6 +99,20 @@ CREATE TABLE `character_skills`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for character_titles
+-- ----------------------------
+DROP TABLE IF EXISTS `character_titles`;
+CREATE TABLE `character_titles`  (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `char_id` int(10) UNSIGNED NOT NULL,
+  `level` tinyint(3) UNSIGNED NOT NULL,
+  `is_active` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
+  PRIMARY KEY (`id`, `char_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for characters
 -- ----------------------------
 DROP TABLE IF EXISTS `characters`;
@@ -134,7 +148,7 @@ CREATE TABLE `characters`  (
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for data_exp
@@ -14471,9 +14485,11 @@ INSERT INTO `data_sets` VALUES (671, 'Conjunto do Oitavo Aniversário', 'Set of 
 -- ----------------------------
 DROP TABLE IF EXISTS `data_titles`;
 CREATE TABLE `data_titles`  (
-  `id` smallint(5) UNSIGNED NOT NULL,
+  `id` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   `idx` smallint(5) UNSIGNED NOT NULL,
-  `unk_id` smallint(5) UNSIGNED NOT NULL,
+  `level` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `unk_id1` smallint(5) UNSIGNED NOT NULL,
+  `unk_id2` smallint(5) UNSIGNED NOT NULL,
   `requires` int(10) UNSIGNED NOT NULL,
   `eff1` smallint(5) UNSIGNED NOT NULL,
   `eff2` smallint(5) UNSIGNED NOT NULL,
@@ -14490,219 +14506,219 @@ CREATE TABLE `data_titles`  (
 -- ----------------------------
 -- Records of data_titles
 -- ----------------------------
-INSERT INTO `data_titles` VALUES (4, 1, 2048, 300, 92, 0, 0, 2, 0, 0, 'Protetor da Natureza', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (5, 1, 2048, 500, 92, 0, 0, 3, 0, 0, 'Protetor da Natureza', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (6, 1, 2048, 1000, 92, 0, 0, 4, 0, 0, 'Protetor da Natureza', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (8, 2, 2048, 300, 99, 0, 0, 2, 0, 0, 'Caçador de Croshu', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (9, 2, 2048, 500, 99, 0, 0, 3, 0, 0, 'Caçador de Croshu', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (10, 2, 2048, 1000, 99, 0, 0, 4, 0, 0, 'Caçador de Croshu', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (12, 3, 2048, 300, 91, 0, 0, 2, 0, 0, 'Matador de Butos', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (13, 3, 2048, 500, 91, 0, 0, 3, 0, 0, 'Matador de Butos', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (14, 3, 2048, 1000, 91, 0, 0, 4, 0, 0, 'Matador de Butos', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (16, 4, 2048, 500, 97, 0, 0, 2, 0, 0, 'Empreiteiro', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (17, 4, 2048, 1000, 97, 0, 0, 3, 0, 0, 'Empreiteiro', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (18, 4, 2048, 2000, 97, 0, 0, 4, 0, 0, 'Empreiteiro', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (20, 5, 2048, 500, 94, 0, 0, 2, 0, 0, 'Vingança Demoníaca', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (21, 5, 2048, 1000, 94, 0, 0, 3, 0, 0, 'Vingança Demoníaca', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (22, 5, 2048, 2000, 94, 0, 0, 4, 0, 0, 'Vingança Demoníaca', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (24, 6, 2048, 1000, 93, 0, 0, 2, 0, 0, 'Valor da Esperança', 1, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (25, 6, 2048, 3000, 93, 0, 0, 3, 0, 0, 'Valor da Esperança', 1, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (26, 6, 2048, 5000, 93, 0, 0, 4, 0, 0, 'Valor da Esperança', 1, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (28, 7, 2048, 1, 0, 0, 0, 1, 0, 0, 'Intruso Sagrado', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (29, 7, 2048, 2, 0, 0, 0, 2, 0, 0, 'Intruso Sagrado', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (30, 7, 2048, 3, 0, 0, 0, 3, 0, 0, 'Intruso Sagrado', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (32, 8, 2048, 2, 247, 0, 0, 1, 0, 0, 'Shinigami', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (33, 8, 2048, 5, 247, 0, 0, 2, 0, 0, 'Shinigami', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (34, 8, 2048, 10, 247, 0, 0, 3, 0, 0, 'Shinigami', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (36, 9, 2048, 2, 339, 0, 0, 1, 0, 0, 'Perseguidor Gressil', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (37, 9, 2048, 5, 339, 0, 0, 2, 0, 0, 'Perseguidor Gressil', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (38, 9, 2048, 10, 339, 0, 0, 3, 0, 0, 'Perseguidor Gressil', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (40, 10, 2048, 2, 242, 0, 0, 1, 0, 0, 'Justiceiro Malik', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (41, 10, 2048, 5, 242, 0, 0, 2, 0, 0, 'Justiceiro Malik', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (42, 10, 2048, 10, 242, 0, 0, 3, 0, 0, 'Justiceiro Malik', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (44, 11, 2048, 10, 0, 0, 0, 1, 0, 0, 'Defensor das Lágrimas', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (45, 11, 2048, 30, 0, 0, 0, 2, 0, 0, 'Defensor das Lágrimas', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (46, 11, 2048, 60, 0, 0, 0, 3, 0, 0, 'Defensor das Lágrimas', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (48, 12, 2048, 10, 246, 0, 0, 1, 0, 0, 'Amigo da Escuridão', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (49, 12, 2048, 30, 246, 0, 0, 2, 0, 0, 'Amigo da Escuridão', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (50, 12, 2048, 60, 246, 0, 0, 3, 0, 0, 'Amigo da Escuridão', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (52, 13, 2048, 10, 21, 0, 0, 1, 0, 0, 'Líder Lycan', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (53, 13, 2048, 30, 21, 0, 0, 2, 0, 0, 'Líder Lycan', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (54, 13, 2048, 60, 21, 0, 0, 3, 0, 0, 'Líder Lycan', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (56, 14, 2048, 20, 20, 0, 0, 1, 0, 0, 'Herói Eldin', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (57, 14, 2048, 50, 20, 0, 0, 2, 0, 0, 'Herói Eldin', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (58, 14, 2048, 100, 20, 0, 0, 3, 0, 0, 'Herói Eldin', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (60, 15, 2048, 10, 0, 0, 0, 1, 0, 0, 'Farel Semelhante', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (61, 15, 2048, 30, 0, 0, 0, 2, 0, 0, 'Farel Semelhante', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (62, 15, 2048, 60, 0, 0, 0, 3, 0, 0, 'Farel Semelhante', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (68, 0, 5376, 0, 0, 0, 0, 1, 0, 0, 'Companheiro Eterno', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (72, 0, 1280, 0, 15, 16, 17, 1, 1, 1, 'Civil', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (76, 0, 1, 0, 19, 0, 0, 5, 0, 0, 'Viajante', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (80, 0, 5121, 0, 15, 0, 0, 3, 0, 0, 'Pugilista', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (84, 1, 5121, 1, 18, 0, 0, 3, 0, 0, 'Defensor', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (88, 2, 5121, 2, 16, 0, 0, 3, 0, 0, 'Destruidor', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (92, 3, 5121, 3, 16, 0, 0, 3, 0, 0, 'Agilidoso', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (96, 4, 5121, 4, 17, 0, 0, 3, 0, 0, 'Manejador', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (100, 5, 5121, 5, 17, 0, 0, 3, 0, 0, 'Protetores', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (108, 0, 2304, 3000, 68, 0, 0, 10, 0, 0, 'Elter notável', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (109, 0, 2304, 10000, 68, 0, 0, 20, 0, 0, 'Elter Notável', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (110, 0, 2304, 30000, 68, 0, 0, 50, 0, 0, 'Elter Notável', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (111, 0, 2304, 60000, 68, 0, 0, 100, 0, 0, 'Elter Notável', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (112, 0, 1792, 30, 69, 0, 0, 10, 0, 0, 'Exterminador', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (113, 0, 1792, 100, 69, 0, 0, 20, 0, 0, 'Exterminador', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (114, 0, 1792, 300, 69, 0, 0, 50, 0, 0, 'Exterminador', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (115, 0, 1792, 600, 69, 0, 0, 100, 0, 0, 'Exterminador', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (116, 0, 2560, 30, 53, 0, 0, 1, 0, 0, 'Saqueador', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (117, 0, 2560, 100, 53, 0, 0, 2, 0, 0, 'Saqueador', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (118, 0, 2560, 300, 53, 0, 0, 3, 0, 0, 'Saqueador', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (119, 0, 2560, 600, 53, 0, 0, 4, 0, 0, 'Saqueador', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (120, 0, 2816, 30, 13, 14, 0, 200, 200, 0, 'Mestre de Batalha', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (121, 0, 2816, 100, 13, 14, 0, 400, 400, 0, 'Mestre de Batalha', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (122, 0, 2816, 300, 13, 14, 0, 600, 600, 0, 'Mestre de Batalha', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (123, 0, 2816, 600, 13, 14, 0, 1000, 1000, 0, 'Mestre de Batalha', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (124, 0, 3072, 30, 64, 0, 0, 100, 0, 0, 'Rei das Lutas', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (125, 0, 3072, 100, 64, 65, 0, 100, 100, 0, 'Rei das Lutas', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (126, 0, 3072, 300, 64, 65, 0, 200, 100, 0, 'Rei das Lutas', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (127, 0, 3072, 600, 64, 65, 0, 200, 200, 0, 'Rei das Lutas', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (128, 17, 2048, 1, 345, 0, 0, 1, 0, 0, 'Guardião da Esperança', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (129, 17, 2048, 5, 345, 0, 0, 3, 0, 0, 'Guardião da esperança', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (130, 17, 2048, 10, 345, 0, 0, 5, 0, 0, 'Guardião da esperança', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (131, 17, 2048, 30, 345, 0, 0, 10, 0, 0, 'Guardião da esperança', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (132, 16, 2048, 3, 344, 0, 0, 1, 0, 0, 'Campeão de Verus', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (133, 16, 2048, 10, 344, 0, 0, 3, 0, 0, 'Campeão de Verus', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (134, 16, 2048, 30, 344, 0, 0, 5, 0, 0, 'Campeão de Verus', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (135, 16, 2048, 100, 344, 0, 0, 10, 0, 0, 'Campeão de Verus', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (136, 0, 1024, 100, 29, 30, 0, 1, 1, 0, 'Inimigo Público', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (137, 0, 1024, 300, 29, 30, 0, 2, 2, 0, 'Inimigo Público', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (138, 0, 1024, 500, 29, 30, 0, 3, 3, 0, 'Inimigo Público', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (139, 0, 1024, 1000, 29, 30, 0, 4, 4, 0, 'Inimigo Público', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (140, 0, 256, 0, 46, 53, 0, 3, 3, 0, 'Marechal', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (144, 0, 512, 0, 46, 53, 0, 2, 2, 0, 'Archon', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (148, 0, 1536, 11, 0, 0, 0, 0, 0, 0, 'Patriota', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (152, 0, 768, 0, 8, 9, 0, 30, 30, 0, 'Abençoado por Aika', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (156, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Campeão', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (160, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Corredor', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (164, 0, 1, 0, 0, 0, 0, 0, 0, 0, '2º Corredor', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (168, 0, 1, 0, 0, 0, 0, 0, 0, 0, '3º Corredor', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (172, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Top 8', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (176, 0, 4352, 0, 0, 0, 0, 0, 0, 0, 'Vida de Câmbio', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (180, 0, 4608, 0, 0, 0, 0, 0, 0, 0, 'Multi-Milionário', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (184, 1, 4096, 5000, 0, 0, 0, 0, 0, 0, 'Gatinho Assustado', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (188, 0, 3840, 1000, 0, 0, 0, 0, 0, 0, 'Aventureiro Mestre', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (192, 1, 3585, 1004, 0, 0, 0, 0, 0, 0, 'Angelical', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (196, 2, 3585, 500, 0, 0, 0, 0, 0, 0, 'Furioso', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (200, 3, 3585, 500, 0, 0, 0, 0, 0, 0, 'Atirador de Elite', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (204, 4, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Sedutora', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (208, 5, 3585, 500, 0, 0, 0, 0, 0, 0, 'Ilusionista', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (212, 6, 3585, 500, 0, 0, 0, 0, 0, 0, 'Enganadora', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (216, 0, 3328, 1000, 0, 0, 0, 0, 0, 0, 'Perito em Pesca', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (220, 0, 4865, 1000, 0, 0, 0, 0, 0, 0, 'Pescador Maluco', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (224, 0, 4865, 2000, 0, 0, 0, 0, 0, 0, 'Mestre da Pesca', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (228, 0, 5633, 0, 68, 69, 0, 10, 10, 0, 'Admirável Pioneiro', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (232, 18, 2048, 3, 242, 0, 0, 1, 0, 0, 'Matador de Dragões', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (233, 18, 2048, 6, 242, 0, 0, 1, 1, 0, 'Matador de Dragões', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (234, 18, 2048, 10, 242, 0, 0, 2, 1, 0, 'Matador de Dragões', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (235, 18, 2048, 20, 242, 0, 0, 2, 2, 0, 'Matador de Dragões', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (236, 19, 2048, 3, 247, 0, 0, 1, 0, 0, 'Montador de Dragão', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (237, 19, 2048, 6, 247, 339, 0, 1, 1, 0, 'Montador de Dragão', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (238, 19, 2048, 10, 247, 339, 0, 2, 1, 0, 'Montador de Dragão', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (239, 19, 2048, 20, 247, 339, 0, 2, 2, 0, 'Montador de Dragão', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (240, 7, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Cabeça Dura', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (244, 8, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Espelho espelho meu', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (248, 9, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Só na Lata', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (252, 10, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Velho Oeste', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (256, 11, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Hipnotizador', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (260, 12, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Floriculturista', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (264, 20, 2048, 5, 242, 0, 0, 1, 0, 0, 'Minerador Mestre', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (265, 20, 2048, 15, 242, 339, 0, 1, 1, 0, 'Minerador Mestre', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (266, 20, 2048, 30, 242, 339, 0, 2, 1, 0, 'Minerador Mestre', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (267, 20, 2048, 60, 242, 339, 0, 2, 2, 0, 'Minerador Mestre', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (268, 2, 4096, 7, 68, 69, 0, 1, 1, 0, 'Pupilo de Alan', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (269, 2, 4096, 14, 68, 69, 0, 3, 3, 0, 'Pupilo de Alan', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (270, 2, 4096, 21, 68, 69, 0, 7, 7, 0, 'Pupilo de Alan', 6, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (271, 2, 4096, 28, 68, 69, 0, 20, 20, 0, 'Pupilo de Alan', 6, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (276, 22, 2048, 10, 243, 0, 0, 1, 0, 0, 'Dono do Portão', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (277, 22, 2048, 20, 243, 247, 0, 1, 1, 0, 'Dono do Portão', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (278, 22, 2048, 50, 243, 247, 0, 2, 1, 0, 'Dono do Portão', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (279, 22, 2048, 100, 243, 247, 0, 2, 2, 0, 'Dono do Portão', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (280, 0, 5888, 100, 68, 69, 0, 10, 10, 0, 'Sangue Frio', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (281, 0, 5888, 300, 68, 69, 0, 20, 20, 0, 'Sangue Frio', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (282, 0, 5888, 500, 68, 69, 0, 30, 30, 0, 'Sangue Frio', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (283, 0, 5888, 1000, 68, 69, 0, 50, 50, 0, 'Sangue Frio', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (284, 3, 4096, 10, 15, 16, 17, 3, 3, 3, 'Mestre da Arena', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (285, 3, 4096, 100, 15, 16, 17, 7, 7, 7, 'Mestre da Arena', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (286, 3, 4096, 300, 15, 16, 17, 10, 10, 10, 'Mestre da Arena', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (287, 3, 4096, 600, 15, 16, 17, 15, 15, 15, 'Mestre da Arena', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (292, 5, 4097, 1, 68, 69, 0, 3, 3, 0, '??? ???', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (293, 5, 4097, 2, 68, 69, 0, 7, 7, 0, '??? ???', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (294, 5, 4097, 3, 68, 69, 0, 20, 20, 0, '??? ???', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (296, 1, 6401, 10, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (297, 1, 6401, 20, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (298, 1, 6401, 25, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (299, 1, 6401, 30, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (300, 2, 6401, 1, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (301, 2, 6401, 6, 344, 345, 0, 2, 2, 0, '??? ???', 3, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (302, 2, 6401, 16, 344, 345, 0, 3, 3, 0, '??? ???', 3, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (303, 2, 6401, 21, 344, 345, 0, 5, 5, 0, '??? ???', 3, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (304, 6, 4097, 10, 386, 0, 0, 1, 0, 0, '??? ?????', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (305, 6, 4097, 50, 386, 0, 0, 2, 0, 0, '??? ?????', 5, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (306, 6, 4097, 100, 386, 0, 0, 3, 0, 0, '??? ?????', 5, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (307, 6, 4097, 200, 386, 0, 0, 4, 0, 0, '??? ?????', 5, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (308, 0, 1, 0, 68, 69, 0, 20, 20, 0, '????', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (312, 7, 4097, 1, 0, 0, 0, 0, 0, 0, '?? ???', 5, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (320, 3, 6401, 20, 0, 0, 0, 0, 0, 0, '?? ???', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (321, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
-INSERT INTO `data_titles` VALUES (322, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
-INSERT INTO `data_titles` VALUES (323, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
-INSERT INTO `data_titles` VALUES (324, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (328, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (332, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (336, 8, 4097, 1, 13, 14, 243, 1200, 1200, 3, 'O Elter Honrável', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (340, 9, 4097, 1, 13, 14, 243, 1500, 1500, 5, 'O Elter Determinado', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (344, 10, 4097, 5, 20, 21, 89, 2, 2, 2, 'Comerciante', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (348, 11, 4097, 5, 20, 21, 89, 4, 4, 4, 'Comerciante Premium', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (352, 12, 4097, 1, 50, 31, 66, 2, 2, 20, 'Rei Momo', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (356, 13, 4097, 1, 50, 21, 20, 2, 2, 4, 'Rainha de Bateria', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (360, 14, 4097, 1, 50, 31, 49, 2, 2, 2, 'Mestre Sala', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (364, 15, 4097, 1, 89, 21, 31, 2, 2, 2, 'Comissão de Frente', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (368, 16, 4097, 1, 89, 21, 20, 2, 2, 4, 'Porta Bandeira', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (372, 17, 4097, 1, 16, 50, 48, 10, 2, 2, 'Abre Alas', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (376, 0, 1, 0, 13, 0, 0, 500, 0, 0, 'Sr. Coelhão', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (380, 0, 1, 0, 13, 0, 0, 1000, 0, 0, 'Executor em Ascensão', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (384, 18, 4097, 1, 20, 21, 89, 3, 3, 3, 'Cavaleiro de Zeelant', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (388, 0, 1, 0, 13, 0, 0, 1000, 0, 0, 'Executor em Ascensão', 6, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (392, 23, 2048, 1, 13, 0, 0, 500, 0, 0, 'Sopro do Dragão', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (393, 23, 2048, 6, 13, 64, 0, 600, 100, 0, 'Sopro do Dragão', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (394, 23, 2048, 10, 13, 64, 0, 700, 200, 0, 'Sopro do Dragão', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (395, 23, 2048, 20, 13, 64, 0, 800, 300, 0, 'Sopro do Dragão', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (396, 0, 5121, 6, 15, 0, 0, 6, 0, 0, 'Arauto de Ares', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (400, 1, 5121, 7, 18, 0, 0, 6, 0, 0, 'Arauta de Atena', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (404, 2, 5121, 8, 16, 0, 0, 6, 0, 0, 'Arauto de Apolo', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (408, 3, 5121, 9, 16, 0, 0, 6, 0, 0, 'Arauta de Artemis', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (412, 4, 5121, 10, 17, 0, 0, 6, 0, 0, 'Arauto de Hades', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (416, 5, 5121, 11, 17, 0, 0, 6, 0, 0, 'Arauta de Afrodite', 3, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (420, 5, 1, 0, 15, 16, 17, 5, 5, 5, '?? ???', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (424, 19, 4097, 1, 0, 0, 0, 0, 0, 0, 'Thug Life', 2, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (428, 20, 4097, 1, 68, 69, 48, 50, 50, 2, 'Elter Lendário', 2, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (429, 20, 4097, 2, 68, 69, 48, 100, 100, 4, 'Elter Lendário', 2, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (430, 20, 4097, 3, 68, 69, 48, 200, 200, 6, 'Elter Lendário', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (431, 20, 4097, 4, 68, 69, 48, 300, 300, 8, 'Elter Lendário', 2, '#FF7CE5FF');
-INSERT INTO `data_titles` VALUES (432, 21, 4097, 1, 20, 21, 48, 4, 4, 3, 'Papai Noel', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (436, 22, 4097, 1, 20, 21, 48, 4, 4, 3, 'Mamãe Noel', 2, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (440, 24, 2049, 1, 20, 0, 0, 1, 0, 0, '???? ???', 4, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (441, 24, 2049, 50, 20, 0, 0, 2, 0, 0, '???? ???', 4, '#FF76FBA2');
-INSERT INTO `data_titles` VALUES (442, 24, 2049, 100, 20, 0, 0, 3, 0, 0, '???? ???', 4, '#FFFFB9D7');
-INSERT INTO `data_titles` VALUES (443, 24, 2049, 200, 20, 0, 0, 4, 0, 0, '???? ???', 4, '#FFB9B9FF');
-INSERT INTO `data_titles` VALUES (444, 23, 4097, 1, 31, 89, 48, 2, 2, 2, 'Soldado Consagrado', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (445, 23, 4097, 3, 31, 89, 48, 3, 5, 5, 'Tenente Consagrado', 6, '#FF8F7900');
-INSERT INTO `data_titles` VALUES (446, 23, 4097, 5, 31, 89, 48, 4, 7, 7, 'Coronel Consagrado', 6, '#FF00C6FF');
-INSERT INTO `data_titles` VALUES (447, 23, 4097, 10, 31, 89, 48, 5, 10, 10, 'General Consagrado', 6, '#FF0021E9');
-INSERT INTO `data_titles` VALUES (448, 24, 4097, 20, 48, 0, 0, 2, 0, 0, '???? ???? ???', 6, '#FFFFFFFF');
-INSERT INTO `data_titles` VALUES (449, 24, 4097, 40, 48, 0, 0, 4, 0, 0, '???? ???? ???', 6, '#FF8F7900');
-INSERT INTO `data_titles` VALUES (452, 25, 2049, 50, 248, 89, 20, 2, 1, 1, 'Arquidemônio', 1, '#FFF9F9F8');
-INSERT INTO `data_titles` VALUES (453, 25, 2049, 100, 248, 89, 20, 4, 2, 2, 'Arquidemônio', 1, '#FF71CC2E');
-INSERT INTO `data_titles` VALUES (454, 25, 2049, 150, 248, 89, 20, 6, 3, 3, 'Arquidemônio', 1, '#FF129CF3');
-INSERT INTO `data_titles` VALUES (455, 25, 2049, 200, 248, 89, 20, 8, 5, 5, 'Arquidemônio', 1, '#FF8B008B');
+INSERT INTO `data_titles` VALUES (4, 1, 0, 1, 2048, 300, 92, 0, 0, 2, 0, 0, 'Protetor da Natureza', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (5, 1, 1, 1, 2048, 500, 92, 0, 0, 3, 0, 0, 'Protetor da Natureza', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (6, 1, 2, 1, 2048, 1000, 92, 0, 0, 4, 0, 0, 'Protetor da Natureza', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (8, 2, 0, 2, 2048, 300, 99, 0, 0, 2, 0, 0, 'Caçador de Croshu', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (9, 2, 1, 2, 2048, 500, 99, 0, 0, 3, 0, 0, 'Caçador de Croshu', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (10, 2, 2, 2, 2048, 1000, 99, 0, 0, 4, 0, 0, 'Caçador de Croshu', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (12, 3, 0, 3, 2048, 300, 91, 0, 0, 2, 0, 0, 'Matador de Butos', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (13, 3, 1, 3, 2048, 500, 91, 0, 0, 3, 0, 0, 'Matador de Butos', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (14, 3, 2, 3, 2048, 1000, 91, 0, 0, 4, 0, 0, 'Matador de Butos', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (16, 4, 0, 4, 2048, 500, 97, 0, 0, 2, 0, 0, 'Empreiteiro', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (17, 4, 1, 4, 2048, 1000, 97, 0, 0, 3, 0, 0, 'Empreiteiro', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (18, 4, 2, 4, 2048, 2000, 97, 0, 0, 4, 0, 0, 'Empreiteiro', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (20, 5, 0, 5, 2048, 500, 94, 0, 0, 2, 0, 0, 'Vingança Demoníaca', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (21, 5, 1, 5, 2048, 1000, 94, 0, 0, 3, 0, 0, 'Vingança Demoníaca', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (22, 5, 2, 5, 2048, 2000, 94, 0, 0, 4, 0, 0, 'Vingança Demoníaca', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (24, 6, 0, 6, 2048, 1000, 93, 0, 0, 2, 0, 0, 'Valor da Esperança', 1, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (25, 6, 1, 6, 2048, 3000, 93, 0, 0, 3, 0, 0, 'Valor da Esperança', 1, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (26, 6, 2, 6, 2048, 5000, 93, 0, 0, 4, 0, 0, 'Valor da Esperança', 1, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (28, 7, 0, 7, 2048, 1, 0, 0, 0, 1, 0, 0, 'Intruso Sagrado', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (29, 7, 1, 7, 2048, 2, 0, 0, 0, 2, 0, 0, 'Intruso Sagrado', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (30, 7, 2, 7, 2048, 3, 0, 0, 0, 3, 0, 0, 'Intruso Sagrado', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (32, 8, 0, 8, 2048, 2, 247, 0, 0, 1, 0, 0, 'Shinigami', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (33, 8, 1, 8, 2048, 5, 247, 0, 0, 2, 0, 0, 'Shinigami', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (34, 8, 2, 8, 2048, 10, 247, 0, 0, 3, 0, 0, 'Shinigami', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (36, 9, 0, 9, 2048, 2, 339, 0, 0, 1, 0, 0, 'Perseguidor Gressil', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (37, 9, 1, 9, 2048, 5, 339, 0, 0, 2, 0, 0, 'Perseguidor Gressil', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (38, 9, 2, 9, 2048, 10, 339, 0, 0, 3, 0, 0, 'Perseguidor Gressil', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (40, 10, 0, 10, 2048, 2, 242, 0, 0, 1, 0, 0, 'Justiceiro Malik', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (41, 10, 1, 10, 2048, 5, 242, 0, 0, 2, 0, 0, 'Justiceiro Malik', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (42, 10, 2, 10, 2048, 10, 242, 0, 0, 3, 0, 0, 'Justiceiro Malik', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (44, 11, 0, 11, 2048, 10, 0, 0, 0, 1, 0, 0, 'Defensor das Lágrimas', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (45, 11, 1, 11, 2048, 30, 0, 0, 0, 2, 0, 0, 'Defensor das Lágrimas', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (46, 11, 2, 11, 2048, 60, 0, 0, 0, 3, 0, 0, 'Defensor das Lágrimas', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (48, 12, 0, 12, 2048, 10, 246, 0, 0, 1, 0, 0, 'Amigo da Escuridão', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (49, 12, 1, 12, 2048, 30, 246, 0, 0, 2, 0, 0, 'Amigo da Escuridão', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (50, 12, 2, 12, 2048, 60, 246, 0, 0, 3, 0, 0, 'Amigo da Escuridão', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (52, 13, 0, 13, 2048, 10, 21, 0, 0, 1, 0, 0, 'Líder Lycan', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (53, 13, 1, 13, 2048, 30, 21, 0, 0, 2, 0, 0, 'Líder Lycan', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (54, 13, 2, 13, 2048, 60, 21, 0, 0, 3, 0, 0, 'Líder Lycan', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (56, 14, 0, 14, 2048, 20, 20, 0, 0, 1, 0, 0, 'Herói Eldin', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (57, 14, 1, 14, 2048, 50, 20, 0, 0, 2, 0, 0, 'Herói Eldin', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (58, 14, 2, 14, 2048, 100, 20, 0, 0, 3, 0, 0, 'Herói Eldin', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (60, 15, 0, 15, 2048, 10, 0, 0, 0, 1, 0, 0, 'Farel Semelhante', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (61, 15, 1, 15, 2048, 30, 0, 0, 0, 2, 0, 0, 'Farel Semelhante', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (62, 15, 2, 15, 2048, 60, 0, 0, 0, 3, 0, 0, 'Farel Semelhante', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (68, 17, 0, 0, 5376, 0, 0, 0, 0, 1, 0, 0, 'Companheiro Eterno', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (72, 18, 0, 0, 1280, 0, 15, 16, 17, 1, 1, 1, 'Civil', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (76, 19, 0, 0, 1, 0, 19, 0, 0, 5, 0, 0, 'Viajante', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (80, 20, 0, 0, 5121, 0, 15, 0, 0, 3, 0, 0, 'Pugilista', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (84, 21, 0, 1, 5121, 1, 18, 0, 0, 3, 0, 0, 'Defensor', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (88, 22, 0, 2, 5121, 2, 16, 0, 0, 3, 0, 0, 'Destruidor', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (92, 23, 0, 3, 5121, 3, 16, 0, 0, 3, 0, 0, 'Agilidoso', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (96, 24, 0, 4, 5121, 4, 17, 0, 0, 3, 0, 0, 'Manejador', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (100, 25, 0, 5, 5121, 5, 17, 0, 0, 3, 0, 0, 'Protetores', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (108, 27, 0, 0, 2304, 3000, 68, 0, 0, 10, 0, 0, 'Elter notável', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (109, 27, 1, 0, 2304, 10000, 68, 0, 0, 20, 0, 0, 'Elter Notável', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (110, 27, 2, 0, 2304, 30000, 68, 0, 0, 50, 0, 0, 'Elter Notável', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (111, 27, 3, 0, 2304, 60000, 68, 0, 0, 100, 0, 0, 'Elter Notável', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (112, 28, 0, 0, 1792, 30, 69, 0, 0, 10, 0, 0, 'Exterminador', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (113, 28, 1, 0, 1792, 100, 69, 0, 0, 20, 0, 0, 'Exterminador', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (114, 28, 2, 0, 1792, 300, 69, 0, 0, 50, 0, 0, 'Exterminador', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (115, 28, 3, 0, 1792, 600, 69, 0, 0, 100, 0, 0, 'Exterminador', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (116, 29, 0, 0, 2560, 30, 53, 0, 0, 1, 0, 0, 'Saqueador', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (117, 29, 1, 0, 2560, 100, 53, 0, 0, 2, 0, 0, 'Saqueador', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (118, 29, 2, 0, 2560, 300, 53, 0, 0, 3, 0, 0, 'Saqueador', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (119, 29, 3, 0, 2560, 600, 53, 0, 0, 4, 0, 0, 'Saqueador', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (120, 30, 0, 0, 2816, 30, 13, 14, 0, 200, 200, 0, 'Mestre de Batalha', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (121, 30, 1, 0, 2816, 100, 13, 14, 0, 400, 400, 0, 'Mestre de Batalha', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (122, 30, 2, 0, 2816, 300, 13, 14, 0, 600, 600, 0, 'Mestre de Batalha', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (123, 30, 3, 0, 2816, 600, 13, 14, 0, 1000, 1000, 0, 'Mestre de Batalha', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (124, 31, 0, 0, 3072, 30, 64, 0, 0, 100, 0, 0, 'Rei das Lutas', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (125, 31, 1, 0, 3072, 100, 64, 65, 0, 100, 100, 0, 'Rei das Lutas', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (126, 31, 2, 0, 3072, 300, 64, 65, 0, 200, 100, 0, 'Rei das Lutas', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (127, 31, 3, 0, 3072, 600, 64, 65, 0, 200, 200, 0, 'Rei das Lutas', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (128, 32, 0, 17, 2048, 1, 345, 0, 0, 1, 0, 0, 'Guardião da Esperança', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (129, 32, 1, 17, 2048, 5, 345, 0, 0, 3, 0, 0, 'Guardião da esperança', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (130, 32, 2, 17, 2048, 10, 345, 0, 0, 5, 0, 0, 'Guardião da esperança', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (131, 32, 3, 17, 2048, 30, 345, 0, 0, 10, 0, 0, 'Guardião da esperança', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (132, 33, 0, 16, 2048, 3, 344, 0, 0, 1, 0, 0, 'Campeão de Verus', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (133, 33, 1, 16, 2048, 10, 344, 0, 0, 3, 0, 0, 'Campeão de Verus', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (134, 33, 2, 16, 2048, 30, 344, 0, 0, 5, 0, 0, 'Campeão de Verus', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (135, 33, 3, 16, 2048, 100, 344, 0, 0, 10, 0, 0, 'Campeão de Verus', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (136, 34, 0, 0, 1024, 100, 29, 30, 0, 1, 1, 0, 'Inimigo Público', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (137, 34, 1, 0, 1024, 300, 29, 30, 0, 2, 2, 0, 'Inimigo Público', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (138, 34, 2, 0, 1024, 500, 29, 30, 0, 3, 3, 0, 'Inimigo Público', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (139, 34, 3, 0, 1024, 1000, 29, 30, 0, 4, 4, 0, 'Inimigo Público', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (140, 35, 0, 0, 256, 0, 46, 53, 0, 3, 3, 0, 'Marechal', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (144, 36, 0, 0, 512, 0, 46, 53, 0, 2, 2, 0, 'Archon', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (148, 37, 0, 0, 1536, 11, 0, 0, 0, 0, 0, 0, 'Patriota', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (152, 38, 0, 0, 768, 0, 8, 9, 0, 30, 30, 0, 'Abençoado por Aika', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (156, 39, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Campeão', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (160, 40, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Corredor', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (164, 41, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, '2º Corredor', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (168, 42, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, '3º Corredor', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (172, 43, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 'Top 8', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (176, 44, 0, 0, 4352, 0, 0, 0, 0, 0, 0, 0, 'Vida de Câmbio', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (180, 45, 0, 0, 4608, 0, 0, 0, 0, 0, 0, 0, 'Multi-Milionário', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (184, 46, 0, 1, 4096, 5000, 0, 0, 0, 0, 0, 0, 'Gatinho Assustado', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (188, 47, 0, 0, 3840, 1000, 0, 0, 0, 0, 0, 0, 'Aventureiro Mestre', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (192, 48, 0, 1, 3585, 1004, 0, 0, 0, 0, 0, 0, 'Angelical', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (196, 49, 0, 2, 3585, 500, 0, 0, 0, 0, 0, 0, 'Furioso', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (200, 50, 0, 3, 3585, 500, 0, 0, 0, 0, 0, 0, 'Atirador de Elite', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (204, 51, 0, 4, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Sedutora', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (208, 52, 0, 5, 3585, 500, 0, 0, 0, 0, 0, 0, 'Ilusionista', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (212, 53, 0, 6, 3585, 500, 0, 0, 0, 0, 0, 0, 'Enganadora', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (216, 54, 0, 0, 3328, 1000, 0, 0, 0, 0, 0, 0, 'Perito em Pesca', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (220, 55, 0, 0, 4865, 1000, 0, 0, 0, 0, 0, 0, 'Pescador Maluco', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (224, 56, 0, 0, 4865, 2000, 0, 0, 0, 0, 0, 0, 'Mestre da Pesca', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (228, 57, 0, 0, 5633, 0, 68, 69, 0, 10, 10, 0, 'Admirável Pioneiro', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (232, 58, 0, 18, 2048, 3, 242, 0, 0, 1, 0, 0, 'Matador de Dragões', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (233, 58, 1, 18, 2048, 6, 242, 0, 0, 1, 1, 0, 'Matador de Dragões', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (234, 58, 2, 18, 2048, 10, 242, 0, 0, 2, 1, 0, 'Matador de Dragões', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (235, 58, 3, 18, 2048, 20, 242, 0, 0, 2, 2, 0, 'Matador de Dragões', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (236, 59, 0, 19, 2048, 3, 247, 0, 0, 1, 0, 0, 'Montador de Dragão', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (237, 59, 1, 19, 2048, 6, 247, 339, 0, 1, 1, 0, 'Montador de Dragão', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (238, 59, 2, 19, 2048, 10, 247, 339, 0, 2, 1, 0, 'Montador de Dragão', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (239, 59, 3, 19, 2048, 20, 247, 339, 0, 2, 2, 0, 'Montador de Dragão', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (240, 60, 0, 7, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Cabeça Dura', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (244, 61, 0, 8, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Espelho espelho meu', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (248, 62, 0, 9, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Só na Lata', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (252, 63, 0, 10, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Velho Oeste', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (256, 64, 0, 11, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Hipnotizador', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (260, 65, 0, 12, 3585, 1000, 0, 0, 0, 0, 0, 0, 'Floriculturista', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (264, 66, 0, 20, 2048, 5, 242, 0, 0, 1, 0, 0, 'Minerador Mestre', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (265, 66, 1, 20, 2048, 15, 242, 339, 0, 1, 1, 0, 'Minerador Mestre', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (266, 66, 2, 20, 2048, 30, 242, 339, 0, 2, 1, 0, 'Minerador Mestre', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (267, 66, 3, 20, 2048, 60, 242, 339, 0, 2, 2, 0, 'Minerador Mestre', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (268, 67, 0, 2, 4096, 7, 68, 69, 0, 1, 1, 0, 'Pupilo de Alan', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (269, 67, 1, 2, 4096, 14, 68, 69, 0, 3, 3, 0, 'Pupilo de Alan', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (270, 67, 2, 2, 4096, 21, 68, 69, 0, 7, 7, 0, 'Pupilo de Alan', 6, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (271, 67, 3, 2, 4096, 28, 68, 69, 0, 20, 20, 0, 'Pupilo de Alan', 6, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (276, 69, 0, 22, 2048, 10, 243, 0, 0, 1, 0, 0, 'Dono do Portão', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (277, 69, 1, 22, 2048, 20, 243, 247, 0, 1, 1, 0, 'Dono do Portão', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (278, 69, 2, 22, 2048, 50, 243, 247, 0, 2, 1, 0, 'Dono do Portão', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (279, 69, 3, 22, 2048, 100, 243, 247, 0, 2, 2, 0, 'Dono do Portão', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (280, 70, 0, 0, 5888, 100, 68, 69, 0, 10, 10, 0, 'Sangue Frio', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (281, 70, 1, 0, 5888, 300, 68, 69, 0, 20, 20, 0, 'Sangue Frio', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (282, 70, 2, 0, 5888, 500, 68, 69, 0, 30, 30, 0, 'Sangue Frio', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (283, 70, 3, 0, 5888, 1000, 68, 69, 0, 50, 50, 0, 'Sangue Frio', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (284, 71, 0, 3, 4096, 10, 15, 16, 17, 3, 3, 3, 'Mestre da Arena', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (285, 71, 1, 3, 4096, 100, 15, 16, 17, 7, 7, 7, 'Mestre da Arena', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (286, 71, 2, 3, 4096, 300, 15, 16, 17, 10, 10, 10, 'Mestre da Arena', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (287, 71, 3, 3, 4096, 600, 15, 16, 17, 15, 15, 15, 'Mestre da Arena', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (292, 73, 0, 5, 4097, 1, 68, 69, 0, 3, 3, 0, '??? ???', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (293, 73, 1, 5, 4097, 2, 68, 69, 0, 7, 7, 0, '??? ???', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (294, 73, 2, 5, 4097, 3, 68, 69, 0, 20, 20, 0, '??? ???', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (296, 74, 0, 1, 6401, 10, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (297, 74, 1, 1, 6401, 20, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (298, 74, 2, 1, 6401, 25, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (299, 74, 3, 1, 6401, 30, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (300, 75, 0, 2, 6401, 1, 344, 345, 0, 1, 1, 0, '??? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (301, 75, 1, 2, 6401, 6, 344, 345, 0, 2, 2, 0, '??? ???', 3, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (302, 75, 2, 2, 6401, 16, 344, 345, 0, 3, 3, 0, '??? ???', 3, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (303, 75, 3, 2, 6401, 21, 344, 345, 0, 5, 5, 0, '??? ???', 3, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (304, 76, 0, 6, 4097, 10, 386, 0, 0, 1, 0, 0, '??? ?????', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (305, 76, 1, 6, 4097, 50, 386, 0, 0, 2, 0, 0, '??? ?????', 5, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (306, 76, 2, 6, 4097, 100, 386, 0, 0, 3, 0, 0, '??? ?????', 5, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (307, 76, 3, 6, 4097, 200, 386, 0, 0, 4, 0, 0, '??? ?????', 5, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (308, 77, 0, 0, 1, 0, 68, 69, 0, 20, 20, 0, '????', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (312, 78, 0, 7, 4097, 1, 0, 0, 0, 0, 0, 0, '?? ???', 5, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (320, 80, 0, 3, 6401, 20, 0, 0, 0, 0, 0, 0, '?? ???', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (321, 80, 1, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
+INSERT INTO `data_titles` VALUES (322, 80, 2, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
+INSERT INTO `data_titles` VALUES (323, 80, 3, 0, 6400, 0, 0, 0, 0, 0, 0, 0, '0', 0, '#00000000');
+INSERT INTO `data_titles` VALUES (324, 81, 0, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (328, 82, 0, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (332, 83, 0, 0, 1, 0, 267, 0, 0, 2, 0, 0, '??? ?', 6, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (336, 84, 0, 8, 4097, 1, 13, 14, 243, 1200, 1200, 3, 'O Elter Honrável', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (340, 85, 0, 9, 4097, 1, 13, 14, 243, 1500, 1500, 5, 'O Elter Determinado', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (344, 86, 0, 10, 4097, 5, 20, 21, 89, 2, 2, 2, 'Comerciante', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (348, 87, 0, 11, 4097, 5, 20, 21, 89, 4, 4, 4, 'Comerciante Premium', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (352, 88, 0, 12, 4097, 1, 50, 31, 66, 2, 2, 20, 'Rei Momo', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (356, 89, 0, 13, 4097, 1, 50, 21, 20, 2, 2, 4, 'Rainha de Bateria', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (360, 90, 0, 14, 4097, 1, 50, 31, 49, 2, 2, 2, 'Mestre Sala', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (364, 91, 0, 15, 4097, 1, 89, 21, 31, 2, 2, 2, 'Comissão de Frente', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (368, 92, 0, 16, 4097, 1, 89, 21, 20, 2, 2, 4, 'Porta Bandeira', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (372, 93, 0, 17, 4097, 1, 16, 50, 48, 10, 2, 2, 'Abre Alas', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (376, 94, 0, 0, 1, 0, 13, 0, 0, 500, 0, 0, 'Sr. Coelhão', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (380, 95, 0, 0, 1, 0, 13, 0, 0, 1000, 0, 0, 'Executor em Ascensão', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (384, 96, 0, 18, 4097, 1, 20, 21, 89, 3, 3, 3, 'Cavaleiro de Zeelant', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (388, 97, 0, 0, 1, 0, 13, 0, 0, 1000, 0, 0, 'Executor em Ascensão', 6, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (392, 98, 0, 23, 2048, 1, 13, 0, 0, 500, 0, 0, 'Sopro do Dragão', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (393, 98, 1, 23, 2048, 6, 13, 64, 0, 600, 100, 0, 'Sopro do Dragão', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (394, 98, 2, 23, 2048, 10, 13, 64, 0, 700, 200, 0, 'Sopro do Dragão', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (395, 98, 3, 23, 2048, 20, 13, 64, 0, 800, 300, 0, 'Sopro do Dragão', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (396, 99, 0, 0, 5121, 6, 15, 0, 0, 6, 0, 0, 'Arauto de Ares', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (400, 100, 0, 1, 5121, 7, 18, 0, 0, 6, 0, 0, 'Arauta de Atena', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (404, 101, 0, 2, 5121, 8, 16, 0, 0, 6, 0, 0, 'Arauto de Apolo', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (408, 102, 0, 3, 5121, 9, 16, 0, 0, 6, 0, 0, 'Arauta de Artemis', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (412, 103, 0, 4, 5121, 10, 17, 0, 0, 6, 0, 0, 'Arauto de Hades', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (416, 104, 0, 5, 5121, 11, 17, 0, 0, 6, 0, 0, 'Arauta de Afrodite', 3, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (420, 105, 0, 5, 1, 0, 15, 16, 17, 5, 5, 5, '?? ???', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (424, 106, 0, 19, 4097, 1, 0, 0, 0, 0, 0, 0, 'Thug Life', 2, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (428, 107, 0, 20, 4097, 1, 68, 69, 48, 50, 50, 2, 'Elter Lendário', 2, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (429, 107, 1, 20, 4097, 2, 68, 69, 48, 100, 100, 4, 'Elter Lendário', 2, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (430, 107, 2, 20, 4097, 3, 68, 69, 48, 200, 200, 6, 'Elter Lendário', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (431, 107, 3, 20, 4097, 4, 68, 69, 48, 300, 300, 8, 'Elter Lendário', 2, '#FF7CE5FF');
+INSERT INTO `data_titles` VALUES (432, 108, 0, 21, 4097, 1, 20, 21, 48, 4, 4, 3, 'Papai Noel', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (436, 109, 0, 22, 4097, 1, 20, 21, 48, 4, 4, 3, 'Mamãe Noel', 2, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (440, 110, 0, 24, 2049, 1, 20, 0, 0, 1, 0, 0, '???? ???', 4, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (441, 110, 1, 24, 2049, 50, 20, 0, 0, 2, 0, 0, '???? ???', 4, '#FF76FBA2');
+INSERT INTO `data_titles` VALUES (442, 110, 2, 24, 2049, 100, 20, 0, 0, 3, 0, 0, '???? ???', 4, '#FFFFB9D7');
+INSERT INTO `data_titles` VALUES (443, 110, 3, 24, 2049, 200, 20, 0, 0, 4, 0, 0, '???? ???', 4, '#FFB9B9FF');
+INSERT INTO `data_titles` VALUES (444, 111, 0, 23, 4097, 1, 31, 89, 48, 2, 2, 2, 'Soldado Consagrado', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (445, 111, 1, 23, 4097, 3, 31, 89, 48, 3, 5, 5, 'Tenente Consagrado', 6, '#FF8F7900');
+INSERT INTO `data_titles` VALUES (446, 111, 2, 23, 4097, 5, 31, 89, 48, 4, 7, 7, 'Coronel Consagrado', 6, '#FF00C6FF');
+INSERT INTO `data_titles` VALUES (447, 111, 3, 23, 4097, 10, 31, 89, 48, 5, 10, 10, 'General Consagrado', 6, '#FF0021E9');
+INSERT INTO `data_titles` VALUES (448, 112, 0, 24, 4097, 20, 48, 0, 0, 2, 0, 0, '???? ???? ???', 6, '#FFFFFFFF');
+INSERT INTO `data_titles` VALUES (449, 112, 1, 24, 4097, 40, 48, 0, 0, 4, 0, 0, '???? ???? ???', 6, '#FF8F7900');
+INSERT INTO `data_titles` VALUES (452, 113, 0, 25, 2049, 50, 248, 89, 20, 2, 1, 1, 'Arquidemônio', 1, '#FFF9F9F8');
+INSERT INTO `data_titles` VALUES (453, 113, 1, 25, 2049, 100, 248, 89, 20, 4, 2, 2, 'Arquidemônio', 1, '#FF71CC2E');
+INSERT INTO `data_titles` VALUES (454, 113, 2, 25, 2049, 150, 248, 89, 20, 6, 3, 3, 'Arquidemônio', 1, '#FF129CF3');
+INSERT INTO `data_titles` VALUES (455, 113, 3, 25, 2049, 200, 248, 89, 20, 8, 5, 5, 'Arquidemônio', 1, '#FF8B008B');
 
 -- ----------------------------
 -- Table structure for devir_slots
@@ -14825,7 +14841,7 @@ CREATE TABLE `items`  (
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 136 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for nations

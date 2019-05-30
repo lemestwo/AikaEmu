@@ -32,7 +32,7 @@ namespace AikaEmu.GameServer.Models.Item
         public Item(ushort itemId)
         {
             ItemId = itemId;
-            ItemData = DataManager.Instance.ItemsData.GetItemData(ItemId);
+            ItemData = DataManager.Instance.ItemsData.GetData(ItemId);
         }
 
         public Item(SlotType slotType, ushort slot, ushort itemId, bool loadData = true)
@@ -41,7 +41,7 @@ namespace AikaEmu.GameServer.Models.Item
             Slot = slot;
             ItemId = itemId;
             if (loadData)
-                ItemData = DataManager.Instance.ItemsData.GetItemData(ItemId);
+                ItemData = DataManager.Instance.ItemsData.GetData(ItemId);
         }
 
         public override PacketStream Write(PacketStream stream)

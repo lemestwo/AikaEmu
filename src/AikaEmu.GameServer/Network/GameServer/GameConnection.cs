@@ -24,7 +24,9 @@ namespace AikaEmu.GameServer.Network.GameServer
 
             if (ActiveCharacter == null) return;
 
-            ActiveCharacter.Save();
+            if (!ActiveCharacter.IsInternalDisconnect)
+                ActiveCharacter.Save();
+
             ActiveCharacter.Friends.GetOffline();
             WorldManager.Instance.Despawn(ActiveCharacter);
         }

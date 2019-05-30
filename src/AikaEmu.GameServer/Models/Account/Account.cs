@@ -80,14 +80,14 @@ namespace AikaEmu.GameServer.Models.Account
             }
 
             // TODO - include bad words verification
-            var nameRegex = new Regex(DataManager.Instance.CharInitial.Data.NameRegex, RegexOptions.Compiled);
+            var nameRegex = new Regex(DataManager.Instance.CharacterData.Data.NameRegex, RegexOptions.Compiled);
             if (!nameRegex.IsMatch(name))
             {
                 Connection.SendPacket(new SendMessage(new Message("This name is already taken.", MessageType.Error), 0));
                 return;
             }
 
-            var configs = DataManager.Instance.CharInitial;
+            var configs = DataManager.Instance.CharacterData;
             var charInitials = configs.GetInitial((ushort) charClass);
             var charTemplate = new Character
             {

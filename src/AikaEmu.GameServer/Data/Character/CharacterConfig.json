@@ -2,6 +2,7 @@
   "MaxGold": 2000000000,
   "MaxLevel": 99,
   "ItemStack": 255,
+  "MaxEnchant": 12,
   "NameRegex": "^[a-zA-Z0-9]{1,16}$",
   "StartPosition": [
     {

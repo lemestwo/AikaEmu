@@ -3,11 +3,11 @@ using AikaEmu.Shared.Utils;
 
 namespace AikaEmu.GameServer.Models.Data
 {
-	public class CharInitialData
+	public class CharacterData
 	{
 		public CharacterConfigJson Data { get; }
 
-		public CharInitialData(string path)
+		public CharacterData(string path)
 		{
 			JsonUtil.DeserializeFile(path, out CharacterConfigJson data);
 			Data = data;

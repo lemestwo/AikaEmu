@@ -26,7 +26,7 @@ namespace AikaEmu.GameServer.Helpers
                 return;
             }
 
-            var skillData = DataManager.Instance.SkillData.GetSkillData(skillId);
+            var skillData = DataManager.Instance.SkillData.GetData(skillId);
             if (skillData == null) return;
 
             var isError = false;
@@ -88,7 +88,7 @@ namespace AikaEmu.GameServer.Helpers
 
             if (npc.StoreItems[index] <= 0) return;
 
-            var item = DataManager.Instance.ItemsData.GetItemData(npc.StoreItems[index]);
+            var item = DataManager.Instance.ItemsData.GetData(npc.StoreItems[index]);
             if (item == null) return;
 
             if (GlobalUtils.IsEquipment(item.ItemType) && quantity > 1 || character.Money < item.BuyPrice * quantity) return;

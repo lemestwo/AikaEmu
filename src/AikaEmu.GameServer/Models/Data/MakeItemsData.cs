@@ -18,8 +18,9 @@ namespace AikaEmu.GameServer.Models.Data
                     {
                         var makeItem = new MakeItemDataModel
                         {
-                            Id = reader.GetUInt16("id"),
-                            ResultItemId = reader.GetUInt16("result_item_id"),
+                            ResultItemId = reader.GetUInt16("id"),
+                            ResultSupItemId = reader.GetUInt16("result_sup_item_id"),
+                            Level = reader.GetByte("level"),
                             Price = reader.GetUInt64("price"),
                             Quantity = reader.GetUInt16("quantity"),
                             Rate = reader.GetUInt32("rate"),
@@ -27,7 +28,7 @@ namespace AikaEmu.GameServer.Models.Data
                             RateDouble = reader.GetUInt32("rate_double"),
                             Ingredients = new List<MakeItemIngredients>()
                         };
-                        Objects.Add(makeItem.Id, makeItem);
+                        Objects.Add(makeItem.ResultItemId, makeItem);
                     }
                 }
             }
@@ -44,7 +45,7 @@ namespace AikaEmu.GameServer.Models.Data
                         var makeItemIngredients = new MakeItemIngredients
                         {
                             ItemId = reader.GetUInt16("item_id"),
-                            Quantity = reader.GetUInt16("quantity")
+                            Quantity = reader.GetByte("quantity")
                         };
                         if (Objects.ContainsKey(id))
                             Objects[id].Ingredients.Add(makeItemIngredients);

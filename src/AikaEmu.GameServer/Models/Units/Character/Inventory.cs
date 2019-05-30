@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using AikaEmu.GameServer.Managers;
 using AikaEmu.GameServer.Models.Chat;
 using AikaEmu.GameServer.Models.Item;
@@ -70,7 +71,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
         {
             // TODO - Guild bank use same function?
             if (slotType != SlotType.Bank) return;
-            var maxMoney = DataManager.Instance.CharInitial.Data.MaxGold;
+            var maxMoney = DataManager.Instance.CharacterData.Data.MaxGold;
 
             var isDeposit = amount > 0;
             if (isDeposit && _character.BankMoney + (ulong) amount > maxMoney)
@@ -122,6 +123,22 @@ namespace AikaEmu.GameServer.Models.Units.Character
             _character.SendPacket(new UpdateItem(item, false));
             return true;
         }
+        
+        public bool UpdateItem(SlotType slotType, ushort slot, byte newQuantity, bool save = true)
+        {
+            var item = GetItem(slotType, slot);
+            if (item == null) return false;
+            lock (_lockObject)
+            {
+                item.Quantity = newQuantity;
+                _items[slotType][slot] = item;
+                if (save)
+                    _character.Save(SaveType.Inventory);
+            }
+
+            _character.SendPacket(new UpdateItem(item, false));
+            return true;
+        }
 
         public void MergeItems(ushort slotFrom, ushort slotTo)
         {
@@ -132,7 +149,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 if (itemFrom == null || itemTo == null || !itemFrom.ItemId.Equals(itemTo.ItemId) || !itemFrom.ItemData.IsStackable ||
                     !itemTo.ItemData.IsStackable) return;
 
-                if (itemFrom.Quantity + itemTo.Quantity > DataManager.Instance.CharInitial.Data.ItemStack)
+                if (itemFrom.Quantity + itemTo.Quantity > DataManager.Instance.CharacterData.Data.ItemStack)
                 {
                     SwapItems(SlotType.Inventory, SlotType.Inventory, slotFrom, slotTo);
                     return;
@@ -149,7 +166,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
         public void SplitItem(SlotType slotType, ushort slot, uint quantity)
         {
-            if (quantity >= DataManager.Instance.CharInitial.Data.ItemStack ||
+            if (quantity >= DataManager.Instance.CharacterData.Data.ItemStack ||
                 slotType != SlotType.Inventory && slotType != SlotType.Bank && slotType != SlotType.PranInventory) return;
 
             lock (_lockObject)
@@ -174,7 +191,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
             _character.SendPacket(new UpdateBank(_character.BankMoney, items, 0));
         }
 
-        public bool RemoveItem(SlotType slotType, ushort slot, byte qty = 0, bool save = true)
+        public bool RemoveItem(SlotType slotType, ushort slot, uint qty = 0, bool save = true)
         {
             lock (_lockObject)
             {
@@ -191,7 +208,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 }
                 else
                 {
-                    item.Quantity -= qty;
+                    item.Quantity -= (byte) (qty & 0xFF);
                     _items[slotType][slot] = item;
                     _character.SendPacket(new UpdateItem(item, false));
                 }
@@ -200,6 +217,49 @@ namespace AikaEmu.GameServer.Models.Units.Character
                     _character.Save(SaveType.Inventory);
 
                 return true;
+            }
+        }
+
+        public bool RemoveItems(SlotType slotType, ushort itemId, uint qty, bool save)
+        {
+            lock (_lockObject)
+            {
+                var (items, itemQty) = GetItems(slotType, itemId);
+                if (itemQty < qty) return false;
+
+                foreach (var item in items)
+                {
+                    if (qty == 0) continue;
+
+                    RemoveItem(slotType, item.Slot, qty, save);
+                    qty = item.Quantity <= qty ? qty - item.Quantity : 0;
+                }
+
+                return true;
+            }
+        }
+
+        public bool RemoveItems(SlotType slotType, Dictionary<ushort, uint> items, bool save)
+        {
+            foreach (var (itemId, qty) in items)
+            {
+                if (!RemoveItems(slotType, itemId, qty, save)) return false;
+            }
+
+            return true;
+        }
+
+        public (List<Item.Item> items, uint count) GetItems(SlotType slotType, ushort itemId)
+        {
+            lock (_lockObject)
+            {
+                var list = _items[slotType].Where(item => item?.ItemId == itemId).ToList();
+
+                var count = 0u;
+                foreach (var item in list)
+                    count += item.Quantity;
+
+                return (list, count);
             }
         }
 
@@ -236,13 +296,13 @@ namespace AikaEmu.GameServer.Models.Units.Character
             {
                 var newItems = new List<Item.Item>();
                 var freeSlots = GetFreeSlots(slotType);
-                var itemData = DataManager.Instance.ItemsData.GetItemData(itemId);
+                var itemData = DataManager.Instance.ItemsData.GetData(itemId);
                 if (itemData == null) return false;
 
                 // If item is stackable
                 if (itemData.IsStackable)
                 {
-                    var maxStack = DataManager.Instance.CharInitial.Data.ItemStack;
+                    var maxStack = DataManager.Instance.CharacterData.Data.ItemStack;
                     var stacks = Math.DivRem(quantity, maxStack, out var remainder);
                     if (remainder != 0) stacks++;
                     if (stacks <= 0) return false;

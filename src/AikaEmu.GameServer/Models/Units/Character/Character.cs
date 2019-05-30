@@ -46,6 +46,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
         public ShopType OpenedShopType { get; set; }
         public uint OpenedShopNpcConId { get; set; }
 
+        public bool IsInternalDisconnect { get; set; }
+
         public void ActivatePran()
         {
             var item = Inventory.GetItem(SlotType.Equipments, (ushort) ItemType.PranStone);
@@ -84,6 +86,8 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 Titles = new Titles(this);
                 Titles.Init(connection);
             }
+
+            IsInternalDisconnect = false;
         }
 
         public void PartialInit()
@@ -139,6 +143,14 @@ namespace AikaEmu.GameServer.Models.Units.Character
 
             Connection.SendPacket(new UpdatePosition(this, 1));
             WorldManager.Instance.ShowVisibleUnits(this);
+        }
+
+        public bool UpdateMoney(ulong value, bool isAdd = false)
+        {
+            if (isAdd) Money += value;
+            else Money -= value;
+            SendPacket(new UpdateCharGold(this));
+            return true;
         }
 
         private ulong InitBankMoney(MySqlConnection connection)

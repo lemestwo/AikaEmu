@@ -8,6 +8,7 @@ using AikaEmu.GameServer.Models.Units.Character;
 using AikaEmu.GameServer.Models.Units.Character.Const;
 using AikaEmu.GameServer.Network.GameServer;
 using AikaEmu.GameServer.Network.Packets.Game;
+using AikaEmu.GameServer.Utils;
 
 namespace AikaEmu.GameServer.Helpers
 {
@@ -82,7 +83,7 @@ namespace AikaEmu.GameServer.Helpers
             Dictionary<ushort, (byte qty, Item data)> extractList, byte baseChance, byte extChance, byte concExtChance)
         {
             if (coreData.ItemData.ItemType != gearType || itemData.Quantity < 7 << 4 || coreData.Quantity < 1) return (false, 0);
-            var isWeapon = itemData.ItemData.ItemType > ItemType.MonsterWeapon && itemData.ItemData.ItemType <= ItemType.Staff;
+            var isWeapon = GlobalUtils.IsWeapon(itemData.ItemData.ItemType);
             var chance = (int) baseChance;
             foreach (var (qty, data) in extractList.Values)
             {

@@ -136,6 +136,7 @@ namespace AikaEmu.GameServer.Network
         InviteToPartyResult = 0x3023,
         LeaveParty = 0x3024,
         DisbandParty = 0x3025,
+        RequestCraftAction = 0x302B,
         RequestDeleteItem = 0x302C,
         RequestEnchant = 0x302D,
         QuestRewardChoice = 0x3030,

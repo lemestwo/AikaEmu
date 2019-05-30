@@ -15,7 +15,7 @@ namespace AikaEmu.GameServer.Models.Item.UseItem
         {
             _log.Info("UseItem: GoldCoin, Amount: {0}", item.ItemData.GearCoreLevel);
 
-            var maxMoney = DataManager.Instance.CharInitial.Data.MaxGold;
+            var maxMoney = DataManager.Instance.CharacterData.Data.MaxGold;
             var amount = item.ItemData.GearCoreLevel;
             if (character.Money + amount > maxMoney)
             {

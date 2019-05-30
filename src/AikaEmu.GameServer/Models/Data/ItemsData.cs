@@ -18,10 +18,5 @@ namespace AikaEmu.GameServer.Models.Data
         {
             return Objects.ContainsKey(id) ? Objects[id].ItemType : ItemType.Default;
         }
-
-        public ItemsJson GetItemData(ushort id)
-        {
-            return Objects.ContainsKey(id) ? Objects[id] : null;
-        }
     }
 }

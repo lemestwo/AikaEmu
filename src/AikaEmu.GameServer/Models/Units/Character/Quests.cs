@@ -40,9 +40,9 @@ namespace AikaEmu.GameServer.Models.Units.Character
             var quest = GetQuest(questId);
             if (quest == null || !quest.IsCompleted || quest.IsDone) return;
 
-            var maxMoney = DataManager.Instance.CharInitial.Data.MaxGold;
-            var maxLevel = DataManager.Instance.CharInitial.Data.MaxLevel;
-            var maxStack = DataManager.Instance.CharInitial.Data.ItemStack;
+            var maxMoney = DataManager.Instance.CharacterData.Data.MaxGold;
+            var maxLevel = DataManager.Instance.CharacterData.Data.MaxLevel;
+            var maxStack = DataManager.Instance.CharacterData.Data.ItemStack;
 
             var canProcced = quest.QuestData.Rewards.Count;
             var totalStacks = 0;
@@ -180,7 +180,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             },
                             IsDone = reader.GetBoolean("is_done"),
                         };
-                        quest.QuestData = DataManager.Instance.QuestData.GetQuest(quest.Id);
+                        quest.QuestData = DataManager.Instance.QuestData.GetData(quest.Id);
 
                         if (quest.QuestData != null)
                             _quests.Add(quest.Id, quest);

@@ -15,7 +15,7 @@ namespace AikaEmu.GameServer.Models.World.Devir
         public DevirSlot(ushort itemId)
         {
             ItemId = itemId;
-            ItemData = DataManager.Instance.ItemsData.GetItemData(itemId);
+            ItemData = DataManager.Instance.ItemsData.GetData(itemId);
         }
     }
 }

@@ -12,10 +12,5 @@ namespace AikaEmu.GameServer.Models.Data
             foreach (var skillList in skillData)
                 Objects.Add(skillList.Id, skillList);
         }
-
-        public SkillDataJson GetSkillData(ushort skillId)
-        {
-            return Objects.ContainsKey(skillId) ? Objects[skillId] : null;
-        }
     }
 }

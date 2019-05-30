@@ -13,11 +13,6 @@ namespace AikaEmu.GameServer.Models.Data
                 Objects.Add(quest.Id, quest);
         }
 
-        public QuestJson GetQuest(ushort id)
-        {
-            return Objects.ContainsKey(id) ? Objects[id] : null;
-        }
-
         public List<QuestJson> GetQuestByNpc(ushort npcId)
         {
             var list = new List<QuestJson>();

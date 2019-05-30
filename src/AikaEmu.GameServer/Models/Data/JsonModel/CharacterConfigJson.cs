@@ -8,6 +8,7 @@ namespace AikaEmu.GameServer.Models.Data.JsonModel
         public uint MaxGold { get; set; }
         public byte MaxLevel { get; set; }
         public byte ItemStack { get; set; }
+        public byte MaxEnchant { get; set; }
         public string NameRegex { get; set; }
         public StartPosition[] StartPosition { get; set; }
         public List<Item> StartItems { get; set; }

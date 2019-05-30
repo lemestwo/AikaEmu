@@ -65,7 +65,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                 {
                     SkillId = skillId,
                     Level = 1,
-                    SkillData = DataManager.Instance.SkillData.GetSkillData(skillId)
+                    SkillData = DataManager.Instance.SkillData.GetData(skillId)
                 };
                 if (template.SkillData != null)
                 {
@@ -122,7 +122,7 @@ namespace AikaEmu.GameServer.Models.Units.Character
                             SkillId = reader.GetUInt16("skill_id"),
                             Level = reader.GetByte("level"),
                         };
-                        template.SkillData = DataManager.Instance.SkillData.GetSkillData(template.SkillIdx);
+                        template.SkillData = DataManager.Instance.SkillData.GetData(template.SkillIdx);
                         if (template.SkillData != null)
                         {
                             _skillList[template.SkillData.Tier][template.SkillData.TierPos] = template;

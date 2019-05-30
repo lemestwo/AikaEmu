@@ -11,7 +11,7 @@ namespace AikaEmu.GameServer.Managers
     {
         private readonly Logger _log = LogManager.GetCurrentClassLogger();
         private readonly string _curDir;
-        public CharInitialData CharInitial { get; private set; }
+        public CharacterData CharacterData { get; private set; }
         public ConvertCoreData ConvertCoreData { get; private set; }
         public ExpData ExpData { get; private set; }
         public ExpData PranExpData { get; private set; }
@@ -23,6 +23,8 @@ namespace AikaEmu.GameServer.Managers
         public NpcData NpcData { get; private set; }
         public MobData MobData { get; private set; }
         public QuestData QuestData { get; private set; }
+        public ReinforceAData ReinforceAData { get; private set; }
+        public ReinforceWData ReinforceWData { get; private set; }
         public RecipesData RecipesData { get; private set; }
         public SetsData SetsData { get; private set; }
         public SkillDataData SkillData { get; private set; }
@@ -35,7 +37,7 @@ namespace AikaEmu.GameServer.Managers
 
         public void Init()
         {
-            CharInitial = new CharInitialData(GetPath("Character\\CharacterConfig"));
+            CharacterData = new CharacterData(GetPath("Character\\CharacterConfig"));
             _log.Info("Loaded CharacterConfig...");
 
             ItemsData = new ItemsData(GetPath("Game\\ItemList.bin"));
@@ -78,6 +80,10 @@ namespace AikaEmu.GameServer.Managers
 
                 RecipesData = new RecipesData(connection);
                 _log.Info("Loaded {0} recipes.", RecipesData.Count);
+
+                ReinforceAData = new ReinforceAData(connection);
+                ReinforceWData = new ReinforceWData(connection);
+                _log.Info("Loaded {0} reinforce values.", ReinforceAData.Count + ReinforceWData.Count);
 
                 SetsData = new SetsData(connection);
                 _log.Info("Loaded {0} sets.", SetsData.Count);

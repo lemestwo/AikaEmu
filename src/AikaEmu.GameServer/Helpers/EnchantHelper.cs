@@ -36,13 +36,14 @@ namespace AikaEmu.GameServer.Helpers
 
             if (enchantData == null || actualEnchant >= DataManager.Instance.CharacterData.Data.MaxEnchant) return;
 
-            if (character.Money < enchantData.Price || equipReagent.Quantity < enchantData.ReagentQty ||
-                equipCash != null && isWeapon && equipCash.ItemData.ItemType != ItemType.ExtractWeapon &&
-                equipCash.ItemData.ItemType != ItemType.ExtractConcWeapon ||
-                equipCash != null && !isWeapon && equipCash.ItemData.ItemType != ItemType.ExtractArmor &&
-                equipCash.ItemData.ItemType != ItemType.ExtractConcArmor ||
-                equipCash != null && equipCash.ItemData.Rank < equipData.ItemData.Rank ||
-                equipReagent.ItemData.Rank < equipData.ItemData.Rank)
+            if (character.Money < enchantData.Price ||
+                equipReagent.Quantity < enchantData.ReagentQty ||
+                equipReagent.ItemData.Rank < equipData.ItemData.Rank ||
+                equipCash != null && (
+                    isWeapon && equipCash.ItemData.ItemType != ItemType.ExtractWeapon && equipCash.ItemData.ItemType != ItemType.ExtractConcWeapon ||
+                    !isWeapon && equipCash.ItemData.ItemType != ItemType.ExtractArmor && equipCash.ItemData.ItemType != ItemType.ExtractConcArmor ||
+                    equipCash.ItemData.Rank < equipData.ItemData.Rank
+                ))
             {
                 connection.SendPacket(new SendMessage(new Message("Not enough materials.", MessageType.Error)));
                 return;
@@ -70,9 +71,10 @@ namespace AikaEmu.GameServer.Helpers
                 else result = ResultEnchantType.MajorFailure;
 
                 if (result == ResultEnchantType.MajorFailure && equipCash != null) result = ResultEnchantType.FailureNoDestruction;
-                if (equipCash != null && result == ResultEnchantType.FailureNoDestruction &&
-                    (equipCash.ItemData.ItemType != ItemType.ExtractConcWeapon || equipCash.ItemData.ItemType != ItemType.ExtractConcArmor))
-                    result = ResultEnchantType.Failure;
+                if (equipCash != null && result == ResultEnchantType.Failure && (
+                        equipCash.ItemData.ItemType != ItemType.ExtractConcWeapon || equipCash.ItemData.ItemType != ItemType.ExtractConcArmor
+                    ))
+                    result = ResultEnchantType.FailureNoDestruction;
             }
 
             switch (result)

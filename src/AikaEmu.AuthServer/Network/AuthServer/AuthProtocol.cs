@@ -94,8 +94,8 @@ namespace AikaEmu.AuthServer.Network.AuthServer
                                 var packet = (AuthPacket) Activator.CreateInstance(pType);
                                 packet.Opcode = opcode;
                                 packet.Connection = connection;
-                                packet.Decode(stream);
                                 _log.Debug("C->Auth: {0:x2} {1}", opcode, pName);
+                                packet.Decode(stream);
                             }
                             else
                             {

@@ -99,11 +99,11 @@ namespace AikaEmu.GameServer.Network.GameServer
                                 packet.Opcode = opcode;
                                 packet.Connection = connection;
                                 packet.SenderId = sender;
-                                packet.Decode(stream);
+
                                 if (opcode != 0x30bf && opcode != 0x3005 && opcode != 0x3006)
-                                {
                                     _log.Debug("C->Game: (0x{0:x2}) {1}.", opcode, pName);
-                                }
+
+                                packet.Decode(stream);
                             }
                             else
                             {

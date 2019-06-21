@@ -6,6 +6,8 @@ It's code is based on several ideas from others emulators and is being developed
 
 AikaEmu is free and licensed under [GNU GPL v3.0](LICENSE.md).
 
+If you want more information or just talk, please join our [Discord](https://discord.gg/pVAXHWS).
+
 ## Getting Started
 
 ### Setup Server

@@ -12,7 +12,7 @@
     "Host": "localhost",
     "Port": 3306,
     "User": "root",
-    "Pass": "root",
+    "Pass": "",
     "Database": "aikaemu_game"
   }
 }

@@ -1,17 +1,17 @@
-/*
+﻿/*
  Navicat Premium Data Transfer
 
- Source Server         : mysql
+ Source Server         : MySql
  Source Server Type    : MySQL
- Source Server Version : 80015
+ Source Server Version : 50724
  Source Host           : localhost:3306
  Source Schema         : aikaemu_game
 
  Target Server Type    : MySQL
- Target Server Version : 80015
+ Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 27/05/2019 13:54:11
+ Date: 21/06/2019 19:14:00
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `account_nation`  (
   PRIMARY KEY (`acc_id`) USING BTREE,
   INDEX `nation_id`(`nation_id`) USING BTREE,
   CONSTRAINT `account_nation_ibfk_1` FOREIGN KEY (`nation_id`) REFERENCES `nations` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for bank_gold
@@ -40,7 +40,7 @@ CREATE TABLE `bank_gold`  (
   `gold` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`acc_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_friends
@@ -50,12 +50,12 @@ CREATE TABLE `character_friends`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `char_id` int(10) UNSIGNED NOT NULL,
   `friend_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `is_blocked` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `char_id`, `friend_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_quests
@@ -73,7 +73,7 @@ CREATE TABLE `character_quests`  (
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`char_id`, `quest_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_skillbars
@@ -85,7 +85,7 @@ CREATE TABLE `character_skillbars`  (
   `slot_id` smallint(5) UNSIGNED NOT NULL,
   `slot_type` tinyint(3) UNSIGNED NOT NULL,
   PRIMARY KEY (`char_id`, `slot`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_skills
@@ -96,7 +96,7 @@ CREATE TABLE `character_skills`  (
   `skill_id` smallint(5) UNSIGNED NOT NULL,
   `level` tinyint(3) UNSIGNED NOT NULL,
   PRIMARY KEY (`char_id`, `skill_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for character_titles
@@ -110,7 +110,7 @@ CREATE TABLE `character_titles`  (
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `char_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for characters
@@ -120,7 +120,7 @@ CREATE TABLE `characters`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `acc_id` int(10) UNSIGNED NOT NULL,
   `slot` tinyint(3) UNSIGNED NOT NULL,
-  `name` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `level` smallint(5) UNSIGNED NOT NULL,
   `class` smallint(6) NOT NULL,
   `width` tinyint(4) UNSIGNED NOT NULL,
@@ -144,11 +144,11 @@ CREATE TABLE `characters`  (
   `int` tinyint(4) UNSIGNED NOT NULL,
   `const` tinyint(3) UNSIGNED NOT NULL,
   `spi` tinyint(3) UNSIGNED NOT NULL,
-  `token` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `token` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for data_exp
@@ -157,7 +157,7 @@ DROP TABLE IF EXISTS `data_exp`;
 CREATE TABLE `data_exp`  (
   `level` tinyint(3) UNSIGNED NOT NULL,
   `exp` bigint(20) UNSIGNED NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_exp
@@ -332,7 +332,7 @@ CREATE TABLE `data_gearconverts`  (
   `ext_chance` tinyint(3) UNSIGNED NOT NULL,
   `conc_ext_chance` tinyint(3) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_gearconverts
@@ -383,7 +383,7 @@ CREATE TABLE `data_gearcores`  (
   `ext_chance` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `conc_ext_chance` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_gearcores
@@ -1133,10 +1133,10 @@ DROP TABLE IF EXISTS `data_make_item_ingredients`;
 CREATE TABLE `data_make_item_ingredients`  (
   `id` smallint(5) UNSIGNED NOT NULL,
   `item_id` smallint(5) UNSIGNED NOT NULL,
-  `quantity` smallint(5) UNSIGNED NOT NULL,
+  `quantity` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   INDEX `id`(`id`) USING BTREE,
   CONSTRAINT `data_make_item_ingredients_ibfk_1` FOREIGN KEY (`id`) REFERENCES `data_make_items` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_make_item_ingredients
@@ -3448,443 +3448,444 @@ INSERT INTO `data_make_item_ingredients` VALUES (5322, 5321, 5);
 DROP TABLE IF EXISTS `data_make_items`;
 CREATE TABLE `data_make_items`  (
   `id` smallint(5) UNSIGNED NOT NULL,
-  `result_item_id` smallint(5) UNSIGNED NOT NULL,
+  `result_sup_item_id` smallint(5) UNSIGNED NOT NULL,
+  `level` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `price` bigint(20) UNSIGNED NOT NULL,
   `quantity` smallint(5) UNSIGNED NOT NULL,
   `rate` int(10) UNSIGNED NOT NULL,
   `rate_sup` int(10) UNSIGNED NOT NULL,
   `rate_double` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_make_items
 -- ----------------------------
-INSERT INTO `data_make_items` VALUES (1000, 6670, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1001, 6671, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1002, 6672, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1003, 6673, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1004, 6674, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1005, 6675, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1006, 6676, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1007, 6677, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1008, 6678, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1009, 6679, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1010, 6682, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1035, 6705, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1036, 6706, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1037, 6707, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1038, 6708, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1039, 6709, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1040, 6710, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1041, 6711, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1042, 6712, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1043, 6713, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1044, 6714, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1045, 6717, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1140, 6810, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1141, 6811, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1142, 6812, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1143, 6813, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1144, 6814, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1145, 6815, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1146, 6816, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1147, 6817, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1148, 6818, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1149, 6819, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1150, 6822, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1175, 6845, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1176, 6846, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1177, 6847, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1178, 6848, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1179, 6849, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1180, 6850, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1181, 6851, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1182, 6852, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1183, 6853, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1184, 6854, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1185, 6857, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1210, 6880, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1211, 6881, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1212, 6882, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1213, 6883, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1214, 6884, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1215, 6885, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1216, 6886, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1217, 6887, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1218, 6888, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1219, 6889, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1220, 6892, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1245, 6915, 100, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1246, 6916, 256, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1247, 6917, 676, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1248, 6918, 1444, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1249, 6919, 3136, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1250, 6920, 6724, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1251, 6921, 13456, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1252, 6922, 24336, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1253, 6923, 45905, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1254, 6924, 97793, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1255, 6927, 151051, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1280, 6950, 60, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1281, 6951, 154, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1282, 6952, 406, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1283, 6953, 866, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1284, 6954, 1882, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1285, 6955, 4034, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1286, 6956, 8074, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1287, 6957, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1288, 6958, 27543, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1289, 6959, 58676, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1290, 6962, 90631, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1660, 6980, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1661, 6981, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1662, 6982, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1663, 6983, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1664, 6984, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1665, 6985, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1666, 6986, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1667, 6987, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1668, 6988, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1669, 6989, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1670, 6992, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1690, 7010, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1691, 7011, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1692, 7012, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1693, 7013, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1694, 7014, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1695, 7015, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1696, 7016, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1697, 7017, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1698, 7018, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1699, 7019, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1700, 7022, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1720, 7040, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1721, 7041, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1722, 7042, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1723, 7043, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1724, 7044, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1725, 7045, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1726, 7046, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1727, 7047, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1728, 7048, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1729, 7049, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1730, 7052, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1750, 7070, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1751, 7071, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1752, 7072, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1753, 7073, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1754, 7074, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1755, 7075, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1756, 7076, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1757, 7077, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1758, 7078, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1759, 7079, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1760, 7082, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1780, 7100, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1781, 7101, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1782, 7102, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1783, 7103, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1784, 7104, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1785, 7105, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1786, 7106, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1787, 7107, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1788, 7108, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1789, 7109, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1790, 7112, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1810, 7130, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1811, 7131, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1812, 7132, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1813, 7133, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1814, 7134, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1815, 7135, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1816, 7136, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1817, 7137, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1818, 7138, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1819, 7139, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1820, 7142, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1840, 7160, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1841, 7161, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1842, 7162, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1843, 7163, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1844, 7164, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1845, 7165, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1846, 7166, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1847, 7167, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1848, 7168, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1849, 7169, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1850, 7172, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1870, 7190, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1871, 7191, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1872, 7192, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1873, 7193, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1874, 7194, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1875, 7195, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1876, 7196, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1877, 7197, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1878, 7198, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1879, 7199, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1880, 7202, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1900, 7220, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1901, 7221, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1902, 7222, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1903, 7223, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1904, 7224, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1905, 7225, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1906, 7226, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1907, 7227, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1908, 7228, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1909, 7229, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1910, 7232, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1930, 7250, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1931, 7251, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1932, 7252, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1933, 7253, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1934, 7254, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1935, 7255, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1936, 7256, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1937, 7257, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1938, 7258, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1939, 7259, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1940, 7262, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1960, 7280, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1961, 7281, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1962, 7282, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1963, 7283, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1964, 7284, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1965, 7285, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1966, 7286, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1967, 7287, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1968, 7288, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1969, 7289, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (1970, 7292, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (1990, 7310, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1991, 7311, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1992, 7312, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1993, 7313, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1994, 7314, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1995, 7315, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1996, 7316, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (1997, 7317, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (1998, 7318, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (1999, 7319, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2000, 7322, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2020, 7340, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2021, 7341, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2022, 7342, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2023, 7343, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2024, 7344, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2025, 7345, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2026, 7346, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2027, 7347, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2028, 7348, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2029, 7349, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2030, 7352, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2050, 7370, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2051, 7371, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2052, 7372, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2053, 7373, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2054, 7374, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2055, 7375, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2056, 7376, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2057, 7377, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2058, 7378, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2059, 7379, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2060, 7382, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2080, 7400, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2081, 7401, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2082, 7402, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2083, 7403, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2084, 7404, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2085, 7405, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2086, 7406, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2087, 7407, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2088, 7408, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2089, 7409, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2090, 7412, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2110, 7430, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2111, 7431, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2112, 7432, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2113, 7433, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2114, 7434, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2115, 7435, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2116, 7436, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2117, 7437, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2118, 7438, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2119, 7439, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2120, 7442, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2140, 7460, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2141, 7461, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2142, 7462, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2143, 7463, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2144, 7464, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2145, 7465, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2146, 7466, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2147, 7467, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2148, 7468, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2149, 7469, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2150, 7472, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2170, 7490, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2171, 7491, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2172, 7492, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2173, 7493, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2174, 7494, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2175, 7495, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2176, 7496, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2177, 7497, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2178, 7498, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2179, 7499, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2180, 7502, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2200, 7520, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2201, 7521, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2202, 7522, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2203, 7523, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2204, 7524, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2205, 7525, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2206, 7526, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2207, 7527, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2208, 7528, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2209, 7529, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2210, 7532, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2230, 7550, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2231, 7551, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2232, 7552, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2233, 7553, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2234, 7554, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2235, 7555, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2236, 7556, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2237, 7557, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2238, 7558, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2239, 7559, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2240, 7562, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2260, 7580, 50, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2261, 7581, 128, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2262, 7582, 338, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2263, 7583, 722, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2264, 7584, 1568, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2265, 7585, 3362, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2266, 7586, 6728, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2267, 7587, 12168, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2268, 7588, 22953, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2269, 7589, 48897, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2270, 7592, 75526, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2290, 7610, 70, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2291, 7611, 179, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2292, 7612, 473, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2293, 7613, 1011, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2294, 7614, 2195, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2295, 7615, 4707, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2296, 7616, 9419, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2297, 7617, 17035, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2298, 7618, 32134, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2299, 7619, 68455, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2300, 7622, 105736, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2320, 7640, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2321, 7641, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2322, 7642, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2323, 7643, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2324, 7644, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2325, 7645, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2326, 7646, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2327, 7647, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2328, 7648, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2329, 7649, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2330, 7652, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (2350, 7670, 40, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2351, 7671, 102, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2352, 7672, 270, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2353, 7673, 578, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2354, 7674, 1254, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2355, 7675, 2690, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2356, 7676, 5382, 1, 1000, 250, 0);
-INSERT INTO `data_make_items` VALUES (2357, 7677, 9734, 1, 1000, 180, 0);
-INSERT INTO `data_make_items` VALUES (2358, 7678, 18362, 1, 1000, 160, 0);
-INSERT INTO `data_make_items` VALUES (2359, 7679, 39117, 1, 1000, 140, 0);
-INSERT INTO `data_make_items` VALUES (2360, 7682, 60420, 1, 1000, 275, 0);
-INSERT INTO `data_make_items` VALUES (4352, 4352, 5, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4356, 4356, 16, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4392, 4392, 4, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4396, 4396, 13, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4542, 4542, 2500, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4543, 4543, 6500, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4544, 4544, 11000, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4545, 4545, 22000, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4546, 4546, 44000, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4562, 4562, 625, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4563, 4563, 1625, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4564, 4564, 2750, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4565, 4565, 5500, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4566, 4566, 11000, 1, 500, 0, 0);
-INSERT INTO `data_make_items` VALUES (4633, 4633, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4634, 4634, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4636, 4636, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4637, 4637, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4639, 4639, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4640, 4640, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4642, 4642, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4643, 4643, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4645, 4645, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4646, 4646, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4647, 4647, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4648, 4648, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4650, 4650, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4651, 4651, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4652, 4652, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4781, 4781, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4782, 4782, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4783, 4783, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4785, 4785, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4786, 4786, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4787, 4787, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4789, 4789, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4790, 4790, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4791, 4791, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4793, 4793, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4794, 4794, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4795, 4795, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4797, 4797, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4798, 4798, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4799, 4799, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4801, 4801, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4802, 4802, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4803, 4803, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4879, 4879, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4880, 4880, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4881, 4881, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4882, 4882, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4883, 4883, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4884, 4884, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4885, 4885, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4886, 4886, 1000, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (4931, 4931, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4932, 4932, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4933, 4933, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4935, 4935, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4936, 4936, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4937, 4937, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4939, 4939, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4940, 4940, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4941, 4941, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4943, 4943, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4944, 4944, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4945, 4945, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4947, 4947, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4948, 4948, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4949, 4949, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4952, 4952, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4953, 4953, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (4954, 4954, 10, 2, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5083, 5083, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5084, 5084, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5085, 5085, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5086, 5086, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5087, 5087, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5088, 5088, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5101, 5101, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5102, 5102, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5111, 5111, 10, 1, 1000, 0, 200);
-INSERT INTO `data_make_items` VALUES (5321, 5321, 187, 1, 1000, 0, 0);
-INSERT INTO `data_make_items` VALUES (5322, 5322, 625, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (1000, 6670, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1001, 6671, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1002, 6672, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1003, 6673, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1004, 6674, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1005, 6675, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1006, 6676, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1007, 6677, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1008, 6678, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1009, 6679, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1010, 6682, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1035, 6705, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1036, 6706, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1037, 6707, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1038, 6708, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1039, 6709, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1040, 6710, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1041, 6711, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1042, 6712, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1043, 6713, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1044, 6714, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1045, 6717, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1140, 6810, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1141, 6811, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1142, 6812, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1143, 6813, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1144, 6814, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1145, 6815, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1146, 6816, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1147, 6817, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1148, 6818, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1149, 6819, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1150, 6822, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1175, 6845, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1176, 6846, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1177, 6847, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1178, 6848, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1179, 6849, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1180, 6850, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1181, 6851, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1182, 6852, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1183, 6853, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1184, 6854, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1185, 6857, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1210, 6880, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1211, 6881, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1212, 6882, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1213, 6883, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1214, 6884, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1215, 6885, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1216, 6886, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1217, 6887, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1218, 6888, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1219, 6889, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1220, 6892, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1245, 6915, 0, 100, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1246, 6916, 4, 256, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1247, 6917, 12, 676, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1248, 6918, 20, 1444, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1249, 6919, 28, 3136, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1250, 6920, 36, 6724, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1251, 6921, 44, 13456, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1252, 6922, 52, 24336, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1253, 6923, 60, 45905, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1254, 6924, 68, 97793, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1255, 6927, 76, 151051, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1280, 6950, 0, 60, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1281, 6951, 4, 154, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1282, 6952, 12, 406, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1283, 6953, 20, 866, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1284, 6954, 28, 1882, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1285, 6955, 36, 4034, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1286, 6956, 44, 8074, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1287, 6957, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1288, 6958, 60, 27543, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1289, 6959, 68, 58676, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1290, 6962, 76, 90631, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1660, 6980, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1661, 6981, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1662, 6982, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1663, 6983, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1664, 6984, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1665, 6985, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1666, 6986, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1667, 6987, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1668, 6988, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1669, 6989, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1670, 6992, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1690, 7010, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1691, 7011, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1692, 7012, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1693, 7013, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1694, 7014, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1695, 7015, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1696, 7016, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1697, 7017, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1698, 7018, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1699, 7019, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1700, 7022, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1720, 7040, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1721, 7041, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1722, 7042, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1723, 7043, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1724, 7044, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1725, 7045, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1726, 7046, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1727, 7047, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1728, 7048, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1729, 7049, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1730, 7052, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1750, 7070, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1751, 7071, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1752, 7072, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1753, 7073, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1754, 7074, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1755, 7075, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1756, 7076, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1757, 7077, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1758, 7078, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1759, 7079, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1760, 7082, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1780, 7100, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1781, 7101, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1782, 7102, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1783, 7103, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1784, 7104, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1785, 7105, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1786, 7106, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1787, 7107, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1788, 7108, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1789, 7109, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1790, 7112, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1810, 7130, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1811, 7131, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1812, 7132, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1813, 7133, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1814, 7134, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1815, 7135, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1816, 7136, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1817, 7137, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1818, 7138, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1819, 7139, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1820, 7142, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1840, 7160, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1841, 7161, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1842, 7162, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1843, 7163, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1844, 7164, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1845, 7165, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1846, 7166, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1847, 7167, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1848, 7168, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1849, 7169, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1850, 7172, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1870, 7190, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1871, 7191, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1872, 7192, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1873, 7193, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1874, 7194, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1875, 7195, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1876, 7196, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1877, 7197, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1878, 7198, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1879, 7199, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1880, 7202, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1900, 7220, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1901, 7221, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1902, 7222, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1903, 7223, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1904, 7224, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1905, 7225, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1906, 7226, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1907, 7227, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1908, 7228, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1909, 7229, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1910, 7232, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1930, 7250, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1931, 7251, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1932, 7252, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1933, 7253, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1934, 7254, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1935, 7255, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1936, 7256, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1937, 7257, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1938, 7258, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1939, 7259, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1940, 7262, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1960, 7280, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1961, 7281, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1962, 7282, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1963, 7283, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1964, 7284, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1965, 7285, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1966, 7286, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1967, 7287, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1968, 7288, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1969, 7289, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (1970, 7292, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (1990, 7310, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1991, 7311, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1992, 7312, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1993, 7313, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1994, 7314, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1995, 7315, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1996, 7316, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (1997, 7317, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (1998, 7318, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (1999, 7319, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2000, 7322, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2020, 7340, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2021, 7341, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2022, 7342, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2023, 7343, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2024, 7344, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2025, 7345, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2026, 7346, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2027, 7347, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2028, 7348, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2029, 7349, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2030, 7352, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2050, 7370, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2051, 7371, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2052, 7372, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2053, 7373, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2054, 7374, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2055, 7375, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2056, 7376, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2057, 7377, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2058, 7378, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2059, 7379, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2060, 7382, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2080, 7400, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2081, 7401, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2082, 7402, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2083, 7403, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2084, 7404, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2085, 7405, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2086, 7406, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2087, 7407, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2088, 7408, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2089, 7409, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2090, 7412, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2110, 7430, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2111, 7431, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2112, 7432, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2113, 7433, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2114, 7434, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2115, 7435, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2116, 7436, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2117, 7437, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2118, 7438, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2119, 7439, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2120, 7442, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2140, 7460, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2141, 7461, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2142, 7462, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2143, 7463, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2144, 7464, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2145, 7465, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2146, 7466, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2147, 7467, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2148, 7468, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2149, 7469, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2150, 7472, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2170, 7490, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2171, 7491, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2172, 7492, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2173, 7493, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2174, 7494, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2175, 7495, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2176, 7496, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2177, 7497, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2178, 7498, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2179, 7499, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2180, 7502, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2200, 7520, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2201, 7521, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2202, 7522, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2203, 7523, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2204, 7524, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2205, 7525, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2206, 7526, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2207, 7527, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2208, 7528, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2209, 7529, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2210, 7532, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2230, 7550, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2231, 7551, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2232, 7552, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2233, 7553, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2234, 7554, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2235, 7555, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2236, 7556, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2237, 7557, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2238, 7558, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2239, 7559, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2240, 7562, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2260, 7580, 0, 50, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2261, 7581, 4, 128, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2262, 7582, 12, 338, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2263, 7583, 20, 722, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2264, 7584, 28, 1568, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2265, 7585, 36, 3362, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2266, 7586, 44, 6728, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2267, 7587, 52, 12168, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2268, 7588, 60, 22953, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2269, 7589, 68, 48897, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2270, 7592, 76, 75526, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2290, 7610, 0, 70, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2291, 7611, 4, 179, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2292, 7612, 12, 473, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2293, 7613, 20, 1011, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2294, 7614, 28, 2195, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2295, 7615, 36, 4707, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2296, 7616, 44, 9419, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2297, 7617, 52, 17035, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2298, 7618, 60, 32134, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2299, 7619, 68, 68455, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2300, 7622, 76, 105736, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2320, 7640, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2321, 7641, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2322, 7642, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2323, 7643, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2324, 7644, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2325, 7645, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2326, 7646, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2327, 7647, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2328, 7648, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2329, 7649, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2330, 7652, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (2350, 7670, 0, 40, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2351, 7671, 4, 102, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2352, 7672, 12, 270, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2353, 7673, 20, 578, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2354, 7674, 28, 1254, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2355, 7675, 36, 2690, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2356, 7676, 44, 5382, 1, 1000, 250, 0);
+INSERT INTO `data_make_items` VALUES (2357, 7677, 52, 9734, 1, 1000, 180, 0);
+INSERT INTO `data_make_items` VALUES (2358, 7678, 60, 18362, 1, 1000, 160, 0);
+INSERT INTO `data_make_items` VALUES (2359, 7679, 68, 39117, 1, 1000, 140, 0);
+INSERT INTO `data_make_items` VALUES (2360, 7682, 76, 60420, 1, 1000, 275, 0);
+INSERT INTO `data_make_items` VALUES (4352, 4352, 1, 5, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4356, 4356, 9, 16, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4392, 4392, 1, 4, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4396, 4396, 9, 13, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4542, 4542, 39, 2500, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4543, 4543, 49, 6500, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4544, 4544, 59, 11000, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4545, 4545, 69, 22000, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4546, 4546, 79, 44000, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4562, 4562, 39, 625, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4563, 4563, 49, 1625, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4564, 4564, 59, 2750, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4565, 4565, 69, 5500, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4566, 4566, 79, 11000, 1, 500, 0, 0);
+INSERT INTO `data_make_items` VALUES (4633, 4633, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4634, 4634, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4636, 4636, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4637, 4637, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4639, 4639, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4640, 4640, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4642, 4642, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4643, 4643, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4645, 4645, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4646, 4646, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4647, 4647, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4648, 4648, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4650, 4650, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4651, 4651, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4652, 4652, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4781, 4781, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4782, 4782, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4783, 4783, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4785, 4785, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4786, 4786, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4787, 4787, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4789, 4789, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4790, 4790, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4791, 4791, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4793, 4793, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4794, 4794, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4795, 4795, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4797, 4797, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4798, 4798, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4799, 4799, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4801, 4801, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4802, 4802, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4803, 4803, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4879, 4879, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4880, 4880, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4881, 4881, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4882, 4882, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4883, 4883, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4884, 4884, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4885, 4885, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4886, 4886, 1, 1000, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (4931, 4931, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4932, 4932, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4933, 4933, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4935, 4935, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4936, 4936, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4937, 4937, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4939, 4939, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4940, 4940, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4941, 4941, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4943, 4943, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4944, 4944, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4945, 4945, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4947, 4947, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4948, 4948, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4949, 4949, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4952, 4952, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4953, 4953, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (4954, 4954, 1, 10, 2, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5083, 5083, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5084, 5084, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5085, 5085, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5086, 5086, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5087, 5087, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5088, 5088, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5101, 5101, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5102, 5102, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5111, 5111, 1, 10, 1, 1000, 0, 200);
+INSERT INTO `data_make_items` VALUES (5321, 5321, 9, 187, 1, 1000, 0, 0);
+INSERT INTO `data_make_items` VALUES (5322, 5322, 39, 625, 1, 1000, 0, 0);
 
 -- ----------------------------
 -- Table structure for data_map_regions
@@ -3898,12 +3899,12 @@ CREATE TABLE `data_map_regions`  (
   `location` smallint(5) UNSIGNED NOT NULL,
   `tp_level` smallint(5) UNSIGNED NOT NULL,
   `unk1` smallint(6) NOT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `region_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `region_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `map_id`(`map_id`) USING BTREE,
   CONSTRAINT `data_map_regions_ibfk_1` FOREIGN KEY (`map_id`) REFERENCES `data_maps` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_map_regions
@@ -3975,7 +3976,7 @@ INSERT INTO `data_map_regions` VALUES (60, 1217, 2682, 16, 4, 1, 0, 'Floresta Ar
 DROP TABLE IF EXISTS `data_maps`;
 CREATE TABLE `data_maps`  (
   `id` smallint(5) UNSIGNED NOT NULL,
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `x1` smallint(5) UNSIGNED NOT NULL,
   `y1` smallint(5) UNSIGNED NOT NULL,
   `x2` smallint(5) UNSIGNED NOT NULL,
@@ -3985,7 +3986,7 @@ CREATE TABLE `data_maps`  (
   `unk3` smallint(5) UNSIGNED NOT NULL,
   `unk4` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_maps
@@ -4060,7 +4061,7 @@ DROP TABLE IF EXISTS `data_pran_exp`;
 CREATE TABLE `data_pran_exp`  (
   `level` tinyint(3) UNSIGNED NOT NULL,
   `exp` bigint(20) UNSIGNED NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_pran_exp
@@ -4177,7 +4178,7 @@ CREATE TABLE `data_recipe_ingredients`  (
   `quantity` smallint(5) UNSIGNED NOT NULL,
   INDEX `recipe_id`(`recipe_id`) USING BTREE,
   CONSTRAINT `data_recipe_ingredients_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `data_recipes` (`item_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_recipe_ingredients
@@ -7978,7 +7979,7 @@ CREATE TABLE `data_recipe_rates`  (
   `rate_15` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`recipe_id`) USING BTREE,
   CONSTRAINT `data_recipe_rates_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `data_recipes` (`item_id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_recipe_rates
@@ -8249,7 +8250,7 @@ CREATE TABLE `data_recipes`  (
   `rate_double` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`, `item_id`) USING BTREE,
   INDEX `item_id`(`item_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_recipes
@@ -9332,6 +9333,169 @@ INSERT INTO `data_recipes` VALUES (1075, 22452, 22461, 22461, 0, 1, 0, 1000, 0, 
 INSERT INTO `data_recipes` VALUES (1076, 22453, 22461, 22461, 0, 1, 0, 1000, 0, 0);
 
 -- ----------------------------
+-- Table structure for data_reinforce_a
+-- ----------------------------
+DROP TABLE IF EXISTS `data_reinforce_a`;
+CREATE TABLE `data_reinforce_a`  (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `price` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `reagent_qty` smallint(5) UNSIGNED NOT NULL,
+  `c1` smallint(5) UNSIGNED NOT NULL,
+  `c2` smallint(5) UNSIGNED NOT NULL,
+  `c3` smallint(5) UNSIGNED NOT NULL,
+  `c4` smallint(5) UNSIGNED NOT NULL,
+  `c5` smallint(5) UNSIGNED NOT NULL,
+  `c6` smallint(5) UNSIGNED NOT NULL,
+  `c7` smallint(5) UNSIGNED NOT NULL,
+  `c8` smallint(5) UNSIGNED NOT NULL,
+  `c9` smallint(5) UNSIGNED NOT NULL,
+  `c10` smallint(5) UNSIGNED NOT NULL,
+  `c11` smallint(5) UNSIGNED NOT NULL,
+  `c12` smallint(5) UNSIGNED NOT NULL,
+  `c13` smallint(5) UNSIGNED NOT NULL,
+  `c14` smallint(5) UNSIGNED NOT NULL,
+  `c15` smallint(5) UNSIGNED NOT NULL,
+  `c16` smallint(5) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_reinforce_a
+-- ----------------------------
+INSERT INTO `data_reinforce_a` VALUES (1, 200, 1, 1000, 1000, 1000, 1000, 1000, 800, 700, 600, 250, 100, 50, 45, 40, 36, 32, 0);
+INSERT INTO `data_reinforce_a` VALUES (2, 300, 1, 1000, 1000, 1000, 1000, 1000, 780, 680, 580, 240, 95, 49, 44, 39, 35, 31, 0);
+INSERT INTO `data_reinforce_a` VALUES (3, 800, 1, 1000, 1000, 1000, 1000, 1000, 760, 660, 560, 230, 90, 48, 43, 38, 34, 30, 0);
+INSERT INTO `data_reinforce_a` VALUES (4, 1700, 1, 1000, 1000, 1000, 1000, 1000, 740, 640, 540, 220, 85, 47, 42, 37, 33, 29, 0);
+INSERT INTO `data_reinforce_a` VALUES (5, 3300, 1, 1000, 1000, 1000, 1000, 1000, 720, 620, 520, 210, 80, 46, 41, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_a` VALUES (6, 6100, 1, 1000, 1000, 1000, 1000, 1000, 700, 600, 500, 200, 75, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_a` VALUES (7, 10200, 1, 1000, 1000, 1000, 1000, 1000, 680, 580, 480, 190, 70, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (8, 17000, 1, 1000, 1000, 1000, 1000, 1000, 660, 560, 460, 180, 65, 43, 38, 34, 30, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (9, 25500, 1, 1000, 1000, 1000, 1000, 1000, 640, 540, 440, 170, 60, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (10, 42350, 1, 1000, 1000, 1000, 1000, 1000, 640, 540, 440, 170, 60, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (11, 70140, 1, 1000, 1000, 1000, 1000, 1000, 620, 520, 420, 160, 55, 41, 36, 32, 28, 25, 0);
+INSERT INTO `data_reinforce_a` VALUES (12, 42350, 1, 1000, 1000, 1000, 1000, 1000, 580, 480, 380, 140, 45, 39, 35, 31, 27, 24, 0);
+INSERT INTO `data_reinforce_a` VALUES (13, 42350, 1, 1000, 1000, 1000, 1000, 1000, 560, 460, 360, 130, 40, 38, 34, 30, 27, 24, 0);
+INSERT INTO `data_reinforce_a` VALUES (36, 12800, 1, 1000, 1000, 1000, 1000, 580, 480, 190, 70, 44, 44, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (37, 7600, 1, 1000, 1000, 1000, 1000, 600, 500, 200, 75, 45, 45, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_a` VALUES (38, 12800, 1, 1000, 1000, 1000, 1000, 580, 480, 190, 70, 44, 44, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (39, 33600, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (51, 21300, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (52, 32700, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (53, 37730, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (54, 44880, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (55, 66640, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (57, 77840, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (58, 84280, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (59, 71960, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (60, 41140, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (61, 30800, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (62, 105060, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (63, 122230, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 11, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (65, 25120, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (71, 240, 1, 1000, 1000, 1000, 1000, 700, 600, 250, 100, 50, 50, 50, 45, 40, 36, 32, 0);
+INSERT INTO `data_reinforce_a` VALUES (72, 360, 1, 1000, 1000, 1000, 1000, 680, 580, 240, 95, 49, 49, 49, 44, 39, 35, 31, 0);
+INSERT INTO `data_reinforce_a` VALUES (73, 1000, 1, 1000, 1000, 1000, 1000, 660, 560, 230, 90, 48, 48, 48, 43, 38, 34, 30, 0);
+INSERT INTO `data_reinforce_a` VALUES (74, 2200, 1, 1000, 1000, 1000, 1000, 640, 540, 220, 85, 47, 47, 47, 42, 37, 33, 29, 0);
+INSERT INTO `data_reinforce_a` VALUES (75, 4100, 1, 1000, 1000, 1000, 1000, 620, 520, 210, 80, 46, 46, 46, 41, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_a` VALUES (76, 7600, 1, 1000, 1000, 1000, 1000, 600, 500, 200, 75, 45, 45, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_a` VALUES (77, 12800, 1, 1000, 1000, 1000, 1000, 580, 480, 190, 70, 44, 44, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (78, 21300, 1, 1000, 1000, 1000, 1000, 560, 460, 180, 65, 43, 43, 43, 38, 34, 30, 27, 0);
+INSERT INTO `data_reinforce_a` VALUES (79, 31900, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (80, 50930, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (81, 79940, 1, 1000, 1000, 1000, 1000, 520, 420, 160, 55, 41, 41, 41, 36, 32, 28, 25, 0);
+INSERT INTO `data_reinforce_a` VALUES (83, 140564, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (84, 105060, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (85, 140564, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (86, 140564, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (87, 139576, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (88, 168677, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_a` VALUES (91, 62810, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_a` VALUES (92, 161648, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+
+-- ----------------------------
+-- Table structure for data_reinforce_w
+-- ----------------------------
+DROP TABLE IF EXISTS `data_reinforce_w`;
+CREATE TABLE `data_reinforce_w`  (
+  `id` smallint(5) UNSIGNED NOT NULL,
+  `price` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `reagent_qty` smallint(5) UNSIGNED NOT NULL,
+  `c1` smallint(5) UNSIGNED NOT NULL,
+  `c2` smallint(5) UNSIGNED NOT NULL,
+  `c3` smallint(5) UNSIGNED NOT NULL,
+  `c4` smallint(5) UNSIGNED NOT NULL,
+  `c5` smallint(5) UNSIGNED NOT NULL,
+  `c6` smallint(5) UNSIGNED NOT NULL,
+  `c7` smallint(5) UNSIGNED NOT NULL,
+  `c8` smallint(5) UNSIGNED NOT NULL,
+  `c9` smallint(5) UNSIGNED NOT NULL,
+  `c10` smallint(5) UNSIGNED NOT NULL,
+  `c11` smallint(5) UNSIGNED NOT NULL,
+  `c12` smallint(5) UNSIGNED NOT NULL,
+  `c13` smallint(5) UNSIGNED NOT NULL,
+  `c14` smallint(5) UNSIGNED NOT NULL,
+  `c15` smallint(5) UNSIGNED NOT NULL,
+  `c16` smallint(5) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of data_reinforce_w
+-- ----------------------------
+INSERT INTO `data_reinforce_w` VALUES (1, 500, 1, 1000, 1000, 1000, 1000, 1000, 800, 700, 600, 250, 100, 50, 45, 40, 36, 32, 0);
+INSERT INTO `data_reinforce_w` VALUES (2, 900, 1, 1000, 1000, 1000, 1000, 1000, 780, 680, 580, 240, 95, 49, 44, 39, 35, 31, 0);
+INSERT INTO `data_reinforce_w` VALUES (3, 2900, 1, 1000, 1000, 1000, 1000, 1000, 760, 660, 560, 230, 90, 48, 43, 38, 34, 30, 0);
+INSERT INTO `data_reinforce_w` VALUES (4, 6300, 1, 1000, 1000, 1000, 1000, 1000, 740, 640, 540, 220, 85, 47, 42, 37, 33, 29, 0);
+INSERT INTO `data_reinforce_w` VALUES (5, 12500, 1, 1000, 1000, 1000, 1000, 1000, 720, 620, 520, 210, 80, 46, 41, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_w` VALUES (6, 23100, 1, 1000, 1000, 1000, 1000, 1000, 700, 600, 500, 200, 75, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_w` VALUES (7, 39600, 1, 1000, 1000, 1000, 1000, 1000, 680, 580, 480, 190, 70, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_w` VALUES (8, 62700, 1, 1000, 1000, 1000, 1000, 1000, 660, 560, 460, 180, 65, 43, 38, 34, 30, 27, 0);
+INSERT INTO `data_reinforce_w` VALUES (9, 93800, 1, 1000, 1000, 1000, 1000, 1000, 640, 540, 440, 170, 60, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (10, 137880, 1, 1000, 1000, 1000, 1000, 1000, 640, 540, 440, 170, 60, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (11, 195160, 1, 1000, 1000, 1000, 1000, 1000, 620, 520, 420, 160, 55, 41, 36, 32, 28, 25, 0);
+INSERT INTO `data_reinforce_w` VALUES (36, 7900, 1, 1000, 1000, 1000, 600, 580, 560, 280, 70, 18, 18, 18, 16, 14, 12, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (37, 15600, 1, 1000, 1000, 1000, 580, 560, 540, 270, 68, 17, 17, 17, 15, 13, 11, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (38, 28800, 1, 1000, 1000, 1000, 560, 540, 520, 260, 65, 16, 16, 16, 14, 12, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (39, 49500, 1, 1000, 1000, 1000, 540, 520, 500, 250, 63, 16, 16, 16, 14, 12, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (40, 78400, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (41, 106200, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (42, 109100, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (43, 122760, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (44, 146160, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (54, 146160, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (55, 184910, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (56, 211150, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (57, 216480, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (58, 234520, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (59, 200080, 1, 1000, 1000, 1000, 460, 440, 420, 210, 53, 13, 13, 13, 11, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (60, 133920, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (61, 100080, 1, 1000, 1000, 1000, 520, 500, 480, 240, 60, 15, 15, 15, 13, 11, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (62, 240670, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (63, 299920, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 11, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (65, 96720, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (71, 700, 1, 1000, 1000, 1000, 1000, 700, 600, 250, 100, 50, 50, 50, 45, 40, 36, 32, 0);
+INSERT INTO `data_reinforce_w` VALUES (72, 1100, 1, 1000, 1000, 1000, 1000, 680, 580, 240, 95, 49, 49, 49, 44, 39, 35, 31, 0);
+INSERT INTO `data_reinforce_w` VALUES (73, 3600, 1, 1000, 1000, 1000, 1000, 660, 560, 230, 90, 48, 48, 48, 43, 38, 34, 30, 0);
+INSERT INTO `data_reinforce_w` VALUES (74, 7900, 1, 1000, 1000, 1000, 1000, 640, 540, 220, 85, 47, 47, 47, 42, 37, 33, 29, 0);
+INSERT INTO `data_reinforce_w` VALUES (75, 15600, 1, 1000, 1000, 1000, 1000, 620, 520, 210, 80, 46, 46, 46, 41, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_w` VALUES (76, 28800, 1, 1000, 1000, 1000, 1000, 600, 500, 200, 75, 45, 45, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_w` VALUES (77, 49500, 1, 1000, 1000, 1000, 1000, 580, 480, 190, 70, 44, 44, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_w` VALUES (78, 78400, 1, 1000, 1000, 1000, 1000, 560, 460, 180, 65, 43, 43, 43, 38, 34, 30, 27, 0);
+INSERT INTO `data_reinforce_w` VALUES (79, 117300, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (80, 158400, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (81, 222220, 1, 1000, 1000, 1000, 1000, 520, 420, 150, 55, 41, 41, 41, 36, 32, 28, 25, 0);
+INSERT INTO `data_reinforce_w` VALUES (83, 359904, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (84, 240670, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (85, 359904, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (86, 359904, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (87, 347730, 1, 1000, 1000, 1000, 430, 410, 390, 195, 49, 12, 12, 12, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (88, 431885, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+INSERT INTO `data_reinforce_w` VALUES (89, 28800, 1, 1000, 1000, 1000, 620, 600, 500, 200, 75, 45, 45, 45, 40, 36, 32, 28, 0);
+INSERT INTO `data_reinforce_w` VALUES (90, 49500, 1, 1000, 1000, 1000, 600, 580, 480, 190, 70, 44, 44, 44, 39, 35, 31, 27, 0);
+INSERT INTO `data_reinforce_w` VALUES (91, 251400, 1, 1000, 1000, 1000, 1000, 540, 440, 170, 60, 42, 42, 42, 37, 33, 29, 26, 0);
+INSERT INTO `data_reinforce_w` VALUES (92, 431884, 1, 1000, 1000, 1000, 400, 380, 360, 190, 45, 11, 11, 10, 10, 10, 10, 10, 0);
+
+-- ----------------------------
 -- Table structure for data_set_effects
 -- ----------------------------
 DROP TABLE IF EXISTS `data_set_effects`;
@@ -9344,7 +9508,7 @@ CREATE TABLE `data_set_effects`  (
   `eff_value` smallint(5) UNSIGNED NOT NULL,
   INDEX `id`(`id`) USING BTREE,
   CONSTRAINT `data_set_effects_ibfk_1` FOREIGN KEY (`id`) REFERENCES `data_sets` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_set_effects
@@ -11605,7 +11769,7 @@ CREATE TABLE `data_set_items`  (
   `item_id` smallint(5) UNSIGNED NOT NULL,
   INDEX `id`(`id`) USING BTREE,
   CONSTRAINT `data_set_items_ibfk_1` FOREIGN KEY (`id`) REFERENCES `data_sets` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_set_items
@@ -13996,11 +14160,11 @@ INSERT INTO `data_set_items` VALUES (671, 21883);
 DROP TABLE IF EXISTS `data_sets`;
 CREATE TABLE `data_sets`  (
   `id` smallint(5) UNSIGNED NOT NULL,
-  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
-  `name2` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `name2` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `unk` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_sets
@@ -14497,11 +14661,11 @@ CREATE TABLE `data_titles`  (
   `eff1_value` smallint(5) UNSIGNED NOT NULL,
   `eff2_value` smallint(5) UNSIGNED NOT NULL,
   `eff3_value` smallint(5) UNSIGNED NOT NULL,
-  `desc` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `desc` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `unk` smallint(6) NOT NULL,
-  `color` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `color` varchar(12) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of data_titles
@@ -14730,11 +14894,11 @@ CREATE TABLE `devir_slots`  (
   `devir_id` tinyint(3) UNSIGNED NOT NULL,
   `is_active` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `item_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
-  `put_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
+  `put_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `put_time` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`slot_id`, `devir_id`, `nation_id`) USING BTREE,
   INDEX `devir_id`(`devir_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of devir_slots
@@ -14841,7 +15005,7 @@ CREATE TABLE `items`  (
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for nations
@@ -14849,9 +15013,9 @@ CREATE TABLE `items`  (
 DROP TABLE IF EXISTS `nations`;
 CREATE TABLE `nations`  (
   `id` tinyint(3) UNSIGNED NOT NULL,
-  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of nations
@@ -14869,7 +15033,7 @@ CREATE TABLE `prans`  (
   `acc_id` int(10) UNSIGNED NOT NULL,
   `char_id` int(10) UNSIGNED NOT NULL,
   `item_id` int(10) UNSIGNED NOT NULL,
-  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `food` tinyint(4) NOT NULL,
   `devotion` int(11) NOT NULL,
   `p_cute` smallint(5) UNSIGNED NOT NULL,
@@ -14893,6 +15057,6 @@ CREATE TABLE `prans`  (
   `updated_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   `created_at` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0),
   PRIMARY KEY (`id`, `acc_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -1,4 +1,4 @@
-FRAMEWORK=netcoreapp2.2
+FRAMEWORK=netcoreapp3.1
 CONFIGURATION=Debug
 RUNTIME=win10-x64
 

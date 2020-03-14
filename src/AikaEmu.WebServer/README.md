@@ -1,6 +1,6 @@
 # AikaEmu.WebServer
 
-WebServer made in **ASP.Net Core 2.2 MVC**.
+WebServer made in **ASP.Net Core 3.1**.
 
 ## Getting Started
 

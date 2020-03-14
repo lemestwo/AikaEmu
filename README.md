@@ -1,6 +1,6 @@
 # AikaEmu
 
-AikaEmu is a completely open source **C# .Net Core 2.2** emulator for the MMORPG **Aika Online**. 
+AikaEmu is a completely open source **C# .Net Core 3.1** emulator for the MMORPG **Aika Online**. 
 
 It's code is based on several ideas from others emulators and is being developed only for educational purposes. 
 
